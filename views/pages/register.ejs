@@ -1,4 +1,49 @@
-<%- include('../partials/header') %>
-<h2>Register PAGE</h2>
 
-<a href="/login">Login</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/global-styles.css">
+    <title>Login - Air Hockey</title>
+</head>
+<body>
+    <main class="site-main bg-default">
+        <%- include('../partials/header-public') %>
+        <section class="form-container">
+            <form method="post">
+                <h1 class="heading-lg text-center">User Registration</h1>
+                <div class="d-flex direction-col gap-10">
+                    <div><input type="email" name="" id="" placeholder="User Email"></div>
+                    <div><input type="password" name="" id="" placeholder="Password"></div>
+                </div>
+                
+                <div class="d-flex align-center">
+                    <button>Login</button>
+                    <span>
+                        <a href="">Forget Password</a>
+                    </span>
+                </div>
+                <div class="d-flex align-center justify-between">
+                    <label for="">
+                        <span></span>
+                        <input type="checkbox" name="" id="">
+                        <span>Remember me</span>
+                    </label>
+                    <span>
+                        I already have account
+                        <a href="/login">Login</a>
+                    </span>
+                </div>
+            </form>
+        </section>
+    
+        
+        <%- include('../partials/footer') %>
+    </main>
+
+    <script src="./js/login.js"></script>
+</body>
+</html>
+
+

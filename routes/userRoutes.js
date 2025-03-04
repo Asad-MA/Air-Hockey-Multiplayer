@@ -6,7 +6,7 @@ import path from "path";;
 const userRoutes = express.Router();
 
 userRoutes.get('/login' , (req , res)=>{
-    res.render('pages/login' , {msg: 'Hello World'});
+    res.render('pages/login' , {msg: 'Hello World', title: 'Login Page', layout: "layouts/main"});
 })
 
 userRoutes.get('/register' , (req , res)=>{

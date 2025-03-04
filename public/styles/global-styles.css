@@ -1,0 +1,77 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tomorrow' , sans-serif;
+}
+
+img{
+    max-width: 100%;
+}
+
+main.site-main {
+    min-height: 100vh;
+}
+
+.bg-default{
+    background-color: blueviolet;
+    background-image: url('../img/default-bg.png');
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+}
+
+section.form-container {
+    max-width: 650px;
+    background: rgb(222 234 255 / 41%);
+    margin: auto;
+    padding: 40px 50px;
+}
+
+.d-flex{
+    display: flex;
+}
+
+.direction-col{
+    flex-direction: column;
+}
+
+.align-center{
+    align-items: center;
+}
+
+.justify-center{
+    justify-content: center;
+}
+
+.justify-between{
+    justify-content: space-between;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.p-20{
+    padding: 20px;
+}
+
+footer.site-footer {
+    text-align: center;
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    right: 0;
+}
+
+input:not([type="checkbox"]) {
+    height: 50px;
+    border: none;
+    width: 100%;
+    border-radius: 8px;
+    text-indent: 14px;
+}
+
+.gap-10{
+    gap: 10px;
+}

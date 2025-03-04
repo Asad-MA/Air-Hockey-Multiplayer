@@ -8,6 +8,7 @@ import userRoutes from './routes/userRoutes.js';
 
 
 
+
 const app = express();
 const PORT = process.env.PORT || 6000;
 
@@ -18,9 +19,14 @@ app.use(cookieParser());
 
 app.use(userRoutes);
 
+
+
 app.use(express.static("public"));
 
+
+
 app.set('view engine', 'ejs');
+
 
 
 
