@@ -5,44 +5,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/global-styles.css">
+    <script src="https://kit.fontawesome.com/192402329c.js" crossorigin="anonymous"></script>
     <title>Login - Air Hockey</title>
 </head>
 <body>
-    <main class="site-main bg-default">
+    <div class="site-main bg-default d-flex direction-col">
         <%- include('../partials/header-public') %>
-        <section class="form-container">
+        <main class="site-content fill-space d-flex direction-col justify-center align-center">
+        <section class="form-container site-modal pos-relative overflow-hidden">
+            <div class="loader"></div>
             <form method="post">
-                <h1 class="heading-lg text-center">User Registration</h1>
+                <h1 class="heading-lg text-center">Register</h1>
+                <div class="divider mb-30 mt-20"></div>
                 <div class="d-flex direction-col gap-10">
                     <div><input type="email" name="" id="" placeholder="User Email"></div>
                     <div><input type="password" name="" id="" placeholder="Password"></div>
                 </div>
                 
-                <div class="d-flex align-center">
-                    <button>Login</button>
-                    <span>
-                        <a href="">Forget Password</a>
-                    </span>
-                </div>
-                <div class="d-flex align-center justify-between">
-                    <label for="">
-                        <span></span>
-                        <input type="checkbox" name="" id="">
-                        <span>Remember me</span>
-                    </label>
+                <div class="d-flex align-center mt-30 justify-between" >
+                    <button class="text-uppercase">Register</button>
                     <span>
                         I already have account
                         <a href="/login">Login</a>
                     </span>
                 </div>
+                <div class="d-flex align-center justify-between mt-30">
+                    <label for="">
+                        <span></span>
+                        <input type="checkbox" name="" id="">
+                        <span>Private Account 
+                            <span class="info-container">
+                                <span class="info-button"><i class="fa-solid fa-circle-info"></i></span>
+                                <span class="tooltip">Private accounts are not visible to other players. You can set account visibility from account settings later.</span>
+                            </span>
+                              
+                        </span>
+                    </label>
+                    
+                </div>
             </form>
         </section>
-    
+    </main>
         
         <%- include('../partials/footer') %>
-    </main>
+    </div>
 
-    <script src="./js/login.js"></script>
+    <script src="./js/register.js"></script>
 </body>
 </html>
 
