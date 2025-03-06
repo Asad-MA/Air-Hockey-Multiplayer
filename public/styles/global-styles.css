@@ -45,7 +45,7 @@
     /* Modals */
     --modal-bg: rgb(222 234 255 / 41%);
     --modal-radius: 50px;
-
+    --modal-padding: 50px 60px;
 }
 
 *{
@@ -185,14 +185,13 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .form-container {
-    max-width: 680px;
-    padding: 50px 60px;
-    width: 100%;
+    width: clamp(360px, calc(100vw - 100px) , 750px);
 }
 
 .site-modal{
     background: var(--modal-bg);
     border-radius: var(--modal-radius);
+    padding: var(--modal-padding);
 }
 
 .d-flex{
@@ -231,6 +230,19 @@ h1, h2, h3, h4, h5, h6{
     overflow: hidden;
 }
 
+.width-50{
+    width: 50%;
+}
+
+.d-grid{
+    display: grid;
+}
+
+.grid-col-2{
+    
+    grid-template-columns: repeat(2 , minmax(300px , 1fr));
+}
+
 .info-container {
     position: relative;
     display: inline-block;
@@ -264,7 +276,8 @@ h1, h2, h3, h4, h5, h6{
     min-width: 300px;
     max-width: 350px;
     width: 100%;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+    line-height: 1.4;
   }
   
   .info-container:hover .tooltip {
@@ -305,6 +318,7 @@ input:focus {
     left: 0;
     background-color: var(--divider-color);
     overflow: hidden;
+    display: none;
   }
   
   .loader::after {
@@ -314,6 +328,16 @@ input:focus {
     height: 100%;
     background: var(--btn-bg);
     animation: googleLoader 2s infinite ease-in-out;
+    animation-play-state: paused;
+    
+  }
+
+  .loader.active::after{
+    animation-play-state: running;
+  }
+
+  .loader.active{
+    display: block;
   }
   
   @keyframes googleLoader {
@@ -321,4 +345,48 @@ input:focus {
     50% { left: 25%; width: 75%; }
     100% { left: 100%; width: 50%; }
   }
+
+  /* Styled Checkbox */
+  .styled-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+    gap: 8px;
+    user-select: none;
+}
+
+.styled-checkbox input {
+    display: none; /* Hide the default checkbox */
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #bbb2e6;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Checkmark appearance when checked */
+.styled-checkbox input:checked + .checkmark {
+    background-color: #bbb2e6;
+    border-color: #bbb2e6;
+}
+
+/* Checkmark symbol */
+.styled-checkbox input:checked + .checkmark::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0px;
+    width: 4px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
   
