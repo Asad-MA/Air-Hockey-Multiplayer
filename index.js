@@ -16,6 +16,9 @@ const PORT = process.env.PORT || 6000;
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+//app.use(express.urlencoded({ extended: true }));
+
+
 
 app.use(userRoutes);
 
@@ -27,6 +30,13 @@ app.use(express.static("public"));
 
 app.set('view engine', 'ejs');
 
+app.use((err, req, res, next) => {
+  res.status(err.status || 500).render("pages/error", {
+      title: err.title || "Something Went Wrong",
+      message: err.message || "An unexpected error occurred.",
+      suggestion: err.suggestion || "Please try again later or contact support."
+  });
+});
 
 
 

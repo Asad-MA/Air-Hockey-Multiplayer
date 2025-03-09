@@ -2,10 +2,12 @@ import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true, index:true },
     password: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
-    verificationToken: { type: String },
+    avatar: { type: String },
+    status: { type: String},
+    accountStatus: { type: String , default: 'active'},
     createdAt: { type: Date, default: Date.now }
 }, {collection: "Users"});
 
