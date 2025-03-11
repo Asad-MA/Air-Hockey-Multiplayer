@@ -44,6 +44,11 @@ class AuthService{
         const user = await userRepo.findUserByEmail(email);
         if(!user) throw new Error("Email doesn't exist!");
 
+        if(!user.isVerified) {
+            
+            throw new Error("Verify your email!<br>Check your inbox and click the link to activate your account.");
+        }
+           
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) throw new Error("Invalid credentials!");
