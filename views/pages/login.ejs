@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./styles/global-styles.css">
     <link rel="stylesheet" href="./styles/login.css">
     <script src="https://kit.fontawesome.com/192402329c.js" crossorigin="anonymous"></script>
+    
     <title>Login - Air Hockey</title>
 </head>
 <body>
@@ -15,12 +16,20 @@
         <main class="site-content fill-space d-flex direction-col justify-center align-center">
         <section class="form-container site-modal pos-relative overflow-hidden">
             <div class="loader"></div>
+            <% if(typeof message !== "undefined" && message) { %>
+                <div class="genaric-success mb-30 mt-20">
+                    <p class="success-message">
+                        <i class="fa-solid fa-circle-check"></i> <%= message %>
+                    </p>
+                </div>
+            <% } %>
+            
             <form method="post">
                 <h1 class="heading-lg text-center">User Login</h1>
                 <div class="divider mb-30 mt-20"></div>
                 <div class="d-flex direction-col gap-10">
-                    <div><input type="email" name="" id="" placeholder="User Email"></div>
-                    <div><input type="password" name="" id="" placeholder="Password"></div>
+                    <div><input type="email" name="email" id="" placeholder="User Email"></div>
+                    <div><input type="password" name="password" id="" placeholder="Password"></div>
                 </div>
                 
                 <div class="d-flex align-center mt-30 gap-30" >
@@ -32,7 +41,7 @@
                 <div class="d-flex align-center justify-between mt-30">
                     <label for="remember" class="styled-checkbox">
                         
-                        <input type="checkbox" name="" id="remember">
+                        <input type="checkbox" name="remember-me" id="remember">
                         <span class="checkmark"></span>
                         <span>Remember me</span>
                     </label>
@@ -47,7 +56,7 @@
         
         <%- include('../partials/footer') %>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="./js/login.js"></script>
 </body>
 </html>

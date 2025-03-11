@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Tomorrow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 :root{
     --heading-color: #fff;
     --primary-color: #fff;
@@ -9,6 +11,8 @@
     --heading-letter-spacing: 0.02em;
     --letter-spacing: 0.02em;
     --anchor-text-size: 15px;
+    --error-bg: #ff797975;
+    --success-color: #b8ff78;
     
     --heading-font-family: 'Tomorrow' , sans-serif;
     --btn-font-family: 'Tomorrow' , sans-serif;
@@ -76,11 +80,13 @@ button{
 }
 
 ::-webkit-input-placeholder{
-
+    color: var(--placeholder);
+    font-family: var(--text-font-family);
 }
 
 ::-moz-placeholder{
-
+    color: var(--placeholder);
+    font-family: var(--text-font-family);
 }
 
 p , span, li , a{
@@ -306,11 +312,16 @@ input:not([type="checkbox"]) {
     transition: border-color 0.8s ease, box-shadow 0.8s ease;
     letter-spacing: var(--letter-spacing);
     color: var(--input-text-color);
+    font-size: var(--text-size);
 }
 
 input:focus {
   border: 1px solid #c608cb85;
   box-shadow: var(--input-focus-shadow);
+}
+
+input[type="password"]{
+    /* font-size:22px; */
 }
 
 
@@ -357,6 +368,7 @@ input:focus {
     cursor: pointer;
     font-size: 16px;
     gap: 8px;
+    -webkit-user-select: none;
     user-select: none;
 }
 
@@ -393,4 +405,40 @@ input:focus {
     transform: rotate(45deg);
 }
 
+p.error-message{
+    font-size: 13px;
+    margin: 5px;
+    color: #ffd77d;
+    line-height: var(--heading-line-height);
+}
+
+p.error-message > span{
+    text-transform: capitalize;
+    font-size: inherit;
+    color: inherit;
+}
+
+.genaric-error {
+    /* background: var(--error-bg); */
+    /* min-height: 70px; */
+    border-radius: 20px;
+    text-align: center;
+}
+
+.genaric-success {
+    text-align: center;
+    max-width: 700px;
+    margin: auto;
+    margin-bottom: 25px;
+    /* position: absolute; */
+    top: 15px;
+    left: 0;
+    right: 0;
+}
+
+.genaric-success > p{
+    color: var(--success-color);
+    ine-height: var(--text-line-height);
+    font-size: 14px;
+}
   

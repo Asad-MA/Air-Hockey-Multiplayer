@@ -19,7 +19,7 @@ class TokenRepository {
     }
 
     async findByUserId(userId) {
-        return await VerificationToken.findById(userId);
+        return await VerificationToken.findOne(userId);
     }
 }
 

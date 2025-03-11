@@ -1,17 +1,33 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
-    
-    form.addEventListener("submit", async function (event) {
-        event.preventDefault();
+jQuery(document).ready(function ($) {
+    const form = $("form");
+    const loader = $(".loader");
 
-        const formData = new FormData(form);
-        
+    // Function to remove all error messages
+    function clearErrors() {
+        $(".error-message").remove();
+        $(".genaric-error").remove();
+        $(".genaric-success").remove();
+    }
+
+    // Remove errors when input changes
+    form.find("input").on("input", function () {
+        $(this).next(".error-message").remove();
+        $(".genaric-error").remove();
+    });
+
+    form.on("submit", async function (event) {
+        event.preventDefault();
+        loader.addClass("active");
+        // Clear errors before submitting
+        clearErrors();
+
+        const formData = form.serializeArray();
         const data = {
-            username: formData.get("username"),
-            usermail: formData.get("usermail"),
-            password: formData.get("password"),
-            repeatPassword: formData.get("repeat-password"),
-            privateAccount: document.getElementById("Private-account").checked
+            username: formData.find(item => item.name === "username")?.value,
+            usermail: formData.find(item => item.name === "usermail")?.value,
+            password: formData.find(item => item.name === "password")?.value,
+            repeatPassword: formData.find(item => item.name === "repeatPassword")?.value,
+            privateAccount: $("#Private-account").prop("checked")
         };
 
         try {
@@ -23,16 +39,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify(data)
             });
 
+            const result = await response.json();
+           loader.removeClass("active");
+            console.log("Result:", result);
+            //console.log(response);
             if (!response.ok) {
-                throw new Error("Network response was not ok");
+                result.status = response.status;
+                throw new Error(JSON.stringify(result));
             }
 
-            const result = await response.json();
-            console.log("Success:", result);
-            alert("Registration successful!");
+            if(result.success)
+                 $('.divider').after(`<div class="genaric-success  mt-20"><p class="success-message"> ${result.message}</p></div>`);
+
+            form.trigger('reset');
+           // alert("Registration successful!");
         } catch (error) {
-            console.error("Error:", error);
-            alert("Registration failed. Please try again.");
+            console.log(error);
+            const errors = JSON.parse(error.message);
+            console.log(errors , errors.status);
+
+            if(errors.status == 500){
+                $('.divider').after(`<div class="genaric-error mb-30 mt-20"><p class="error-message"><i class="fa-solid fa-triangle-exclamation"></i> ${errors.error}</p></div>`);
+                return;
+            }
+
+            
+
+            for (const error in errors) {
+                $(`[name="${error}"]`).after(`<p class="error-message"><i class="fa-solid fa-triangle-exclamation"></i> ${errors[error][0]}</p>`);
+            }
         }
     });
 });

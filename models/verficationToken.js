@@ -5,7 +5,11 @@ const tokenSchema = new mongoose.Schema({
     token: { type: String, required: true },
     expiresAt: { type: Date, required: true , default: () => new Date(Date.now() + 60 * 60 * 1000)} ,
     
-    createdAt: { type: Date, default: Date.now }
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        expires: 60 * 60   // Auto-delete after 7 days (in seconds)
+      }
 }, {collection: "emailTokens"});
 
 export default mongoose.model("veificationToken", tokenSchema);
