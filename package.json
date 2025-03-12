@@ -16,7 +16,8 @@
     "jsonwebtoken": "^9.0.2",
     "method-override": "^3.0.0",
     "mongoose": "^8.12.0",
-    "nodemailer": "^6.10.0"
+    "nodemailer": "^6.10.0",
+    "user-agent": "^1.0.4"
   },
   "devDependencies": {
     "concurrently": "^9.1.2",

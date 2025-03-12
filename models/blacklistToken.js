@@ -8,4 +8,4 @@ const blacklistedTokenSchema = new mongoose.Schema({
 // TTL index to remove documents after 15 minutes (900 seconds)
 blacklistedTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 900 });
 
-export default mongoose.model("BlacklistedToken", blacklistedTokenSchema);
+export default mongoose.model("blacklistedToken", blacklistedTokenSchema);
