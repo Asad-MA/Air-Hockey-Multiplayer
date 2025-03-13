@@ -4,6 +4,8 @@ import tokenRepo from "../repos/tokenRepo.js";
 import userRepo from "../repos/userRepo.js";
 import userService from "../services/userService.js";
 import AuthService from "../services/authService.js";
+import verficationToken from "../models/verficationToken.js";
+import bcrypt from 'bcrypt';
 
 class UserController {
     async handleLogin(req , res) {
@@ -47,7 +49,7 @@ class UserController {
 
 
             // Send verification Email
-            if (!sendEmail(usermail, `${fullUrl}/verify/${user._id}?token=${token}`)) {
+            if (!sendEmail(usermail, 'Confirm Your Account' , 'email-verification' `${fullUrl}/verify/${user._id}?token=${token}`)) {
 
                 const delUser = await user.findOneAndDelete(user._id);
                 console.log(delUser);
@@ -89,10 +91,61 @@ class UserController {
         }
     }
 
-    resetPassword() {
+    async resetPassword(req , res) {
+        try{
+            const {password , repeatPassword , requestID, token} = req.body;
+            if(password !== repeatPassword) throw new Error("Password mismatched!");
 
+            if(!password || !repeatPassword || !requestID || !token)
+                throw new Error('Invalid Request! Please try again');
+
+            const TOKEN = await verficationToken.findOne({userId: requestID , token , type: 'passwordReset'});
+            if(!TOKEN) throw new Error('Invalid Request token');
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            await userRepo.updateUser(TOKEN.userId , {password: hashedPassword});
+
+            res.status(200).send({success: true, message: 'Your password has been reset. <a href="/login">LOGIN</a>'})
+        }
+        catch(err){
+            res.status(500).send({
+                success: false,
+                error: err.message
+            })
+        }
     }
 
+    async handleResetPasswordRequest(req , res){
+        try{
+            const {email} = req.body;
+            if(!email) throw new Error('Email is required!');
+
+            const user = await userRepo.findUserByEmail(email);
+            console.log(user);
+
+            const token = generateToken();
+
+            const fullUrl = req.protocol + '://' + req.get('host');
+
+
+            // Send verification Email
+            if (!sendEmail(email, 'Reset Your Password!' , 'reset-password', `${fullUrl}/reset-password/${user._id}?token=${token}`)) {
+                return res.status(400).send({ message: "❌ Oops! We couldn't send the verification email. Please check your email address and try again, or contact support for assistance." });
+            }
+
+            await tokenRepo.insertToken(user._id , token , 'passwordReset');
+
+            res.status(200).send({success: true , message: "📩 We've email you a password resend link! Please check your inbox and follow the link to verify your account. Didn’t receive it? Check your spam folder or resend the email."})
+
+        }
+        catch(err){
+            res.status(500).send({
+                success: false,
+                error: err.message
+            })
+        }
+    }
 
     forgotPassword() {
 

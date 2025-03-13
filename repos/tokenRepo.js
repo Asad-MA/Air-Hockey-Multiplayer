@@ -1,9 +1,9 @@
 import VerificationToken from "../models/verficationToken.js";
 
 class TokenRepository {
-    async insertToken(userId , token) {
+    async insertToken(userId , token, type) {
         try{
-            await VerificationToken.create({ userId , token });
+            await VerificationToken.create({ userId , token , type });
             console.log("Token Added!");
             return true;
         }

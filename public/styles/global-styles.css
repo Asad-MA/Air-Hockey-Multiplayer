@@ -7,13 +7,14 @@
     --text-color: #fff;
     --link-color: #fff;
     --text-size: 15px;
+    --text-size-md: 14px;
+    --text-size-sm: 13px;
     --heading-size: 35px;
     --heading-letter-spacing: 0.02em;
     --letter-spacing: 0.02em;
     --anchor-text-size: 15px;
     --error-bg: #ff797975;
     --success-color: #b8ff78;
-    
     --heading-font-family: 'Tomorrow' , sans-serif;
     --btn-font-family: 'Tomorrow' , sans-serif;
     --text-font-family: 'Tomorrow' , sans-serif;
@@ -21,19 +22,19 @@
     --heading-line-height: 1.4;
     --text-line-height: 1.8;
     --text-weight: 400;
-    --heading-weight: 600;
+    --heading-weight: 500;
     --heading-mb: 10px;
     --text-mb: 5px;
 
     /* inputs */
     --input-text-color: #392c39;
     --input-bg: #fff;
-    --input-height: 58px;
+    --input-height: 56px;
     --input-radius: 12px;
     --input-border: none;
     --placeholder: #787682;
     --input-focus-border: none;
-    --input-focus-shadow: 1px 1px 10px 0px rgb(192 10 200 / 30%);;
+    --input-focus-shadow: 1px 1px 10px 0px rgb(192 10 200 / 30%);
 
     /* buttons */
     --btn-bg: linear-gradient(45deg , #9b14ba , #c708cb);
@@ -108,6 +109,14 @@ h1, h2, h3, h4, h5, h6{
 
 .text-uppercase{
     text-transform: uppercase;
+}
+
+.text-normal{
+    text-transform: none;
+}
+
+.text-sm{
+    font-size: var(--text-size-sm);
 }
 
 .decoration-underline{
@@ -195,7 +204,7 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .form-container {
-    width: clamp(360px, calc(100vw - 100px) , 750px);
+    width: clamp(360px, calc(100vw - 100px) , 650px);
 }
 
 .site-modal{
