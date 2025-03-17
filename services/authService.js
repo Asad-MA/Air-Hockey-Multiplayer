@@ -4,60 +4,63 @@ import userRepo from "../repos/userRepo.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import BlacklistedToken from '../models/blacklistToken.js';
-
-
+import {timeToStr} from '../utils/humanReadableDate.js'
+import {UAParser} from 'ua-parser-js';
 
 dotenv.config({ path: path.join("./config/", ".env") });
+
 class AuthService{
     constructor(){
         this.accessSecret = process.env.JWT_ACCESS_SECRET;
-        this.refreshSecret = process.env.refreshSecret;
+        this.refreshSecret = process.env.JWT_REFRESH_SECRET;
     }
-    async verifyToken(token){
+    async verifyToken(token , type="access"){
         // Refresh Token + Access token 
 
-        // try {
-        //     const blacklisted = await BlacklistedToken.findOne({ token });
-        //     if (blacklisted) {
-        //         console.log("Token is blacklisted!");
-        //         throw new Error("Token has been blacklisted!");
-        //     }
-    
-            
-                return jwt.verify(token, this.accessSecret);
-            // } catch (err) {
-            //     // console.log(err);
-            //     throw new Error(err.message || "Invalid or expired token!");
-            // }
+        const blacklisted = await BlacklistedToken.findOne({ token });
+        if (blacklisted) {
+            console.log("Token is blacklisted!");
+            throw new Error("Token has been blacklisted!");
+        }
+        return jwt.verify(token, this[`${type}Secret`]);
     }
 
-    refreshToken(){
+    async refreshToken(oldToken){
+        const decoded = await this.verifyToken(oldToken , 'refresh');
+        console.log('Refresh Decoded');
+        console.log(decoded.exp); //Error Here
+        const expiry = decoded.exp;
+        const newAccessToken = await this.generateToken(decoded); //timestampToHummanReadable(decoded.exp)
+        const newRefreshToken = await this.generateToken(decoded , timeToStr(expiry) , 'refresh') //Exipry Issue (need to convert 10m/10d etc)
+
+        return {token: newAccessToken , refreshToken: newRefreshToken}
 
     }
 
-    generateToken(){
-        
+    async generateToken(user , expiry='5m' , type = 'access'){
+        if(!user) throw new Error("Invalid Users OR Empty User Object");
+        if(type == 'refresh') 
+            return jwt.sign({ userId: user._id,name: user.name, email: user.email, type: type }, this.refreshSecret, { expiresIn:'1m' });
+        return jwt.sign({ userId: user._id,name: user.name, email: user.email, type: type }, this.accessSecret, { expiresIn:expiry });
     }
 
-    async login(email , password){
+    async login(email , password , rememberMe = false){
 
         const user = await userRepo.findUserByEmail(email);
         if(!user) throw new Error("Email doesn't exist!");
 
-        if(!user.isVerified) {
-            
-            throw new Error("Verify your email!<br>Check your inbox and click the link to activate your account.");
-        }
-           
-
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) throw new Error("Invalid credentials!");
 
-        const token = jwt.sign({ userId: user._id,name: user.name, email: user.email }, this.accessSecret, { expiresIn: "15m" });
+        if(!user.isVerified) {
+            throw new Error("Verify your email!<br>Check your inbox and click the link to activate your account.");
+        }
 
-       
+        const token = await this.generateToken(user);
 
-        return { token, user };
+        const refreshToken = await this.generateToken(user , rememberMe?'7d':'24h' , 'refresh');
+
+        return { token, user , refreshToken};
     }
 
    async register(name , email , password){
@@ -72,8 +75,11 @@ class AuthService{
        
     }
 
-    async invalidateToken(token){
-        const decoded = jwt.verify(token, this.accessSecret);
+    async invalidateToken(token , type = 'access'){
+
+        const decoded = jwt.verify(token, this[`${type}Secret`]);
+
+        console.log('Decoded Token: ' , decoded);
         const expiryDate = new Date(decoded.exp * 1000); // Convert expiry to Date
 
         await BlacklistedToken.create({ token, expiresAt: expiryDate });

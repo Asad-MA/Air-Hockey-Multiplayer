@@ -6,10 +6,10 @@
     --background-color: #fff;
     --text-color: #fff;
     --link-color: #fff;
-    --text-size: 15px;
-    --text-size-md: 14px;
-    --text-size-sm: 13px;
-    --heading-size: 35px;
+    --text-size: clamp(14px , 2vw , 15px);
+    --text-size-md: clamp(12px , 2vw , 14px);
+    --text-size-sm: clamp(12px , 2vw , 13px);
+    --heading-size: clamp(28px , 7vw , 35px);;
     --heading-letter-spacing: 0.02em;
     --letter-spacing: 0.02em;
     --anchor-text-size: 15px;
@@ -49,8 +49,8 @@
 
     /* Modals */
     --modal-bg: rgb(222 234 255 / 41%);
-    --modal-radius: 50px;
-    --modal-padding: 50px 60px;
+    --modal-radius: clamp(20px , 5vw , 60px);
+    --modal-padding: clamp(30px , 5% , 50px) clamp(20px , 5% , 50px);
 }
 
 *{
@@ -72,6 +72,8 @@ button{
     letter-spacing: var(--letter-spacing);
     line-height: var(--text-line-height);
     border:  none;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 ::placeholder{
@@ -137,6 +139,10 @@ h1, h2, h3, h4, h5, h6{
     display: inline-flex;
 }
 
+.flex-wrap{
+    flex-wrap: wrap;
+}
+
 .pt-10{
     padding-top: 10px;
 }
@@ -176,7 +182,7 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .gap-30{
-    gap:30px;
+    gap: 20px;
 }
 
 .my-20{
@@ -204,7 +210,7 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .form-container {
-    width: clamp(360px, calc(100vw - 100px) , 650px);
+    width: clamp(300px, calc(100vw - 40px) , 550px);
 }
 
 .site-modal{
@@ -259,7 +265,7 @@ h1, h2, h3, h4, h5, h6{
 
 .grid-col-2{
     
-    grid-template-columns: repeat(2 , minmax(300px , 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .info-container {
@@ -386,8 +392,8 @@ input[type="password"]{
 }
 
 .checkmark {
-    width: 18px;
-    height: 18px;
+    width: 15px;
+    height: 15px;
     border: 2px solid #bbb2e6;
     border-radius: 4px;
     display: inline-block;
@@ -449,5 +455,16 @@ p.error-message > span{
     color: var(--success-color);
     ine-height: var(--text-line-height);
     font-size: 14px;
+}
+
+.site-logo{
+    width: clamp(70px , 30vw , 170px);
+}
+
+
+@media all and (max-width: 450px){
+    .justify-center-xs{
+        justify-content: center;
+    }
 }
   

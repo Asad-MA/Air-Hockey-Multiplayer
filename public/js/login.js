@@ -26,7 +26,7 @@ jQuery(document).ready(function ($) {
         const data = {
             email: formData.find(item => item.name === "email")?.value,
             password: formData.find(item => item.name === "password")?.value,
-            privateAccount: $("#remember").prop("checked")
+            remember: $("#remember").prop("checked")
         };
 
         try {

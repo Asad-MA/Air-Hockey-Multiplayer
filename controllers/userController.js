@@ -5,23 +5,55 @@ import userRepo from "../repos/userRepo.js";
 import userService from "../services/userService.js";
 import AuthService from "../services/authService.js";
 import verficationToken from "../models/verficationToken.js";
+import refreshTokenRepo from "../repos/refreshTokenRepo.js";
+import { UAParser } from "ua-parser-js";
 import bcrypt from 'bcrypt';
+import { version } from "mongoose";
 
 class UserController {
     async handleLogin(req , res) {
         try{
-            const {email , password} = req.body;
+            const {email , password , remember} = req.body;
             // console.log(email , password);
-            const {token , user} = await AuthService.login(email , password);
+            const {token , user , refreshToken} = await AuthService.login(email , password , remember);
 
             res.cookie("token", token, {
                 httpOnly: true, // Prevent JavaScript access (XSS protection)
                 secure: process.env.NODE_ENV === "production", // Use secure cookies in production
                 sameSite: "Strict",
             });
-            res.setHeader("access_token" , token);
 
-            res.json({token});
+            res.cookie("refreshtoken", refreshToken, {
+                httpOnly: true, // Prevent JavaScript access (XSS protection)
+                secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+                sameSite: "Strict",
+                maxAge: (remember?7:1) * 24 * 60 * 60 * 1000,
+            });
+
+             const parser = new UAParser(req.headers['user-agent']);
+
+             const userAgent = parser.getResult();
+
+            // console.log(parser.getResult());
+
+            await refreshTokenRepo.insertToken(user._id, refreshToken, req.ip || req.connection.remoteAddress , {
+                ua: userAgent.ua,
+                browser: {
+                    name: userAgent.browser.name,
+                    version: userAgent.browser.version,
+                    major: userAgent.browser.major
+                },
+                engine: {
+                    name: userAgent.engine.name,
+                    version: userAgent.engine.version
+                },
+                os: {
+                    name: userAgent.os.name,
+                    version: userAgent.os.version
+                }
+            })
+
+            res.json({success: true , token});
 
         }
         catch(err){
@@ -49,7 +81,7 @@ class UserController {
 
 
             // Send verification Email
-            if (!sendEmail(usermail, 'Confirm Your Account' , 'email-verification' `${fullUrl}/verify/${user._id}?token=${token}`)) {
+            if (!sendEmail(usermail, 'Confirm Your Account' , 'email-verification', `${fullUrl}/verify/${user._id}?token=${token}`)) {
 
                 const delUser = await user.findOneAndDelete(user._id);
                 console.log(delUser);
@@ -75,10 +107,17 @@ class UserController {
     async handleLogout(req , res , next) {
         try{
             const token  = req.cookies.token;
+            const refreshToken = req.cookies.refreshtoken;
             if(!token) throw new Error("Invalid Request!");
+            const decoded = await AuthService.verifyToken(token);
             await AuthService.invalidateToken(token);
-            res.clearCookie("token", { httpOnly: true, secure: true, sameSite: "Strict" });
-            // res.json({success: true, message: "Logged out successfully!" });
+            res.clearCookie("token", { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "Strict" });
+            await AuthService.invalidateToken(refreshToken , 'refresh');
+            res.clearCookie("refreshtoken", { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "Strict" });
+
+            //Delete Token From DB
+            await refreshTokenRepo.deleteToken(decoded.userId);
+
             res.render('pages/login' , {message: 'You have been successfully logged out!'});
         }
         catch(e){
@@ -87,7 +126,6 @@ class UserController {
                 title: "Invalid Request",
                 message: e.message,
             });
-            //res.status(500).json({success:false , message: e.message});
         }
     }
 
