@@ -11,7 +11,7 @@
     <title>Register - Air Hockey</title>
 </head>
 <body>
-    <div class="site-main bg-default d-flex direction-col">
+    <div class="site-main bg-default d-flex direction-col gap-30">
         <%- include('../partials/header-public') %>
         <main class="site-content fill-space d-flex direction-col justify-center align-center">
         <section class="form-container site-modal pos-relative overflow-hidden register-form">
@@ -26,14 +26,14 @@
                     <div class="width-5"><input type="password" name="repeatPassword" id="" placeholder="Repeat Password"></div>
                 </div>
                 
-                <div class="d-flex align-center mt-30 justify-between" >
+                <div class="d-flex align-center mt-30 justify-between flex-wrap gap-30 justify-center-xs" >
                     <button class="text-uppercase">Register</button>
                     <span>
                         I already have account
                         <a href="/login">Login</a>
                     </span>
                 </div>
-                <div class="d-flex align-center justify-between mt-30">
+                <div class="d-flex align-center justify-between mt-30 justify-center-xs">
                     <label for="Private-account" class="styled-checkbox">
                         
                         <input type="checkbox" name="" id="Private-account">

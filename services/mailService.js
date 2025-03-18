@@ -35,10 +35,17 @@ const sendEmail = async (toEmail, subject, template ,link ) => {
 
         // Prepare email content
         const mailOptions = {
-            from: '"Air Hockey Multiplayer" <airhockeymultiplayer@gmail.com>',
+            from: '"Air Hockey Multiplayer" <no-reply@airhockeymultiplayer@gmail.com>',
             to: toEmail,
             subject: subject,
             html: replaceTemplate(emailTemplate, { link }), 
+            headers: {
+                "X-Mailer": "Nodemailer",
+                "X-Priority": "3",
+                "X-MSMail-Priority": "Normal",
+                "Importance": "High",
+                "List-Unsubscribe": "<mailto:unsubscribe@airhockeymultiplayer@gmail.com>",
+            },
         };
 
         // Send email

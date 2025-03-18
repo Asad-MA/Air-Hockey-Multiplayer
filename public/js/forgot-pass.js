@@ -42,6 +42,11 @@ jQuery(document).ready(function ($) {
                 result.status = response.status;
                 throw new Error(JSON.stringify(result));
             }
+
+            if(result.success)
+                $('.divider').after(`<div class="genaric-success  mt-20"><p class="success-message"> ${result.message}</p></div>`);
+
+           form.trigger('reset');
            // alert("Registration successful!");
         } catch (error) {
             console.log(error);

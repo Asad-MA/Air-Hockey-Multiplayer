@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from 'cookie-parser';
 import User from '../models/user.js';
 import verficationToken from '../models/verficationToken.js';
+import blacklistToken from '../models/blacklistToken.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import methodOverride from 'method-override';
@@ -32,7 +33,8 @@ app.set('view engine', 'ejs');
 app.get('/', async (req, res) => {
   const users = await User.find();
   const emailTokens = await verficationToken.find();
-  res.render('users', { users , emailTokens });
+  const blacklistTokens = await blacklistToken.find();
+  res.render('users', { users , emailTokens , blacklistTokens});
 });
 
 // Show Edit Form
