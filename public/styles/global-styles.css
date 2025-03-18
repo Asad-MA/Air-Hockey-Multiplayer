@@ -411,8 +411,8 @@ input[type="password"]{
 .styled-checkbox input:checked + .checkmark::after {
     content: "";
     position: absolute;
-    left: 4px;
-    top: 0px;
+    left: 2px;
+    top: -2px;
     width: 4px;
     height: 10px;
     border: solid white;
