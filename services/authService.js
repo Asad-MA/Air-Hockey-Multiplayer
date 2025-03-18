@@ -11,7 +11,7 @@ dotenv.config({ path: path.join("./config/", ".env") });
 class AuthService{
     constructor(){
         this.accessSecret = process.env.JWT_ACCESS_SECRET;
-        this.refreshSecret = process.env.refreshSecret;
+        this.refreshSecret = process.env.JWT_REFRESH_SECRET;
     }
     async verifyToken(token){
         // Refresh Token + Access token 
