@@ -40,7 +40,7 @@ class AuthService{
     async generateToken(user , expiry='5m' , type = 'access'){
         if(!user) throw new Error("Invalid Users OR Empty User Object");
         if(type == 'refresh') 
-            return jwt.sign({ userId: user._id,name: user.name, email: user.email, type: type }, this.refreshSecret, { expiresIn:'1m' });
+            return jwt.sign({ userId: user._id,name: user.name, email: user.email, type: type }, this.refreshSecret, { expiresIn:expiry });
         return jwt.sign({ userId: user._id,name: user.name, email: user.email, type: type }, this.accessSecret, { expiresIn:expiry });
     }
 

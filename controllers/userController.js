@@ -162,6 +162,8 @@ class UserController {
             const user = await userRepo.findUserByEmail(email);
             console.log(user);
 
+            if(!user) throw new Error('No Account Found!');
+
             const token = generateToken();
 
             const fullUrl = req.protocol + '://' + req.get('host');
