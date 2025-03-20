@@ -32,4 +32,7 @@ userRoutes.post('/reset-password', userController.resetPassword );
 
 userRoutes.post('resend-verification-mail' , userController.resendMail);
 
+// Game Routes
+userRoutes.get('/matchmaking' , authenticate , (req , res) => res.render('pages/lobby'))
+
 export default userRoutes;
