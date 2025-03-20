@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
+import wss from './ws-channel.js';
 
 
 
