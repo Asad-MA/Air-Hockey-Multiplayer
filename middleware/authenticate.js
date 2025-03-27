@@ -8,7 +8,7 @@ const authenticate = async (req, res, next) => {
     try {
         if (!token || !refreshtoken) throw new Error('Invalid Tokens!');
         const user = await AuthService.verifyToken(token);
-        req.user = { name: user.name, email: user.email }
+        req.user = { name: user.name, email: user.email , token: token}
         next();
     }
     catch (err) {
@@ -96,7 +96,7 @@ const authenticate = async (req, res, next) => {
             console.log('Inserted new Refresh token!');
 
             // call next() 
-            req.user = { name: user.name, email: user.email }
+            req.user = { name: user.name, email: user.email , token: token}
 
             next();
             //If invalid

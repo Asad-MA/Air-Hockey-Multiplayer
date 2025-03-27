@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <%- include('../partials/header') %>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            overflow: hidden;
+            font-family: "Roboto", sans-serif;
+        }
+        header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Game content goes here -->
+     <div id="game-screen"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.86.0/dist/phaser.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.86.0/dist/phaser.min.js"></script>
+    <script src="./game-core/framework/server/colyseus.js"></script>
+    <script type="module" src="./game-core/index.js"></script>
+</body>
+</html>

@@ -20,7 +20,9 @@ userRoutes.get('/reset-password/:userId' , verifyResetPassword,  (req , res) => 
 
 userRoutes.get('/verify/:userId' , verifyAccount , (req , res)=>{ res.render('pages/verify-account') });
 
-userRoutes.get('/' , authenticate , (req , res)=>{ res.render('pages/dashboard' , {name: req.user.name , email: req.user.email}) })
+userRoutes.get('/' , authenticate , (req , res)=>{ 
+    console.log('User: ', req.user);
+    res.render('pages/dashboard' , {name: req.user.name , email: req.user.email , token: req.user.token}) })
 
 userRoutes.post('/register' , requestsValidator.validateRegister,  userController.handleRegister);
 
@@ -34,5 +36,7 @@ userRoutes.post('resend-verification-mail' , userController.resendMail);
 
 // Game Routes
 userRoutes.get('/matchmaking' , authenticate , (req , res) => res.render('pages/lobby'))
+
+userRoutes.get('/play-live/:roomId' , authenticate , (req , res) => res.render('pages/game'));
 
 export default userRoutes;

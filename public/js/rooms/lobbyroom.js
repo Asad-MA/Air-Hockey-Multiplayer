@@ -1,53 +1,60 @@
+
+
 console.log("Lobby Room!!!");
 
-// ...
+const status = document.getElementById("status");
 const serverUrl = "ws://127.0.0.1:2567";
 const client = new Colyseus.Client(serverUrl);
+client.auth.token = sessionStorage.getItem("token");
+
+console.log(client);
 
 let ROOM ;
 
-client.join("LOBBY" , {name: "LOBBY ROOM"})
+client.joinOrCreate("LOBBY" , {name: "LOBBY ROOM"})
 .then(room => {
     console.log("Room Joined Successfully!" , room);
+    // status.innerHTML = "Room Joined Successfully!";
+   // setTimeout(() => {
+        status.innerHTML = "Finding Opponent...";
+   // }, 10);
     HandleRoom(room);
     ROOM = room;
 })
 .catch(e => {
     console.error("Error While Joining" , e.message);
+    status.innerHTML = "Error While Joining";
 });
 
 const users = {}; // Store connected users' mouse positions
 
 function HandleRoom(room) {
-    room.onMessage("type", data => {
-        users[data.id] = { x: data.x, y: data.y };
-        renderUsers();
-    });
+  room.onMessage("match_found", async (message) => {
+    console.log("Match Found: ", message);
+    status.innerHTML = "Match Found!";
 
-    document.getElementById('gameCanvas').addEventListener("mousemove", (event) => {
-        if (room) {
-            room.send("type", {
-                x: event.clientX,
-                y: event.clientY,
-                id: "user_" + Math.random().toString(36).substr(2, 9),
-                timestamp: Date.now()
-            });
-        }
-    });
+
+     room.leave();
+
+     const newRoom = await client.joinById(message);
+
+        console.log("New Room: " , newRoom);
+        status.innerHTML = "Game Room Joined! " + newRoom.roomId;
+
+        newRoom.onMessage('Players', (message) => {
+            console.log("Players: " , message);
+            const p = message.map((m) => m.name);
+            status.insertAdjacentHTML("beforeend" , `<br>Players: <br>${p.join("<br> ")}`);
+        });
+
+        newRoom.onLeave((code) => {
+            console.log("client left the room" , code);
+          });
+
+    // Redirect to game room
+    // window.location.href = "/game";
+  });
 }
 
-function renderUsers() {
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    for (const id in users) {
-        const user = users[id];
-        // ctx.clearRect(0 , 0 , canvas.width , canvas.height)
-        ctx.beginPath();
-        ctx.arc(user.x, user.y, 5, 0, Math.PI * 2);
-        ctx.fillStyle = "red";
-        ctx.fill();
-    }
-}
+
 

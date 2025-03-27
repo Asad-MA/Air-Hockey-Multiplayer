@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
+import apiRoutes from './routes/apiRoutes.js';
+import defaultAuth from './middleware/api/defaultAuth.js';
 import wss from './ws-channel.js';
 
 
@@ -40,6 +42,10 @@ app.use((err, req, res, next) => {
   });
 });
 
+
+// API Routes
+// app.use('/api', defaultAuth);
+// app.use('/api', apiRoutes);
 
 
 
