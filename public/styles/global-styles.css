@@ -59,6 +59,20 @@
     box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+    display: none;
+  }
+  
+
+body{
+    font-family: 'Tomorrow' , sans-serif;
+    background-color: var(--background-color);
+    /* color: var(--text-color); */
+    /* font-size: var(--text-size); */
+    height: 100vh;
+    background: #1f1e24;
+}
+
 img{
     max-width: 100%;
 }

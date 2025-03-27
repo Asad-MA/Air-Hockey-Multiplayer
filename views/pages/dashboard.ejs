@@ -1,17 +1,37 @@
-<%- include('../partials/header') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/global-styles.css">
+    <title>Air Hockey Online</title>
+</head>
+<body>
+    <%- include('../partials/header') %>
 <h1>User Dashboard</h1>
 <h3>Welcome <%- name %></h3>
 
+
+
 <br>
-<a href="/matchmaking">
-<button>Play</button>
-</a>
+
+<button id="play-online">Play</button>
+
 
 <a href="/logout">
     <button>Logout</button>
 </a>
 
+
 <%- include('../partials/footer') %>
 <script>
     window.sessionStorage.setItem('token', "<%- token %>");
 </script>
+
+
+    <script src="https://unpkg.com/colyseus.js@^0.16.0/dist/colyseus.js"></script>
+    <script type="module" src="./js/rooms/lobbyroom.js"></script>
+</body>
+</html>
+
+
