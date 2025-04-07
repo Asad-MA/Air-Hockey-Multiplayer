@@ -27,6 +27,20 @@ class ColyseusNetwork extends INetworkService {
         }
     }
 
+    async joinByID(ID){
+        try {
+            this.room = await this.client.joinById(ID, { name: 'LOBBY ROOM' });
+            console.log(`🎮 Joined room: ${this.room.roomId}`);
+
+            this.setupListeners();
+            return this.room;
+            // this.latencyChecker.start(this);
+        } catch (error) {
+            console.error('❌ Failed to join room:', error);
+            throw error;
+        }
+    }
+
     setupListeners() {
         this.room.onMessage('*', (type, data) => {
             this.messageHandler.handle(type, data);

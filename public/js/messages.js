@@ -15,6 +15,10 @@ const messages = {
         title: "Player Joined",
         description: "A new player has joined the game!"
     },
+    matchFound: {
+        title: "Match Found",  
+        description: "A match has been found! Get ready to play!"
+    },
     playerLeft: {
         title: "Player Left",
         description: "A player has left the game."

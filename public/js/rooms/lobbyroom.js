@@ -48,28 +48,24 @@ play.addEventListener("click", () => {
 function HandleRoom(room) {
   room.onMessage("match_found", async (message) => {
     console.log("Match Found: ", message);
-    status.innerHTML = "Match Found!";
+    notifier.push(
+      messages.matchFound.title,
+      messages.matchFound.description,
+      { type: 'success', duration: 0 }
+    );
 
 
     room.leave();
 
-    const newRoom = await client.joinById(message);
+    setTimeout(() => {
+        // Redirect to game room
+        window.location.href = "/play-live/" + message;
+    }, 1000);
 
-    console.log("New Room: ", newRoom);
-    status.innerHTML = "Game Room Joined! " + newRoom.roomId;
+    
 
-    newRoom.onMessage('Players', (message) => {
-      console.log("Players: ", message);
-      const p = message.map((m) => m.name);
-      status.insertAdjacentHTML("beforeend", `<br>Players: <br>${p.join("<br> ")}`);
-    });
+  
 
-    newRoom.onLeave((code) => {
-      console.log("client left the room", code);
-    });
-
-    // Redirect to game room
-    // window.location.href = "/game";
   });
   room.onError((code, message) => {
     console.log("oops, error ocurred:");

@@ -8,35 +8,39 @@ import path from "path";
 
 const userRoutes = express.Router();
 
-userRoutes.get('/login' , (req , res)=>{ res.render('pages/login' ) })
+userRoutes.get('/login', (req, res) => { res.render('pages/login') })
 
-userRoutes.get('/register' , (req , res)=>{ res.render('pages/register') })
+userRoutes.get('/register', (req, res) => { res.render('pages/register') })
 
-userRoutes.get('/logout' , userController.handleLogout);
+userRoutes.get('/logout', userController.handleLogout);
 
-userRoutes.get('/forget-password' , (req , res) => {res.render('pages/forget-password')});
+userRoutes.get('/forget-password', (req, res) => { res.render('pages/forget-password') });
 
-userRoutes.get('/reset-password/:userId' , verifyResetPassword,  (req , res) => {res.render('pages/reset-password' , {id: req.params.userId , token: req.query.token})});
+userRoutes.get('/reset-password/:userId', verifyResetPassword, (req, res) => { res.render('pages/reset-password', { id: req.params.userId, token: req.query.token }) });
 
-userRoutes.get('/verify/:userId' , verifyAccount , (req , res)=>{ res.render('pages/verify-account') });
+userRoutes.get('/verify/:userId', verifyAccount, (req, res) => { res.render('pages/verify-account') });
 
-userRoutes.get('/' , authenticate , (req , res)=>{ 
+userRoutes.get('/', authenticate, (req, res) => {
     console.log('User: ', req.user);
-    res.render('pages/dashboard' , {name: req.user.name , email: req.user.email , token: req.user.token}) })
+    res.render('pages/dashboard', { name: req.user.name, email: req.user.email, token: req.user.token })
+})
 
-userRoutes.post('/register' , requestsValidator.validateRegister,  userController.handleRegister);
+userRoutes.post('/register', requestsValidator.validateRegister, userController.handleRegister);
 
-userRoutes.post('/login' ,  userController.handleLogin);
+userRoutes.post('/login', userController.handleLogin);
 
-userRoutes.post('/reset-password-request' , userController.handleResetPasswordRequest);
+userRoutes.post('/reset-password-request', userController.handleResetPasswordRequest);
 
-userRoutes.post('/reset-password', userController.resetPassword );
+userRoutes.post('/reset-password', userController.resetPassword);
 
-userRoutes.post('resend-verification-mail' , userController.resendMail);
+userRoutes.post('resend-verification-mail', userController.resendMail);
 
 // Game Routes
-userRoutes.get('/matchmaking' , authenticate , (req , res) => res.render('pages/lobby'))
+userRoutes.get('/matchmaking', authenticate, (req, res) => res.render('pages/lobby'))
 
-userRoutes.get('/play-live/:roomId' , authenticate , (req , res) => res.render('pages/game'));
+userRoutes.get('/play-live/:roomId', (req, res) => {
+    res.render('pages/game', { roomID: req.params.roomId, name: req.user?.name || 'placeholder' , email: req.user?.email || 'example@gmail.com' })
+}
+);
 
 export default userRoutes;

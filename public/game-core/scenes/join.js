@@ -3,7 +3,7 @@ import Network from '../networking/network.js';
 class PlayerJoinScene extends Phaser.Scene {
     constructor() {
         super('PlayerJoinScene');
-
+        this.roomID = document.getElementById('roomid').value;
     }
 
     preload() {
@@ -30,10 +30,13 @@ class PlayerJoinScene extends Phaser.Scene {
         this.playerBoxes = [];
         // Join Lobby
         try {
-            await this.joinLobby();
+            const room  = await this.joinGameRoom();
+
+            console.log('Game Room: ' , room);
+
             joining.destroy();
             this.registerListeners();
-            Network.latencyChecker.start(Network);
+            //Network.latencyChecker.start(Network);
 
             // Placeholder for "VS" (hidden initially)
             this.vsText = this.add.text(this.scale.width / 2, this.scale.height / 2, 'VS', {
@@ -42,7 +45,7 @@ class PlayerJoinScene extends Phaser.Scene {
                 fill: '#ffcc00'
             }).setOrigin(0.5).setVisible(false);
 
-            await this.addPlayer(); //Need to update this to add player when match found
+            //Need to update this to add player when match found
 
             // Title Text
             this.add.text(this.scale.width / 2, 50, 'Waiting for Opponent...', {
@@ -59,28 +62,35 @@ class PlayerJoinScene extends Phaser.Scene {
         }
         // Add Player
 
-
+        this.addPlayer({id: 'abcxgh', name: document.getElementById('playername').value , rank: 1});
 
 
 
         //Add Player Here
     }
 
+    async joinGameRoom() {  
+        this.gameRoom = await Network.joinByID(this.roomID);
+        return this.gameRoom;
+    }
+
     async joinLobby() {
         return await Network.connect('LOBBY');
     }
 
-    async addPlayer() {
+    async addPlayer(playerData) {
         if (this.players.length >= this.maxPlayers) return;
 
-        let playerId = this.players.length + 1;
-        let playerName = `Player ${playerId}`;
+        console.log(playerData);
+
+        let playerId = playerData.id; // Assuming playerData has an id property
+        let playerName = playerData.name; // Assuming playerData has a name property`;
         let rank = ` ${Math.floor(Math.random() * 100) + 1}`; // Example rank
 
-        this.players.push({ id: playerId, name: playerName, rank });
+        this.players.push({ id: playerId, name: playerName, rank: 1 });
 
         // Calculate positions
-        let xPos = this.players.length === 1 ? this.scale.width / 6 : (this.scale.width * 3) / 6;
+        let xPos = this.players.length === 1 ? this.scale.width / 6 : (this.scale.width * 3) / 4;
         let yPos = this.scale.height / 2;
 
         // Player Box
@@ -106,18 +116,15 @@ class PlayerJoinScene extends Phaser.Scene {
         let avatar = this.add.image(xPos, yPos, 'avatarPlaceholder').setDisplaySize(100, 100).setOrigin(0.5);
         // avatar.setMask(mask);
         // Player Name
+        console.log(playerName);
         let nameText = this.add.text(xPos, yPos + 60, playerName, {
             fontSize: '16px',
             fill: '#fff'
         }).setOrigin(0.5);
 
-        // Show "VS" if both players joined
-        if (this.players.length === 2) {
             this.vsText.setVisible(true);
-            this.time.delayedCall(2000, () => {
-                // this.scene.start('GameScene'); // Transition to game
-            });
-        }
+            
+        
     }
 
     registerListeners() {
@@ -129,16 +136,30 @@ class PlayerJoinScene extends Phaser.Scene {
         });
 
 
-        Network.addMessageListener('Player_Data',  (message) => {
+        Network.addMessageListener('Player_Data',  async (message) => {
             console.log('Player:', message);
+            
             // Redirect to game room
             // window.location.href = "/game";
         });
 
-        Network.addMessageListener('match_found', async (message) => {
-            console.log('Match Found:', message);
-            // Redirect to game room
-            // window.location.href = "/game";
+        Network.addMessageListener('player_join', async (player) => {
+            console.log('Player Join the room:', player);
+            // message.forEach((player) => {
+                console.log('Player:', player);
+                await this.addPlayer(player);
+                Network.sendMessage('ready', { message: player.name + ' is Ready!' });
+            // });
+            // await this.addPlayer();
+        });
+
+
+        Network.addMessageListener('ready', async (message) => {
+            console.log('Ready:', message);
+            this.vsText.setVisible(true);
+            this.time.delayedCall(2000, () => {
+                this.scene.start('Game'); // Transition to game
+            });
         });
 
         Network.addMessageListener('__playground_message_types', async (message) => {
