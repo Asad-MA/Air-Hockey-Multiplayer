@@ -1,8 +1,11 @@
 class Paddle extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture) {
         super(scene, x, y, texture);
+        this.WIDTH = 100;
+        this.HEIGHT = 100;
+        this.scaleFactor = scene.sys.game.config.physics.scaleFactor;
         scene.add.existing(this);
-        this.setDisplaySize(100 , 100);
+        this.setDisplaySize(this.WIDTH * this.scaleFactor , this.WIDTH * this.scaleFactor);
 
     }
 

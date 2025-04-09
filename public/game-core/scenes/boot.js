@@ -105,6 +105,8 @@ class Boot extends Phaser.Scene {
         this.load.spritesheet("bottom-left", "textures/bottom-left.png", { frameWidth: 1667, frameHeight: 2911 });
         this.load.spritesheet("bottom-right", "textures/bottom-right.png", { frameWidth: 1667, frameHeight: 2911 });
 
+        this.load.json('shapes' , 'textures/textures.json');
+
 
         // Update progress bar
         this.load.on('progress', (value) => {
