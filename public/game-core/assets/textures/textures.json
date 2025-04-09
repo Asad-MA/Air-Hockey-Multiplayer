@@ -1,0 +1,80 @@
+{
+	"generator_info": "Shape definitions generated with PhysicsEditor. Visit https://www.codeandweb.com/physicseditor",
+	"bottom-left": {
+		"type": "fromPhysicsEditor",
+		"label": "bottom-left",
+		"isStatic": false,
+		"density": 0.10000000149011612,
+		"restitution": 0,
+		"friction": 0.10000000149011612,
+		"frictionAir": 0.009999999776482582,
+		"frictionStatic": 0.5,
+		"collisionFilter": {
+			"group": 0,
+			"category": 1,
+			"mask": 255
+		},
+		"fixtures": []
+	},
+	"bottom-right": {
+		"type": "fromPhysicsEditor",
+		"label": "bottom-right",
+		"isStatic": false,
+		"density": 0.10000000149011612,
+		"restitution": 0,
+		"friction": 0.10000000149011612,
+		"frictionAir": 0.009999999776482582,
+		"frictionStatic": 0.5,
+		"collisionFilter": {
+			"group": 0,
+			"category": 1,
+			"mask": 255
+		},
+		"fixtures": []
+	},
+	"center-line": {
+		"type": "fromPhysicsEditor",
+		"label": "center-line",
+		"isStatic": false,
+		"density": 0.10000000149011612,
+		"restitution": 0,
+		"friction": 0.10000000149011612,
+		"frictionAir": 0.009999999776482582,
+		"frictionStatic": 0.5,
+		"collisionFilter": {
+			"group": 0,
+			"category": 1,
+			"mask": 255
+		},
+		"fixtures": []
+	},
+	"top-left": {
+		"type": "fromPhysicsEditor",
+		"label": "top-left",
+		"isStatic": true,
+		"density": 0.1,
+		"restitution": 0,
+		"friction": 0.1,
+		"frictionAir": 0.01,
+		"frictionStatic": 0.5,
+		"collisionFilter": {
+			"group": 0,
+			"category": 1,
+			"mask": 255
+		},
+		"fixtures": [
+			{
+				"label": "",
+				"isSensor": false,
+				"vertices": [
+					[ { "x":197, "y":223 }, { "x":246, "y":205 }, { "x":149, "y":111 }, { "x":55, "y":205 } ],
+					[ { "x":1150, "y":101 }, { "x":149, "y":111 }, { "x":246, "y":205 }, { "x":1043, "y":208 }, { "x":1085, "y":193 }, { "x":1170, "y":135 } ],
+					[ { "x":1561, "y":132 }, { "x":1556, "y":109 }, { "x":1150, "y":101 }, { "x":1170, "y":135 } ],
+					[ { "x":148, "y":269 }, { "x":197, "y":223 }, { "x":55, "y":205 } ],
+					[ { "x":42, "y":2856 }, { "x":130, "y":2802 }, { "x":133, "y":332 }, { "x":55, "y":205 }, { "x":39, "y":359 } ],
+					[ { "x":55, "y":205 }, { "x":133, "y":332 }, { "x":148, "y":269 } ]
+				]
+			}
+		]
+	}
+}

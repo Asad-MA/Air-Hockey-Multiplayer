@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/global-styles.css">
+    <script src="https://kit.fontawesome.com/192402329c.js" crossorigin="anonymous"></script>
+    <title><%- title %></title>
+</head>
+<body>
+    <div class="site-main bg-default d-flex direction-col gap-30">
+        <%- include('../partials/header-public') %>
+        <main class="site-content fill-space d-flex direction-col justify-center align-center">
+        <section class="form-container site-modal pos-relative overflow-hidden text-center">
+           <h1 style="--heading-size: 30px" class="text-center"><%- title %></h1>
+           <p class="text-center"><%- message %></p>
+           <!-- <p class="text-center"><%- suggestion %></p> -->
+           <a href="/" class="d-flex-inline mt-30 decoration-none "><button class="text-uppercase">Go to Home</button></a>
+        </section>
+    </main>
+        
+        <%- include('../partials/footer') %>
+    </div>
+
+</body>
+</html>
+
+

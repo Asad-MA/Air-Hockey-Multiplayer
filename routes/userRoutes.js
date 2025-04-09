@@ -1,16 +1,46 @@
 import express from 'express';
-//const AuthService = require("../services/AuthService");
-//const authMiddleware = require("../middleware/authMiddleware");
-import path from "path";;
+import userController from '../controllers/userController.js';
+import verifyAccount from "../middleware/verifyAccount.js";
+import verifyResetPassword from '../middleware/verify-reset-pass.js';
+import authenticate from '../middleware/authenticate.js';
+import requestsValidator from "../middleware/validateUserRequests.js";
+import path from "path";
 
 const userRoutes = express.Router();
 
-userRoutes.get('/login' , (req , res)=>{
-    res.render('pages/login' , {msg: 'Hello World', title: 'Login Page', layout: "layouts/main"});
+userRoutes.get('/login', (req, res) => { res.render('pages/login') })
+
+userRoutes.get('/register', (req, res) => { res.render('pages/register') })
+
+userRoutes.get('/logout', userController.handleLogout);
+
+userRoutes.get('/forget-password', (req, res) => { res.render('pages/forget-password') });
+
+userRoutes.get('/reset-password/:userId', verifyResetPassword, (req, res) => { res.render('pages/reset-password', { id: req.params.userId, token: req.query.token }) });
+
+userRoutes.get('/verify/:userId', verifyAccount, (req, res) => { res.render('pages/verify-account') });
+
+userRoutes.get('/', authenticate, (req, res) => {
+    console.log('User: ', req.user);
+    res.render('pages/dashboard', { name: req.user.name, email: req.user.email, token: req.user.token })
 })
 
-userRoutes.get('/register' , (req , res)=>{
-    res.render('pages/register' , {msg: 'Hello World'});
-})
+userRoutes.post('/register', requestsValidator.validateRegister, userController.handleRegister);
+
+userRoutes.post('/login', userController.handleLogin);
+
+userRoutes.post('/reset-password-request', userController.handleResetPasswordRequest);
+
+userRoutes.post('/reset-password', userController.resetPassword);
+
+userRoutes.post('resend-verification-mail', userController.resendMail);
+
+// Game Routes
+userRoutes.get('/matchmaking', authenticate, (req, res) => res.render('pages/lobby'))
+
+userRoutes.get('/play-live/:roomId', (req, res) => {
+    res.render('pages/game', { roomID: req.params.roomId, name: req.user?.name || 'placeholder' , email: req.user?.email || 'example@gmail.com' })
+}
+);
 
 export default userRoutes;

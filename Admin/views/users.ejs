@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h2>Admin Dashboard</h2>
+    <h1>Tokens</h1>
+    <table border="1">
+        <tr>
+            <th>userId</th>
+            <th>Token</th>
+            <th>Type</th>
+            <th>expiresAt</th>
+            
+            <th>Actions</th>
+        </tr>
+        <% emailTokens.forEach(emailToken => { %>
+            <tr>
+                <td><%= emailToken.userId %></td>
+                <td><%= emailToken.token %></td>
+                <td><%= emailToken.type %></td>
+                <td><%= emailToken.expiresAt %></td>
+                
+                <td>
+                    <a href="/edit/<%= emailToken._id %>">Edit</a>
+                    <form action="/delete-token/<%= emailToken._id %>?_method=DELETE" method="POST" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </table>
+
+    <h1>Blacklisted Tokens</h1>
+    <table border="1">
+        <tr>
+            <th>id</th>
+            <th>Token</th>
+            <th>expiresAt</th>
+            
+            <th>Actions</th>
+        </tr>
+        <% blacklistTokens.forEach(token => { %>
+            <tr>
+                <td><%= token._id %></td>
+                <td><%= token.token %></td>
+                <td><%= token.expiresAt %></td>
+                
+                <td>
+                    <a href="/edit/<%= token._id %>">Edit</a>
+                    <form action="/delete-token/<%= token._id %>?_method=DELETE" method="POST" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </table>
+
+
+    <h1>USERS</h1>
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>id</th>
+            <th>isVerified</th>
+            <th>Account Status</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        <% users.forEach(user => { %>
+            <tr>
+                <td><%= user.name %></td>
+                <td><%= user.email %></td>
+                <td><%= user._id %></td>
+                <td><%= user.isVerified %></td>
+                <td><%= user.accountStatus %></td>
+                <td><%= user.status %></td>
+                <td>
+                    <a href="/edit/<%= user._id %>">Edit</a>
+                    <form action="/delete/<%= user._id %>?_method=DELETE" method="POST" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </table>
+</body>
+</html>

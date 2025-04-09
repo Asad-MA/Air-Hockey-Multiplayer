@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/global-styles.css">
+    <script src="https://kit.fontawesome.com/192402329c.js" crossorigin="anonymous"></script>
+    <title>Account Verified</title>
+</head>
+<body>
+    <div class="site-main bg-default d-flex direction-col">
+        <%- include('../partials/header-public') %>
+        <main class="site-content fill-space d-flex direction-col justify-center align-center">
+        <section class="form-container site-modal pos-relative overflow-hidden text-center">
+           <h1 style="--heading-size: 30px" class="text-center">Verification Successful!</h1>
+           <p class="text-center">You're all set to dive into the game. Click below to log in and start your journey!</p>
+           <a href="/login" class="d-flex-inline mt-30 decoration-none "><button class="text-uppercase">Login Now</button></a>
+        </section>
+    </main>
+        
+        <%- include('../partials/footer') %>
+    </div>
+
+</body>
+</html>
+
+
