@@ -32,6 +32,9 @@ class GameWorld {
         // Define two rectangles relative to the sprite center
         const rectA = Bodies.rectangle(this.frameX , this.frameY, this.frameWidth* 0.75 , 20);   // Horizontal bar
         const rectB = Bodies.rectangle(this.frameX, this.frameY , 20, this.frameHeight ); // Vertical bar (offset for L shape)
+
+        const rectA1 = Bodies.rectangle(this.frameX + this.frameWidth, this.frameY, this.frameWidth* 0.75 , 20);   // Horizontal bar
+        const rectB1 = Bodies.rectangle(this.frameX + this.frameWidth, this.frameY, 20, this.frameHeight );
         // Combine them into a compound body
 
         this.frameParts = [];
@@ -44,17 +47,27 @@ class GameWorld {
 
 
         this.physicsManager.addGameObject(topLeft);
+        this.physicsManager.addGameObject(topRight);
 
         const compoundBody = Body.create({
             parts: [rectA, rectB],
             friction: 0.1,
-            restitution: 0,
+            restitution: 1,
             isStatic: true,
             render: { sprite: { xOffset: -0.45, yOffset: -0.45} },
         });
 
+        const compoundBody2 = Body.create({
+            parts: [rectA1, rectB1],
+            friction: 0.1,
+            restitution: 1,
+            isStatic: true,
+            render: { sprite: { xOffset: 0.45, yOffset: -0.45} },
+        });
+
         // Assign to the sprite
         topLeft.setExistingBody(compoundBody)
+        topRight.setExistingBody(compoundBody2)
 
         // Add a platform (static physics body) at a given position
         // const platform = platforms.create(this.frameX + 20, this.frameY + 20, 'platformImage');
