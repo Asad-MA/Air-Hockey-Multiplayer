@@ -30,7 +30,7 @@ class ArcadePhysicsManager {
 
     addCollider(object1, object2, callback = null) {
         console.log(this.scene);
-        this.scene.physics.add.collider(object1, object2, callback);
+        this.scene.physics.add.collider(object1, object2, callback , null, this.scene);
     }
 
     setDrag(gameObject, dragX, dragY) {
