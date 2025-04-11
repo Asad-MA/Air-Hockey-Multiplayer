@@ -302,7 +302,7 @@ class Game extends Phaser.Scene {
         this.puck.destroy();
         this.paddle.destroy();
         this.gameFrame.bg.destroy()
-        this.create()
+        //this.create()
         //this.gameFrame = new GameWorld(this);
     }
 }

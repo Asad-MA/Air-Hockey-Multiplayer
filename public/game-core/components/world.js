@@ -15,6 +15,7 @@ class GameWorld {
         // Set initial frame size and position
         this.updateFramePosition();
 
+        this.margin = 25; // Margin for the frame
         // Create background and frame parts
         this.bg = this.scene.add.image(this.frameX, this.frameY, 'gamebg')
             .setDisplaySize(this.frameWidth, this.frameHeight)
@@ -25,6 +26,8 @@ class GameWorld {
         // Listen for window resize events
         // window.addEventListener('resize', this.onResize.bind(this));
     }
+
+    
 
     // Function to calculate scale factor
     calculateScaleFactor() {
@@ -44,7 +47,7 @@ class GameWorld {
         const screenHeight = this.scene.scale.height;
 
         this.frameWidth = this.virtualWidth * this.scaleFactor;
-        this.frameHeight = this.virtualHeight * this.scaleFactor;
+        this.frameHeight = (this.virtualHeight - 100) * this.scaleFactor;
 
         // Center the game world on the screen
         this.frameX = (screenWidth - this.frameWidth) / 2;
@@ -68,6 +71,7 @@ class GameWorld {
 
     createFrameParts() {
         this.frameParts = [];
+        this.goals = [];
 
         const topLeft = this.createFrameSprite(this.frameX, this.frameY - 25, 'top-left')
             .setDisplaySize(this.frameWidth / 2.5, this.frameHeight / 1.9).setOrigin(0, 0);
@@ -88,6 +92,10 @@ class GameWorld {
         this.physicsManager.addGameObject(bottomRight).setImmovable(true);
 
         this.frameParts.push(topLeft, bottomLeft, topRight, bottomRight);
+
+        // Create goals
+        const goalTop = this.createFrameSprite(this.frameX + this.frameWidth / 2, this.frameY - 25, 'goal-top')
+            .setDisplaySize(this.frameWidth / 2, 50)//.setOrigin(0.5, 0);
     }
 
     createFrameSprite(x, y, texture) {
