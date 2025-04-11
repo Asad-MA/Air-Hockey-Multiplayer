@@ -92,7 +92,7 @@ class Boot extends Phaser.Scene {
         this.load.image("center-circle", "textures/center.png");
         this.load.image("center-line", "textures/center-line.png");
         this.load.image("goal-top", "textures/goal-top.png");
-        this.load.image("goal-right", "textures/goal-bottom.png");
+        this.load.image("goal-bottom", "textures/goal-bottom.png");
         this.load.image("top-half", "textures/top-half.png");
         this.load.image("bottom-half", "textures/bottom-half.png");
         this.load.image("left-half", "textures/left-half.png");
