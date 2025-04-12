@@ -67,8 +67,6 @@ class Game extends Phaser.Scene {
       this.physicsManager = new ArcadePhysicsManager(this);
     }
 
-    // this.matter.add.pointerConstraint({ length: 1, stiffness: 0.2 });
-    // this.matter.world.setBounds();
     this.anims.create({
       key: 'impactAnim',
       frames: this.anims.generateFrameNumbers('impactEffect', { start: 2, end: 5 }), // Adjust frame count
@@ -86,14 +84,12 @@ class Game extends Phaser.Scene {
       'frameHeight': this.gameFrame.frameHeight, 
       'scaleFactor': this.scaleFactor
     });
-    //this.paddle = new Paddle(this, this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + this.gameFrame.frameHeight - 50, 'paddle1');
-    //    this.puck = new Puck(this, this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + this.gameFrame.frameHeight / 2, 'puck');
 
     this.paddle = this.physics.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + this.gameFrame.frameHeight - 50, "paddle1").setDisplaySize(100, 100);
-    this.puck = this.physics.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, ( this.gameFrame.frameHeight / 2), "puck").setDisplaySize(50, 50).setOrigin(0.5, 0.5); 
+    this.puck = this.physics.add.sprite((this.gameFrame.frameX + this.gameFrame.frameWidth / 2)  , ( this.gameFrame.frameHeight / 2) , "puck").setDisplaySize(64, 64).setOrigin(0.5, 0.5); 
 
 
-    this.puck.setCircle(80, 35, 35);
+    this.puck.body.setCircle(64, 64, 64);
     this.puck.setMass(0.8);
 
     // paddle1.setCircle(51, 0, 0);
@@ -109,73 +105,14 @@ class Game extends Phaser.Scene {
 
     this.physics.add.collider(this.paddle, this.gameFrame.frameParts)
     this.physics.add.collider(this.puck, this.gameFrame.frameParts)
-
-    this.physics.add.collider(this.puck, this.paddle, () => {
-      // Calculate collision normal (line connecting the centers of the two circles)
-      const collisionNormal = new Phaser.Math.Vector2(
-        this.puck.x - this.paddle.x,
-        this.puck.y - this.paddle.y
-      ).normalize();
-
-      // console.log(this.puck.x , this.paddle.x)
-      // Compute relative velocity
-      const relativeVelocity = new Phaser.Math.Vector2(
-        this.puck.body.velocity.x - this.paddle.tempVelocity.x,
-        this.puck.body.velocity.y - this.paddle.tempVelocity.y
-      );
-
-      // Project relative velocity onto the collision normal
-      const velocityAlongNormal = relativeVelocity.dot(collisionNormal);
-
-      // If the objects are separating, no need to resolve collision
-      if (velocityAlongNormal > 0) return;
-
-      // Restitution (elasticity of the collision: 1 for perfectly elastic)
-      const restitution = 1;
-
-      // Calculate impulse scalar
-      const impulseMagnitude =
-        (-(1 + restitution) * velocityAlongNormal) /
-        (1 / this.puck.body.mass + 1 / this.paddle.body.mass);
-
-      // Compute impulse vector
-      const impulse = collisionNormal.scale(impulseMagnitude);
-
-      // Apply impulse to the puck's velocity
-      this.puck.body.velocity.x -= impulse.x / this.puck.body.mass;
-      this.puck.body.velocity.y -= impulse.y / this.puck.body.mass;
-
-      // Apply impulse to the paddle's velocity (if it's movable)
-      // this.paddle.tempVelocity.x += impulse.x / this.paddle.body.mass;
-      // this.paddle.tempVelocity.y += impulse.y / this.paddle.body.mass;
-    });
-
-
-
-
+    this.physics.add.collider(this.puck, this.paddle);
 
     this.paddle.setImmovable(true);
-
-    // paddle1.setInteractive();
-
+    this.paddle.setDirectControl(true)
     this.paddle.setInteractive();
-
-    // Allow dragging the ball with the mouse
-    // this.input.setDraggable(paddle1);
     this.input.setDraggable(this.paddle);
-
     this.OtherPlayer = this.paddle;
 
-
-    // Velocity Calculations
-    this.lastMouseX = 0;
-    this.lastMouseY = 0;
-    this.lastTime = 0;
-
-    this.velocityX = 0;
-    this.velocityY = 0;
-
-    this.tempVel = new Phaser.Math.Vector2();
 
     // When dragging, set the ball's position to follow the mouse pointer
     this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
@@ -186,87 +123,11 @@ class Game extends Phaser.Scene {
 
       gameObject.setPosition(x, y);
 
-      // Vel Calculations
-      const currentMouseX = x;
-      const currentMouseY = y;
-      const currentTime = performance.now(); // High-resolution timestamp
-
-      if (this.lastTime !== 0) {
-        // Ensure we have a previous time
-        const deltaX = currentMouseX - this.lastMouseX;
-        const deltaY = currentMouseY - this.lastMouseY;
-        const deltaTime = (currentTime - this.lastTime) / 1000; // Convert to seconds
-
-        if (deltaTime > 0) {
-          this.velocityX = deltaX / deltaTime;
-          this.velocityY = deltaY / deltaTime;
-        }
-
-        this.tempVel.x = parseInt(this.velocityX.toFixed(2));
-        this.tempVel.y = parseInt(this.velocityY.toFixed(2));
-
-        this.paddle.tempVelocity = this.tempVel;
-        // console.log(`Velocity X: ${velocityX.toFixed(2)} px/s, Velocity Y: ${velocityY.toFixed(2)} px/s`);
-      }
-
-      // Update previous values
-      this.lastMouseX = currentMouseX;
-      this.lastMouseY = currentMouseY;
-      this.lastTime = currentTime;
-
-      //  gameObject.body.position.x = dragX - 51;
-      // gameObject.body.position.y = dragY - 51;
-
-
-
-      //   this.positionPlayer.pos = {
-
-      //       x: dragX,
-      //       y: dragY
-      //     };
-
-      //     this.positionPlayer.vel = {
-      //       x: this.tempVel.x,
-      //       y:  this.tempVel.y
-      //     }
-
-      // console.log(gameObject.scene.time) dev
-      //if(dataChannel.readyState == 'open'){
-      // dataChannel.send(JSON.stringify(this.positionPlayer));
-      // }
+ 
     });
 
-
-    // this.input.setDraggable(this.paddle);
-
     this.physicsManager.addCollider(this.paddle, this.gameFrame.frameParts);
-    // this.physicsManager.addCollider(this.puck, this.gameFrame.frameParts, this.hitFrame, this);
-
-
-    // this.paddle.setStatic(true);
-    // this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-    //   this.paddle.x = Phaser.Math.Clamp(pointer.x, this.gameFrame.frameX + 50, this.gameFrame.frameX + this.gameFrame.frameWidth - 50);
-    //   this.paddle.y = Phaser.Math.Clamp(pointer.y, this.gameFrame.frameY + 50, this.gameFrame.frameY + this.gameFrame.frameHeight - 50);
-    // Send new position to the server probably we use Network class here to send the data
-    // this.sendPlayerPosition({
-    //     x: this.paddle.x,
-    //     y: this.paddle.y
-    // });
-    //  });
-
-
-    // Velocity Calculations
-    this.lastMouseX = 0;
-    this.lastMouseY = 0;
-    this.lastTime = 0;
-
-    this.velocityX = 0;
-    this.velocityY = 0;
-
-    this.tempVel = new Phaser.Math.Vector2();
-
-
-
+  
 
   }
 

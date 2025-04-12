@@ -53,7 +53,7 @@ const config = {
     render: {
         antialias: true,
         pixelArt: false,
-        roundPixels: false
+        roundPixels: true
     },
 
 };
