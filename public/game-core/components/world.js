@@ -47,7 +47,7 @@ class GameWorld {
         const screenHeight = this.scene.scale.height;
 
         this.frameWidth = this.virtualWidth * this.scaleFactor;
-        this.frameHeight = (this.virtualHeight - 100) * this.scaleFactor;
+        this.frameHeight = (this.virtualHeight ) * this.scaleFactor;
 
         // Center the game world on the screen
         this.frameX = (screenWidth - this.frameWidth) / 2;
@@ -73,30 +73,30 @@ class GameWorld {
         this.frameParts = [];
         this.goals = [];
 
-        const topLeft = this.createFrameSprite(this.frameX, this.frameY - 27, 'top-left')
-            .setDisplaySize(this.frameWidth / 2, this.frameHeight / 1.9).setOrigin(0, 0);
+        const topLeft = this.createFrameSprite(this.frameX, this.frameY  , 'top-left')
+            .setDisplaySize(this.frameWidth / 2, this.frameHeight / 2).setOrigin(0, 0);
 
-        const bottomLeft = this.createFrameSprite(this.frameX - 2, (this.frameY + this.frameHeight) / 2 + 27, 'bottom-left')
-            .setDisplaySize(this.frameWidth / 2, this.frameHeight / 1.9).setOrigin(0, 0);
+        const bottomLeft = this.createFrameSprite(this.frameX, (this.frameY + this.frameHeight) / 2  , 'bottom-left')
+            .setDisplaySize(this.frameWidth / 2, this.frameHeight / 2).setOrigin(0, 0);
 
-        const topRight = this.createFrameSprite(this.frameX + this.frameWidth, this.frameY - 27, 'top-right')
-            .setDisplaySize(this.frameWidth / 2, this.frameHeight / 1.9).setOrigin(1, 0);
+        const topRight = this.createFrameSprite(this.frameX + this.frameWidth, this.frameY , 'top-right')
+            .setDisplaySize(this.frameWidth / 2, this.frameHeight / 2).setOrigin(1, 0);
 
-        const bottomRight = this.createFrameSprite(this.frameX + this.frameWidth / 2, (this.frameY + this.frameHeight) / 2 + 27, 'bottom-right')
-            .setDisplaySize(this.frameWidth / 2, this.frameHeight / 1.9).setOrigin(-0, 0);
+        const bottomRight = this.createFrameSprite(this.frameX + this.frameWidth / 2, (this.frameY + this.frameHeight) / 2 , 'bottom-right')
+            .setDisplaySize(this.frameWidth / 2, this.frameHeight / 2).setOrigin(-0, 0);
 
         // Enable Arcade physics and make them immovable
-        // this.physicsManager.addGameObject(topLeft).setImmovable(true);
-        // this.physicsManager.addGameObject(topRight).setImmovable(true);
-        // this.physicsManager.addGameObject(bottomLeft).setImmovable(true);
-        // this.physicsManager.addGameObject(bottomRight).setImmovable(true);
+        this.physicsManager.addGameObject(topLeft).setImmovable(true);
+        this.physicsManager.addGameObject(topRight).setImmovable(true);
+        this.physicsManager.addGameObject(bottomLeft).setImmovable(true);
+        this.physicsManager.addGameObject(bottomRight).setImmovable(true);
 
         this.frameParts.push(topLeft, bottomLeft, topRight, bottomRight);
 
         // Create goals
-        const goalTop = this.createFrameSprite(this.frameX + this.frameWidth / 2, this.frameY - 9 , 'goal-top')
+        const goalTop = this.createFrameSprite(this.frameX + this.frameWidth / 2, this.frameY + 22, 'goal-top')
             .setDisplaySize(this.frameWidth / 2.8, 50)//.setOrigin(0.5, 0);
-        const goalBottom = this.createFrameSprite(this.frameX + this.frameWidth / 2, this.frameY + this.frameHeight + 4, 'goal-bottom')
+        const goalBottom = this.createFrameSprite(this.frameX + this.frameWidth / 2, this.frameY + this.frameHeight -22, 'goal-bottom')
             .setDisplaySize(this.frameWidth / 2.8, 50)//.setOrigin(0.5, 0);
 
         goalTop.setSize(this.frameWidth - 5, 50);
@@ -105,14 +105,20 @@ class GameWorld {
         //Adding Static  images
         const centerCircle = this.scene.add.image(this.frameX + this.frameWidth / 2, this.frameY + this.frameHeight / 2, 'center-circle')
             .setDisplaySize(this.frameWidth / 3, this.frameWidth / 3).setOrigin(0.5, 0.5);
-        const centerLine = this.scene.add.image(this.frameX + 10 , this.frameY + this.frameHeight / 2, 'center-line').setDisplaySize(this.frameWidth - 20, 2).setOrigin(0, 0.5);  
+        const centerLine = this.scene.add.image(this.frameX + 20 , this.frameY + this.frameHeight / 2, 'center-line').setDisplaySize(this.frameWidth - 40, 1).setOrigin(0, 0.5);  
+
+        const topHalf = this.scene.add.image(this.frameX + this.frameWidth / 2, this.frameY  , 'top-half')
+            .setDisplaySize(this.frameWidth / 2.8, this.frameWidth / 5.6).setOrigin(0.5, 0.5);
+
+        const bottomHalf = this.scene.add.image(this.frameX + this.frameWidth / 2, this.frameY + this.frameHeight, 'bottom-half')
+            .setDisplaySize(this.frameWidth / 2.8, this.frameWidth / 5.6).setOrigin(0.5, 0.5);
 
     }
 
 
 
     createFrameSprite(x, y, texture) {
-        const part = this.scene.add.sprite(x, y, texture);
+        const part = this.scene.physics.add.sprite(x, y, texture);
 
         this.scene.anims.create({
             key: texture + 'Hit',
