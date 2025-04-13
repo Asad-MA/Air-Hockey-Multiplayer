@@ -9,11 +9,13 @@ import MatterPhysicsManager from '../physics/matterPhysicsManager.js';
 class Game extends Phaser.Scene {
   constructor() {
     super({ key: 'Game' });
+    this.isGoal = false;
   }
   preload() {
     this.room = this.scene.get('PlayerJoinScene').gameRoom;
     this.players = this.scene.get('PlayerJoinScene').players;
     this.physicsManager = null;
+
     // this.remotePlayerX = 0;
     // this.remotePaddle;
   }
@@ -57,6 +59,19 @@ class Game extends Phaser.Scene {
   // }
 
   create() {
+
+    const goalText = this.add.text(
+      this.cameras.main.centerX,
+      this.cameras.main.centerY,
+      'GOAL!',
+      {
+        fontSize: '64px',
+        fontFamily: 'Arial',
+        color: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 6
+      }
+    ).setOrigin(0.5).setDepth(10000).setVisible(false);
     console.log(this.game.config.physics.default);
 
     this.scaleFactor = this.sys.game.config.physics.scaleFactor;
@@ -67,6 +82,12 @@ class Game extends Phaser.Scene {
       this.physicsManager = new ArcadePhysicsManager(this);
     }
 
+    this.gameFrame = new GameWorld(this);
+    this.defaultPuckPosition = {
+      x: this.gameFrame.frameX + this.gameFrame.frameWidth / 2,
+      y: this.gameFrame.frameY + this.gameFrame.frameHeight / 2 
+    };
+
     this.anims.create({
       key: 'impactAnim',
       frames: this.anims.generateFrameNumbers('impactEffect', { start: 2, end: 5 }), // Adjust frame count
@@ -74,7 +95,7 @@ class Game extends Phaser.Scene {
       repeat: 0
     });
 
-    this.gameFrame = new GameWorld(this);
+    
 
     console.table({
       'physics': this.game.config.physics.default,
@@ -86,7 +107,7 @@ class Game extends Phaser.Scene {
     });
 
     this.paddle = this.physics.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + this.gameFrame.frameHeight - 50, "paddle1").setDisplaySize(100, 100);
-    this.puck = this.physics.add.sprite((this.gameFrame.frameX + this.gameFrame.frameWidth / 2)  , ( this.gameFrame.frameHeight / 2) , "puck").setDisplaySize(64, 64).setOrigin(0.5, 0.5); 
+    this.puck = this.physics.add.sprite(this.defaultPuckPosition.x  , this.defaultPuckPosition.y , "puck").setDisplaySize(64, 64).setOrigin(0.5, 0.5); 
 
 
     this.puck.body.setCircle(64, 64, 64);
@@ -106,6 +127,30 @@ class Game extends Phaser.Scene {
     this.physics.add.collider(this.paddle, this.gameFrame.frameParts)
     this.physics.add.collider(this.puck, this.gameFrame.frameParts)
     this.physics.add.collider(this.puck, this.paddle);
+    this.physics.add.overlap(this.puck , this.gameFrame.goals, (puck, goal) => {
+      console.log(goal.texture.key, goal.body.position?.y)
+       if(this.isGoal) return;
+      //this.physics.pause(); // Pause the game
+      this.isGoal = true;
+      console.log('Goal!');
+      goalText.setVisible(true);
+      this.cameras.main.shake(500, 0.01)
+      // this.cameras.main.flash(250, 255, 255, 255);
+      this.puck.setPosition(this.defaultPuckPosition.x, this.defaultPuckPosition.y);
+      this.puck.setVelocity(0, 0);
+     // this.physics.world.pause(); // Pause the game
+      this.input.enabled = false;
+      
+      this.paddle.setVelocity(0, 0);  
+      this.time.delayedCall(2000, () => {
+       // this.physics.world.resume();
+        this.isGoal = false;
+        goalText.setVisible(false);
+        this.input.enabled = true;
+        // this.paddle.body.reset()
+      }, [], this);
+      
+    })
 
     this.paddle.setImmovable(true);
     this.paddle.setDirectControl(true)

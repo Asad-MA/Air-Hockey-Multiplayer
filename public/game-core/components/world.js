@@ -84,6 +84,25 @@ class GameWorld {
 
         const bottomRight = this.createFrameSprite(this.frameX + this.frameWidth / 2,  ( this.frameHeight / 2) + this.frameY, 'bottom-right');
         bottomRight.setDisplaySize(this.frameWidth / 2, this.frameHeight / 2).setOrigin(-0, 0);
+        
+        // this.scene.add.rectangle(10, 400 , 20, 20)
+        const topLeftWall = this.scene.add.rectangle(this.frameX, this.frameY , 20, this.frameHeight/2).setOrigin(0, 0);
+        this.physicsManager.addGameObject(topLeftWall).body.setImmovable(true);
+        const bottomLeftWall = this.scene.add.rectangle(this.frameX, this.frameY + this.frameHeight/2 , 20, this.frameHeight/2).setOrigin(0, 0);
+        this.physicsManager.addGameObject(bottomLeftWall).body.setImmovable(true);
+        const topRightWall = this.scene.add.rectangle(this.frameX + this.frameWidth - 20, this.frameY , 20, this.frameHeight/2).setOrigin(0, 0);
+        this.physicsManager.addGameObject(topRightWall).body.setImmovable(true);
+        const bottomRightWall = this.scene.add.rectangle(this.frameX + this.frameWidth - 20, this.frameY + this.frameHeight/2 , 20, this.frameHeight/2).setOrigin(0, 0);
+        this.physicsManager.addGameObject(bottomRightWall).body.setImmovable(true);
+
+        const upLeftWall = this.scene.add.rectangle(this.frameX, this.frameY + 10 , this.frameWidth/3, 20).setOrigin(0, 0);
+        this.physicsManager.addGameObject(upLeftWall).body.setImmovable(true);
+        const upRightWall = this.scene.add.rectangle(this.frameX + this.frameWidth - this.frameWidth/3, this.frameY + 10, this.frameWidth/3, 20).setOrigin(0, 0);
+        this.physicsManager.addGameObject(upRightWall).body.setImmovable(true);
+        const downLeftWall = this.scene.add.rectangle(this.frameX, this.frameY + this.frameHeight - ((3.7/100)*this.frameHeight) , this.frameWidth/3, 20).setOrigin(0, 0);
+        this.physicsManager.addGameObject(downLeftWall).body.setImmovable(true);
+        const downRightWall = this.scene.add.rectangle(this.frameX + this.frameWidth - this.frameWidth/3, this.frameY + this.frameHeight - ((3.7/100)*this.frameHeight)  , this.frameWidth/3, 20).setOrigin(0, 0);
+        this.physicsManager.addGameObject(downRightWall).body.setImmovable(true);
 
         // Enable Arcade physics and make them immovable
         // this.physicsManager.addGameObject(topLeft).setImmovable(true);
@@ -91,7 +110,7 @@ class GameWorld {
         // this.physicsManager.addGameObject(bottomLeft).setImmovable(true);
         // this.physicsManager.addGameObject(bottomRight).setImmovable(true);
 
-        this.frameParts.push(topLeft, bottomLeft, topRight, bottomRight);
+        this.frameParts.push(topLeftWall, bottomLeftWall, topRightWall, bottomRightWall, upLeftWall, upRightWall, downLeftWall, downRightWall);
 
         // Create goals
         const goalTop = this.createFrameSprite(this.frameX + this.frameWidth / 2, this.frameY +20 , 'goal-top');
@@ -99,8 +118,13 @@ class GameWorld {
         const goalBottom = this.createFrameSprite(this.frameX + this.frameWidth / 2, this.frameY + this.frameHeight -20, 'goal-bottom');
         goalBottom.setDisplaySize(this.frameWidth / 2.7, 50)//.setOrigin(0.5, 0);
 
-        goalTop.setSize(this.frameWidth + 50 , 50);
-        goalBottom.setSize(this.frameWidth + 50 , 50);
+        this.physicsManager.addGameObject(goalTop).body.setImmovable(true).setSize(this.frameWidth + 50 , 50);
+        this.physicsManager.addGameObject(goalBottom).body.setImmovable(true).setSize(this.frameWidth + 50 , 50);
+
+        // goalTop.setSize(this.frameWidth + 50 , 50);
+        // goalBottom.setSize(this.frameWidth + 50 , 50);
+
+        this.goals.push(goalTop, goalBottom);
 
         //Adding Static  images
         // const centerCircle = this.scene.add.image(this.frameX + this.frameWidth / 2, this.frameY + this.frameHeight / 2, 'center-circle')
