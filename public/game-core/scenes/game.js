@@ -60,6 +60,13 @@ class Game extends Phaser.Scene {
 
   create() {
 
+    this.music = this.sound.add('glitch',  {volume: 2});
+    this.bgMusic = this.sound.add('bg-music', {volume: 0.5});
+    this.bgMusic.play({loop: true});
+    this.bgMusicNeon = this.sound.add('neon', {volume: 0.05});
+    // this.bgMusicNeon.play({loop: true});
+    // this.music.setSeek(1000);
+
     const goalText = this.add.text(
       this.cameras.main.centerX,
       this.cameras.main.centerY,
@@ -107,20 +114,23 @@ class Game extends Phaser.Scene {
     });
 
     this.paddle = this.physics.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + this.gameFrame.frameHeight - 50, "paddle1").setDisplaySize(100, 100);
-    this.puck = this.physics.add.sprite(this.defaultPuckPosition.x  , this.defaultPuckPosition.y , "puck").setDisplaySize(64, 64).setOrigin(0.5, 0.5); 
+    this.puck = this.physics.add.sprite(this.defaultPuckPosition.x  , this.defaultPuckPosition.y , "puck").setDisplaySize(64, 64)//.setOrigin(0.5, 0.5); 
 
 
     this.puck.body.setCircle(64, 64, 64);
-    this.puck.setMass(0.8);
+    this.puck.body.setMass(2);
 
     // paddle1.setCircle(51, 0, 0);
     this.paddle.setCircle(100, 30, 30);
 
     console.log(this.puck)
-    this.puck.setBounce(0.8);
+    this.puck.setBounce(0.9);
     this.puck.setFriction(10, 10);
     this.puck.setDrag(10, 10)
     this.puck.setMaxVelocity(1000);
+    this.paddle.setMass(1)
+    this.paddle.setBounce(1);
+    // this.puck.setInertia(100)
 
     this.puck.setCollideWorldBounds(true);
 
@@ -130,28 +140,48 @@ class Game extends Phaser.Scene {
     this.physics.add.overlap(this.puck , this.gameFrame.goals, (puck, goal) => {
       console.log(goal.texture.key, goal.body.position?.y)
        if(this.isGoal) return;
-      //this.physics.pause(); // Pause the game
+       this.bgMusic.setVolume(0.2);
+      this.music.play();
+      // this.bgMusic.pl();
+      this.physics.pause(); // Pause the game
       this.isGoal = true;
       console.log('Goal!');
       goalText.setVisible(true);
-      this.cameras.main.shake(500, 0.01)
+      this.cameras.main.shake(500, 0.005)
       // this.cameras.main.flash(250, 255, 255, 255);
-      this.puck.setPosition(this.defaultPuckPosition.x, this.defaultPuckPosition.y);
+      console.log(this.defaultPuckPosition);
+      this.tweens.add({
+        targets: this.puck,
+        alpha: 0,
+        duration: 100,
+        ease: 'Linear'
+      });
+      
       this.puck.setVelocity(0, 0);
      // this.physics.world.pause(); // Pause the game
-      this.input.enabled = false;
+     // this.input.enabled = false;
       
       this.paddle.setVelocity(0, 0);  
       this.time.delayedCall(2000, () => {
-       // this.physics.world.resume();
+        this.puck.setPosition(this.defaultPuckPosition.x, this.defaultPuckPosition.y);
+        this.physics.world.resume();
         this.isGoal = false;
         goalText.setVisible(false);
-        this.input.enabled = true;
+        this.puck.setVisible(true);
+        this.tweens.add({
+          targets: this.puck,
+          alpha: 1,
+          duration: 100,
+          ease: 'Linear'
+        });
+        this.bgMusic.setVolume(0.5);
+       // this.input.enabled = true;
         // this.paddle.body.reset()
       }, [], this);
       
     })
 
+    // this.paddle.body.setMass(0.5);
     this.paddle.setImmovable(true);
     this.paddle.setDirectControl(true)
     this.paddle.setInteractive();
@@ -163,7 +193,7 @@ class Game extends Phaser.Scene {
     this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
 
       const x = Phaser.Math.Clamp(pointer.x, this.gameFrame.frameX + 50, this.gameFrame.frameX + this.gameFrame.frameWidth - 50);
-      const y = Phaser.Math.Clamp(pointer.y, this.gameFrame.frameY + 50, this.gameFrame.frameY + this.gameFrame.frameHeight - 50);
+      const y = Phaser.Math.Clamp(pointer.y, this.gameFrame.frameY + 50, this.gameFrame.frameY + this.gameFrame.frameHeight - 70);
 
 
       gameObject.setPosition(x, y);
@@ -191,16 +221,51 @@ class Game extends Phaser.Scene {
 
 
   update() {
-    // const maxSpeed = 10; // Maximum speed for the puck
-    // console.log(this.puck.body.velocity);     
-    // this.puck.setVelocity(Phaser.Math.Clamp(this.puck.body.velocity.x, -maxSpeed, maxSpeed), Phaser.Math.Clamp(this.puck.body.velocity.x, -maxSpeed, maxSpeed)); // Stop puck movement for testing 
-    // console.log(this);
+    this.resetPuckIfOutOfBounds(this.puck, this.gameFrame.bounds, 5);
     // Simulate remote player movement (Replace with actual WebSocket data)
     if (this.remotePlayerX !== undefined) {
       this.remotePaddle.x = this.remotePlayerX;
       this.remotePaddle.y = this.remotePlayerY;
     }
   }
+
+  isPuckOutOfBounds(puck, worldBounds) {
+    return (
+      puck.body.position.x < worldBounds.x ||
+      puck.body.position.x > worldBounds.x + worldBounds.width ||
+      puck.body.position.y < worldBounds.y ||
+      puck.body.position.y > worldBounds.y + worldBounds.height
+    );
+  }
+
+  resetPuckIfOutOfBounds(puck, worldBounds, buffer = 5) {
+    const velX = puck.body.velocity.x;
+    const velY = puck.body.velocity.y;
+  
+    let reset = false;
+  
+    if (puck.body.position.x < worldBounds.x) {
+      puck.body.position.x = worldBounds.x + buffer;
+      reset = true;
+    } else if (puck.body.position.x > worldBounds.width + worldBounds.x) {
+      puck.body.position.x = worldBounds.width - buffer;
+      reset = true;
+    }
+  
+    if (puck.body.position.y < worldBounds.y) {
+      puck.body.position.y = worldBounds.y + buffer;
+      reset = true;
+    } else if (puck.body.position.y > worldBounds.height + worldBounds.y) {
+      puck.body.position.y = worldBounds.height - buffer;
+      reset = true;
+    }
+  
+    if (reset) {
+      puck.body.setVelocity(velX, velY);
+    }
+  }
+  
+  
 
   sendPlayerPosition(x) {
     Network.sendMessage('position', x);

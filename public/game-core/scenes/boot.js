@@ -97,6 +97,11 @@ class Boot extends Phaser.Scene {
         this.load.image("bottom-half", "textures/bottom-half.png");
         this.load.image("vs", "textures/vs.png");
 
+        // Loading SFX
+        this.load.audio("glitch" , "sfx/glitch-c.wav");
+        this.load.audio("bg-music" , "sfx/bg-music.mp3");
+        this.load.audio("neon" , "sfx/neon-gaming.mp3");
+
         // Loading Sprites
         this.load.spritesheet("impactEffect", "textures/hit-sprite.png", { frameWidth: 1120, frameHeight: 1125 });
         this.load.spritesheet("top-left", "textures/top-left.png", { frameWidth: 1667, frameHeight: 2911 });
