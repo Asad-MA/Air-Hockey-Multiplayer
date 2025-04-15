@@ -216,9 +216,18 @@ class Game extends Phaser.Scene {
       const y = Phaser.Math.Clamp(pointer.y, this.gameFrame.frameY + 50, this.gameFrame.frameY + this.gameFrame.frameHeight - 70);
 
 
-      this.playerPosition.x = x;
-      this.playerPosition.y = y;  
+      // this.playerPosition.x = x;
+      // this.playerPosition.y = y;  
       gameObject.setPosition(x, y);
+
+
+      // In Player A's drag handler
+      const virtualX = (x - this.gameFrame.frameX) / this.gameFrame.scaleFactor;
+      const virtualY = (y - this.gameFrame.frameY) / this.gameFrame.scaleFactor;
+
+      this.playerPosition.x = virtualX;
+      this.playerPosition.y = virtualY;
+
 
  
     });
@@ -316,16 +325,21 @@ class Game extends Phaser.Scene {
   
 
   sendPlayerPosition(x) {
-    console.log('Sending Player positions: ');
+    console.log('Sending Player positions: ' , x);
     Network.sendMessage('position', x);
   }
 
-  receiveRemotePosition(x) {
-    console.log('receving Remote positions: ', x)
-    console.log(this.gameFrame.frameX + this.gameFrame.frameWidth - x.x, this.gameFrame.frameY + this.gameFrame.frameHeight - x.y)
+  receiveRemotePosition(virtual) {
+    console.log('receving Remote positions: ', virtual)
+    // console.log(this.gameFrame.frameX + this.gameFrame.frameWidth - x.x, this.gameFrame.frameY + this.gameFrame.frameHeight - x.y)
     // Placeholder for receiving opponent's position
-    this.remotePlayer.paddle.x = this.gameFrame.frameX + this.gameFrame.frameWidth - x.x;
-    this.remotePlayer.paddle.y = this.gameFrame.frameY + this.gameFrame.frameHeight - x.y;
+    // this.remotePlayer.paddle.x = this.gameFrame.frameX + this.gameFrame.frameWidth - x.x;
+    // this.remotePlayer.paddle.y = this.gameFrame.frameY + this.gameFrame.frameHeight - x.y;
+
+    const screenX = virtual.x * this.gameFrame.scaleFactor + this.gameFrame.frameX;
+    const screenY = virtual.y * this.gameFrame.scaleFactor + this.gameFrame.frameY;
+    // console.log("Receving:" , screenX, screenY);
+    this.remotePlayer.paddle.setPosition(screenX, screenY);
   }
 
   resize() {
