@@ -320,6 +320,7 @@ class Game extends Phaser.Scene {
     this.remotePlayer.name = player.name;
     this.remotePlayer.id = player.id;
     this.remotePlayer.paddle = this.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + 50, "paddle2").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
+    // this.remotePlayer.paddle.setAngle(180)
   }
   
   
@@ -336,9 +337,12 @@ class Game extends Phaser.Scene {
     // this.remotePlayer.paddle.x = this.gameFrame.frameX + this.gameFrame.frameWidth - x.x;
     // this.remotePlayer.paddle.y = this.gameFrame.frameY + this.gameFrame.frameHeight - x.y;
 
-    const screenX = virtual.x * this.gameFrame.scaleFactor + this.gameFrame.frameX;
-    const screenY = virtual.y * this.gameFrame.scaleFactor + this.gameFrame.frameY;
-    // console.log("Receving:" , screenX, screenY);
+    const flippedY = this.gameFrame.virtualHeight - virtual.y;
+    const flippedX = this.gameFrame.virtualWidth - virtual.x;
+
+    const screenX = flippedX * this.gameFrame.scaleFactor + this.gameFrame.frameX;
+    const screenY = flippedY * this.gameFrame.scaleFactor + this.gameFrame.frameY;
+    // console.log("Receving:" , screenX, screenY - this.gameFrame.frameHeight);
     this.remotePlayer.paddle.setPosition(screenX, screenY);
   }
 
