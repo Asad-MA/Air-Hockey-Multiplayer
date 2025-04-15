@@ -101,6 +101,7 @@ class Boot extends Phaser.Scene {
         this.load.audio("glitch" , "sfx/glitch-c.wav");
         this.load.audio("bg-music" , "sfx/bg-music.mp3");
         this.load.audio("neon" , "sfx/neon-gaming.mp3");
+        this.load.audio("hit" , "sfx/puck-hit.mp3");
 
         // Loading Sprites
         this.load.spritesheet("impactEffect", "textures/hit-sprite.png", { frameWidth: 1120, frameHeight: 1125 });
@@ -140,9 +141,9 @@ class Boot extends Phaser.Scene {
         this.load.on('complete', () => {
             console.log('Assets loaded!');
 
-            // this.scene.start('PlayerJoinScene');
+            this.scene.start('PlayerJoinScene');
             // this.scale.resize(800, 1200);
-            this.scene.start('Game');
+            // this.scene.start('Game');
         });
 
         // ✅ **Start loading**

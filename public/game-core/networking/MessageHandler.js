@@ -8,11 +8,11 @@ class MessageHandler {
     }
 
     handle(type, data) {
-        // if (this.handlers[type]) {
-        //     this.handlers[type](data);
-        // } else {
-        //     console.warn(`⚠️ No handler for message type: ${type}`);
-        // }
+        if (this.handlers[type]) {
+            this.handlers[type](data);
+        } else {
+            console.warn(`⚠️ No handler for message type: ${type}`);
+        }
     }
 }
 

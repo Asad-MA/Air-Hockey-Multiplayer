@@ -10,6 +10,9 @@ class Game extends Phaser.Scene {
   constructor() {
     super({ key: 'Game' });
     this.isGoal = false;
+    this.goals = 0;
+    this.remoteGoals = 0;
+    this.remotePlayer = {};
   }
   preload() {
     this.room = this.scene.get('PlayerJoinScene').gameRoom;
@@ -60,10 +63,15 @@ class Game extends Phaser.Scene {
 
   create() {
 
-    this.music = this.sound.add('glitch',  {volume: 2});
-    this.bgMusic = this.sound.add('bg-music', {volume: 0.5});
+    this.music = this.sound.add('glitch',  {volume: 0.8});
+    this.bgMusic = this.sound.add('bg-music', {volume: 0.3});
     this.bgMusic.play({loop: true});
     this.bgMusicNeon = this.sound.add('neon', {volume: 0.05});
+    this.puckhit = this.sound.add('hit', {volume: 1});
+
+   
+    // this.add.image(this.scale.width / 2, this.scale.height / 2, 'gamebg').setDisplaySize(this.scale.width, this.scale.height);
+
     // this.bgMusicNeon.play({loop: true});
     // this.music.setSeek(1000);
 
@@ -95,6 +103,11 @@ class Game extends Phaser.Scene {
       y: this.gameFrame.frameY + this.gameFrame.frameHeight / 2 
     };
 
+     // Render Player Avatars
+     this.renderPlayer(this.players[0] , 5 , 50);
+     this.renderPlayer(this.players[1] , this.scale.width - 50 , 50);
+     this.addRemotePlayer(this.players[1]);
+
     this.anims.create({
       key: 'impactAnim',
       frames: this.anims.generateFrameNumbers('impactEffect', { start: 2, end: 5 }), // Adjust frame count
@@ -113,8 +126,8 @@ class Game extends Phaser.Scene {
       'scaleFactor': this.scaleFactor
     });
 
-    this.paddle = this.physics.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + this.gameFrame.frameHeight - 50, "paddle1").setDisplaySize(100, 100);
-    this.puck = this.physics.add.sprite(this.defaultPuckPosition.x  , this.defaultPuckPosition.y , "puck").setDisplaySize(64, 64)//.setOrigin(0.5, 0.5); 
+    this.paddle = this.physics.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + this.gameFrame.frameHeight - 50, "paddle1").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
+    this.puck = this.physics.add.sprite(this.defaultPuckPosition.x  , this.defaultPuckPosition.y , "puck").setDisplaySize(this.gameFrame.frameWidth/ 10, this.gameFrame.frameWidth/ 10)//.setOrigin(0.5, 0.5); 
 
 
     this.puck.body.setCircle(64, 64, 64);
@@ -135,12 +148,14 @@ class Game extends Phaser.Scene {
     this.puck.setCollideWorldBounds(true);
 
     this.physics.add.collider(this.paddle, this.gameFrame.frameParts)
-    this.physics.add.collider(this.puck, this.gameFrame.frameParts)
-    this.physics.add.collider(this.puck, this.paddle);
+    this.physics.add.collider(this.puck, this.gameFrame.frameParts , null,  ()=> {this.puckhit.play();})
+    this.physics.add.collider(this.puck, this.paddle , (puck , paddle)=>{
+      this.puckhit.play();
+    });
     this.physics.add.overlap(this.puck , this.gameFrame.goals, (puck, goal) => {
       console.log(goal.texture.key, goal.body.position?.y)
        if(this.isGoal) return;
-       this.bgMusic.setVolume(0.2);
+       this.bgMusic.setVolume(0.1);
       this.music.play();
       // this.bgMusic.pl();
       this.physics.pause(); // Pause the game
@@ -174,7 +189,7 @@ class Game extends Phaser.Scene {
           duration: 100,
           ease: 'Linear'
         });
-        this.bgMusic.setVolume(0.5);
+        this.bgMusic.setVolume(0.3);
        // this.input.enabled = true;
         // this.paddle.body.reset()
       }, [], this);
@@ -203,8 +218,20 @@ class Game extends Phaser.Scene {
 
     this.physicsManager.addCollider(this.paddle, this.gameFrame.frameParts);
   
+     this.timer = this.time.addEvent({
+      delay: 100, // ms
+      callback: this.sendPlayerPosition,
+      args: [{}],
+      callbackScope: this,
+      loop: true,
+    });
+
+    this.registerListener();
+    
 
   }
+
+
 
   hitFrame(puck, framePart) {
 
@@ -224,8 +251,8 @@ class Game extends Phaser.Scene {
     this.resetPuckIfOutOfBounds(this.puck, this.gameFrame.bounds, 5);
     // Simulate remote player movement (Replace with actual WebSocket data)
     if (this.remotePlayerX !== undefined) {
-      this.remotePaddle.x = this.remotePlayerX;
-      this.remotePaddle.y = this.remotePlayerY;
+      this.remotePlayer.paddle.x = this.remotePlayerX;
+      // this.remotePaddle.y = this.remotePlayerY;
     }
   }
 
@@ -264,18 +291,33 @@ class Game extends Phaser.Scene {
       puck.body.setVelocity(velX, velY);
     }
   }
+
+
+  renderPlayer(player , x , y) {
+    this.add.text(x, y, player.name, {
+      fontSize: '16px',
+      fill: '#fff'
+    });
+  }
+
+  addRemotePlayer(player){
+    this.remotePlayer.name = player.name;
+    this.remotePlayer.id = player.id;
+    this.remotePlayer.paddle = this.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + 50, "paddle2").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
+  }
   
   
 
   sendPlayerPosition(x) {
+    console.log('Sending Player positions: ');
     Network.sendMessage('position', x);
   }
 
   receiveRemotePosition(x) {
     console.log('receving Remote positions: ', x)
     // Placeholder for receiving opponent's position
-    this.remotePaddle.x = 800 - x.x;
-    this.remotePaddle.y = 600 - x.y;
+    this.remotePlayer.paddle.x = 800 - x.x;
+    this.remotePlayer.paddle.y = 600 - x.y;
   }
 
   resize() {
@@ -285,6 +327,11 @@ class Game extends Phaser.Scene {
     this.gameFrame.bg.destroy()
     //this.create()
     //this.gameFrame = new GameWorld(this);
+  }
+
+  registerListener(){
+    Network.addMessageListener('remote_position', (message) => this.receiveRemotePosition(message));
+
   }
 }
 
