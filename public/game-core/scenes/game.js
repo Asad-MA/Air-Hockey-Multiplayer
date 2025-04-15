@@ -103,6 +103,11 @@ class Game extends Phaser.Scene {
       y: this.gameFrame.frameY + this.gameFrame.frameHeight / 2 
     };
 
+    this.playerPosition = {
+      x: this.gameFrame.frameX + this.gameFrame.frameWidth / 2, 
+      y: this.gameFrame.frameY + this.gameFrame.frameHeight - 50,
+    }
+
      // Render Player Avatars
      this.renderPlayer(this.players[0] , 5 , 50);
      this.renderPlayer(this.players[1] , this.scale.width - 50 , 50);
@@ -126,7 +131,7 @@ class Game extends Phaser.Scene {
       'scaleFactor': this.scaleFactor
     });
 
-    this.paddle = this.physics.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + this.gameFrame.frameHeight - 50, "paddle1").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
+    this.paddle = this.physics.add.sprite(this.playerPosition.x, this.playerPosition.y, "paddle1").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
     this.puck = this.physics.add.sprite(this.defaultPuckPosition.x  , this.defaultPuckPosition.y , "puck").setDisplaySize(this.gameFrame.frameWidth/ 10, this.gameFrame.frameWidth/ 10)//.setOrigin(0.5, 0.5); 
 
 
@@ -211,6 +216,8 @@ class Game extends Phaser.Scene {
       const y = Phaser.Math.Clamp(pointer.y, this.gameFrame.frameY + 50, this.gameFrame.frameY + this.gameFrame.frameHeight - 70);
 
 
+      this.playerPosition.x = x;
+      this.playerPosition.y = y;  
       gameObject.setPosition(x, y);
 
  
@@ -219,9 +226,9 @@ class Game extends Phaser.Scene {
     this.physicsManager.addCollider(this.paddle, this.gameFrame.frameParts);
   
      this.timer = this.time.addEvent({
-      delay: 100, // ms
+      delay: 50, // ms
       callback: this.sendPlayerPosition,
-      args: [{}],
+      args: [this.playerPosition],
       callbackScope: this,
       loop: true,
     });
@@ -315,9 +322,10 @@ class Game extends Phaser.Scene {
 
   receiveRemotePosition(x) {
     console.log('receving Remote positions: ', x)
+    console.log(this.gameFrame.frameX + this.gameFrame.frameWidth - x.x, this.gameFrame.frameY + this.gameFrame.frameHeight - x.y)
     // Placeholder for receiving opponent's position
-    this.remotePlayer.paddle.x = 800 - x.x;
-    this.remotePlayer.paddle.y = 600 - x.y;
+    this.remotePlayer.paddle.x = this.gameFrame.frameX + this.gameFrame.frameWidth - x.x;
+    this.remotePlayer.paddle.y = this.gameFrame.frameY + this.gameFrame.frameHeight - x.y;
   }
 
   resize() {
