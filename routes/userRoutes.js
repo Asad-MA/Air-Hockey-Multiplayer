@@ -38,7 +38,7 @@ userRoutes.post('resend-verification-mail', userController.resendMail);
 // Game Routes
 userRoutes.get('/matchmaking', authenticate, (req, res) => res.render('pages/lobby'))
 
-userRoutes.get('/play-live/:roomId', authenticate, (req, res) => {
+userRoutes.get('/play-live/:roomId', authenticate,  (req, res) => {
     res.render('pages/game', { roomID: req.params.roomId, name: req.user?.name || 'placeholder' , email: req.user?.email || 'example@gmail.com' })
 }
 );
