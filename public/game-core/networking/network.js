@@ -62,4 +62,4 @@ class ColyseusNetwork extends INetworkService {
     }
 }
 
-export default new ColyseusNetwork('ws://localhost:2567' , sessionStorage.getItem("token"));
+export default new ColyseusNetwork('ws://192.168.43.251:2567' , sessionStorage.getItem("token"));

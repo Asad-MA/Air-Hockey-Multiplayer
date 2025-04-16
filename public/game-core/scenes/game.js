@@ -129,27 +129,29 @@ class Game extends Phaser.Scene {
       'frameX': this.gameFrame.frameX,
       'frameY': this.gameFrame.frameY,
       'frameWidth': this.gameFrame.frameWidth,
-      'frameHeight': this.gameFrame.frameHeight, 
-      'scaleFactor': this.scaleFactor
+      'frameHeight': this.gameFrame.frameHeight,
+      'virtualWidth': this.gameFrame.virtualWidth,
+      'virtualHeight': this.gameFrame.virtualHeight,
+      'scaleFactor': this.gameFrame.scaleFactor
     });
 
-    this.paddle = this.physics.add.sprite(this.playerPosition.x, this.playerPosition.y, "paddle1").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
-    this.puck = this.physics.add.sprite(this.defaultPuckPosition.x  , this.defaultPuckPosition.y , "puck").setDisplaySize(this.gameFrame.frameWidth/ 10, this.gameFrame.frameWidth/ 10)//.setOrigin(0.5, 0.5); 
+    this.paddle = this.physics.add.sprite(this.playerPosition.x, this.playerPosition.y, "paddle1").setDisplaySize((this.gameFrame.virtualWidth*this.gameFrame.scaleFactor / 6)  , (this.gameFrame.virtualWidth*this.gameFrame.scaleFactor / 6) ).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
+    this.puck = this.physics.add.sprite(this.defaultPuckPosition.x  , this.defaultPuckPosition.y , "puck").setDisplaySize(this.gameFrame.virtualWidth/ 10, this.gameFrame.frameWidth/ 10)//.setOrigin(0.5, 0.5); 
 
-    this.paddle2 = this.physics.add.sprite(this.playerPosition.x, this.playerPosition.y, "paddle1").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5);
+    this.paddle2 = this.physics.add.sprite(this.playerPosition.x, this.playerPosition.y, "paddle1").setDisplaySize((this.gameFrame.virtualWidth*this.gameFrame.scaleFactor / 6)  , (this.gameFrame.virtualWidth*this.gameFrame.scaleFactor / 6)  ).setOrigin(0.5, 0.5);
 
        // Render Player Avatars
        this.renderPlayer(this.players[0] , 5 , 50);
        this.renderPlayer(this.players[1] , this.scale.width - 50 , 50);
        this.addRemotePlayer(this.players[1]);
 
-    this.puck.body.setCircle(64, 64, 64);
+    this.puck.body.setCircle(this.gameFrame.virtualWidth/7, 48, 48);
     this.puck.body.setMass(2);
 
     // paddle1.setCircle(51, 0, 0);
-    this.paddle.setCircle(this.gameFrame.virtualWidth/4, 30, 30);
-    this.paddle2.setCircle(this.gameFrame.virtualWidth/4, 30, 30);
-    this.paddle2.setAngle(45);
+    this.paddle.setCircle((this.gameFrame.virtualWidth*this.gameFrame.scaleFactor/6), (this.gameFrame.virtualWidth*this.gameFrame.scaleFactor/12), (this.gameFrame.virtualWidth*this.gameFrame.scaleFactor/12 ));
+    this.paddle2.setCircle((this.gameFrame.virtualWidth*this.gameFrame.scaleFactor/6), (this.gameFrame.virtualWidth*this.gameFrame.scaleFactor/12), (this.gameFrame.virtualWidth*this.gameFrame.scaleFactor/12));
+    // this.paddle2.setAngle(45);
 
     console.log(this.puck)
     this.puck.setBounce(0.9);
@@ -169,8 +171,24 @@ class Game extends Phaser.Scene {
     this.physics.add.collider(this.puck, this.gameFrame.frameParts , null,  ()=> {this.puckhit.play();})
     this.physics.add.collider(this.puck, this.paddle , (puck , paddle)=>{
       this.puckhit.play();
+      console.log(this.puck.body.velocity);
+      const puckVirtualX = (this.puck.body.position.x - this.gameFrame.frameX) / this.gameFrame.scaleFactor;
+      const puckVirtualY = (this.puck.body.position.y - this.gameFrame.frameY) / this.gameFrame.scaleFactor;
+
+      const puckVirtualVelocityX = this.puck.body.velocity.x ;// this.gameFrame.scaleFactor;
+      const puckVirtualVelocityY = this.puck.body.velocity.y;// / this.gameFrame.scaleFactor;
+
+      // this.puck.setVelocity(puckVirtualVelocityX , puckVirtualVelocityY);
+
+      this.sendPuckData({
+        x: puckVirtualX,
+        y: puckVirtualY,
+        vx: puckVirtualVelocityX,
+        vy: puckVirtualVelocityY
+      });
+
     });
-    this.physics.add.collider(this.puck, this.paddle2 , (puck , paddle)=>{
+    this.physics.add.overlap(this.puck, this.paddle2 , (puck , paddle)=>{
       this.puckhit.play();
     });
     this.physics.add.overlap(this.puck , this.gameFrame.goals, (puck, goal) => {
@@ -262,6 +280,15 @@ class Game extends Phaser.Scene {
       loop: true,
     });
 
+    if(this.players[0].is_Host){
+    this.timer = this.time.addEvent({
+      delay: 100, // ms
+      callback: this.sendPuckData,
+      args: [this.puckPosition],
+      callbackScope: this,
+      loop: true,
+    });
+  }
     this.registerListener();
     
 
@@ -291,6 +318,9 @@ class Game extends Phaser.Scene {
 
     this.puckPosition.x = puckVirtualX;
     this.puckPosition.y = puckVirtualY;
+
+    // this.puckPosition.vx = this.puck.body.velocity.x / this.gameFrame.scaleFactor;
+    // this.puckPosition.vy = this.puck.body.velocity.y / this.gameFrame.scaleFactor;
 
     // Simulate remote player movement (Replace with actual WebSocket data)
     
@@ -353,6 +383,13 @@ class Game extends Phaser.Scene {
     // this.physics.add.collider(this.puck, this.remotePlayer.paddle);
     // this.remotePlayer.paddle.setAngle(180)
   }
+
+
+  sendPuckData(data) {
+    console.log('Sending Puck Data: ', data);
+    Network.sendMessage('puck_data', data);
+
+  }
   
   
 
@@ -363,6 +400,22 @@ class Game extends Phaser.Scene {
       paddle: x,
     }
     Network.sendMessage('position', positionData);
+  }
+
+  receivePuckData(puck) {
+    console.log("PUCK DATA: ", puck);
+    const puckFlippedY = this.gameFrame.virtualHeight - puck.y;
+    const puckFlippedX = this.gameFrame.virtualWidth - puck.x;  
+    const puckScreenX = puckFlippedX * this.gameFrame.scaleFactor + this.gameFrame.frameX;
+    const puckScreenY = puckFlippedY * this.gameFrame.scaleFactor + this.gameFrame.frameY;  
+   this.puck.setPosition(puckScreenX, puckScreenY);
+
+    //Setting Velocity
+    // if(!puck.vx || !puck.vy) return;
+    const puckVelocityX = puck.vx * this.gameFrame.scaleFactor;
+    const puckVelocityY = puck.vy * this.gameFrame.scaleFactor;
+    this.puck.setVelocity(-puckVelocityX, -puckVelocityY);
+
   }
 
   receiveRemotePosition(virtual) {
@@ -382,7 +435,7 @@ if(puck){
     const puckScreenY = puckFlippedY * this.gameFrame.scaleFactor + this.gameFrame.frameY;  
 
 
-    this.puck.setPosition(puckScreenX, puckScreenY);
+    // this.puck.setPosition(puckScreenX, puckScreenY);
 }
     // console.log("Receving:" , screenX, screenY - this.gameFrame.frameHeight);
     // this.remotePlayer.paddle.setPosition(screenX, screenY);
@@ -400,7 +453,7 @@ if(puck){
 
   registerListener(){
     Network.addMessageListener('remote_position', (message) => this.receiveRemotePosition(message));
-
+    Network.addMessageListener('remote_puck_data', (message) => this.receivePuckData(message));
   }
 }
 
