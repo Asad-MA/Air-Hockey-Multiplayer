@@ -136,6 +136,8 @@ class Game extends Phaser.Scene {
     this.paddle = this.physics.add.sprite(this.playerPosition.x, this.playerPosition.y, "paddle1").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
     this.puck = this.physics.add.sprite(this.defaultPuckPosition.x  , this.defaultPuckPosition.y , "puck").setDisplaySize(this.gameFrame.frameWidth/ 10, this.gameFrame.frameWidth/ 10)//.setOrigin(0.5, 0.5); 
 
+    this.paddle2 = this.physics.add.sprite(this.playerPosition.x, this.playerPosition.y, "paddle1").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5);
+
        // Render Player Avatars
        this.renderPlayer(this.players[0] , 5 , 50);
        this.renderPlayer(this.players[1] , this.scale.width - 50 , 50);
@@ -145,7 +147,9 @@ class Game extends Phaser.Scene {
     this.puck.body.setMass(2);
 
     // paddle1.setCircle(51, 0, 0);
-    this.paddle.setCircle(100, 30, 30);
+    this.paddle.setCircle(this.gameFrame.virtualWidth/4, 30, 30);
+    this.paddle2.setCircle(this.gameFrame.virtualWidth/4, 30, 30);
+    this.paddle2.setAngle(45);
 
     console.log(this.puck)
     this.puck.setBounce(0.9);
@@ -154,6 +158,9 @@ class Game extends Phaser.Scene {
     this.puck.setMaxVelocity(1000);
     this.paddle.setMass(1)
     this.paddle.setBounce(1);
+
+    this.paddle2.setMass(1)
+    this.paddle2.setBounce(1);
     // this.puck.setInertia(100)
 
     this.puck.setCollideWorldBounds(true);
@@ -161,6 +168,9 @@ class Game extends Phaser.Scene {
     this.physics.add.collider(this.paddle, this.gameFrame.frameParts)
     this.physics.add.collider(this.puck, this.gameFrame.frameParts , null,  ()=> {this.puckhit.play();})
     this.physics.add.collider(this.puck, this.paddle , (puck , paddle)=>{
+      this.puckhit.play();
+    });
+    this.physics.add.collider(this.puck, this.paddle2 , (puck , paddle)=>{
       this.puckhit.play();
     });
     this.physics.add.overlap(this.puck , this.gameFrame.goals, (puck, goal) => {
@@ -211,8 +221,12 @@ class Game extends Phaser.Scene {
     this.paddle.setImmovable(true);
     this.paddle.setDirectControl(true)
     this.paddle.setInteractive();
+    this.paddle.setDepth(2)
     this.input.setDraggable(this.paddle);
-    this.OtherPlayer = this.paddle;
+    
+    this.paddle2.setImmovable(true);
+    this.paddle2.setDirectControl(true)
+    this.paddle2.setInteractive();
 
 
     // When dragging, set the ball's position to follow the mouse pointer
@@ -329,14 +343,14 @@ class Game extends Phaser.Scene {
   addRemotePlayer(player){
     this.remotePlayer.name = player.name;
     this.remotePlayer.id = player.id;
-    this.remotePlayer.paddle = this.physics.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + 50, "paddle2").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
-    this.remotePlayer.paddle.body.setCircle(100, 30, 30);
-    this.remotePlayer.paddle.setInteractive(true);
-    this.remotePlayer.paddle.setDirectControl(true);
-    this.remotePlayer.paddle.setMass(1)
-    this.remotePlayer.paddle.setBounce(1);
-    // this.physics.add.collider(this.remotePlayer.paddle, this.gameFrame.frameParts)
-    this.physics.add.collider(this.puck, this.remotePlayer.paddle);
+    // this.remotePlayer.paddle = this.physics.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + 50, "paddle2").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
+    // this.remotePlayer.paddle.body.setCircle(100, 30, 30);
+    // this.remotePlayer.paddle.setInteractive(true);
+    // this.remotePlayer.paddle.setDirectControl(true);
+    // this.remotePlayer.paddle.setMass(1)
+    // this.remotePlayer.paddle.setBounce(1);
+    // // this.physics.add.collider(this.remotePlayer.paddle, this.gameFrame.frameParts)
+    // this.physics.add.collider(this.puck, this.remotePlayer.paddle);
     // this.remotePlayer.paddle.setAngle(180)
   }
   
@@ -371,7 +385,8 @@ if(puck){
     this.puck.setPosition(puckScreenX, puckScreenY);
 }
     // console.log("Receving:" , screenX, screenY - this.gameFrame.frameHeight);
-    this.remotePlayer.paddle.setPosition(screenX, screenY);
+    // this.remotePlayer.paddle.setPosition(screenX, screenY);
+    this.paddle2.setPosition(screenX, screenY);
   }
 
   resize() {

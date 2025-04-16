@@ -21,7 +21,7 @@ const config = {
         debug: true,
         scaleFactor: window.devicePixelRatio,//isMobile ? 2 : 1,
         arcade:{
-            debug: false,
+            debug: true,
             fps: 244,
             gravity: { y: 0 , x: 0 },
             debugShowBody: true,
