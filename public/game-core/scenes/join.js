@@ -62,7 +62,7 @@ class PlayerJoinScene extends Phaser.Scene {
         }
         // Add Player
 
-        this.addPlayer({id: 'abcxgh', name: document.getElementById('playername').value , rank: 1});
+        //this.addPlayer({id: 'abcxgh', name: document.getElementById('playername').value , rank: 1});
 
 
 
@@ -87,7 +87,7 @@ class PlayerJoinScene extends Phaser.Scene {
         let playerName = playerData.name; // Assuming playerData has a name property`;
         let rank = ` ${Math.floor(Math.random() * 100) + 1}`; // Example rank
 
-        this.players.push({ id: playerId, name: playerName, rank: 1 });
+        this.players.push({ id: playerId, name: playerName, rank: 1, isHost: playerData.isHost });
 
         // Calculate positions
         let xPos = this.players.length === 1 ? this.scale.width / 6 : (this.scale.width * 3) / 4;
@@ -143,12 +143,23 @@ class PlayerJoinScene extends Phaser.Scene {
             // window.location.href = "/game";
         });
 
+        Network.addMessageListener('pre_player_join', async (player) => {
+            console.log('YOU Join the room:', player);
+            // message.forEach((player) => {
+                console.log('Player:', player);
+                await this.addPlayer(player);
+                console.log(this.players);
+            // });
+            // await this.addPlayer();
+        });
+
         Network.addMessageListener('player_join', async (player) => {
             console.log('Player Join the room:', player);
             // message.forEach((player) => {
                 console.log('Player:', player);
                 await this.addPlayer(player);
                 Network.sendMessage('ready', { message: player.name + ' is Ready!' });
+                console.log(this.players);
             // });
             // await this.addPlayer();
         });

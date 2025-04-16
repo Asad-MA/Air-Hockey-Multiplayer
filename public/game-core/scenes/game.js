@@ -108,10 +108,12 @@ class Game extends Phaser.Scene {
       y: this.gameFrame.frameY + this.gameFrame.frameHeight - 50,
     }
 
-     // Render Player Avatars
-     this.renderPlayer(this.players[0] , 5 , 50);
-     this.renderPlayer(this.players[1] , this.scale.width - 50 , 50);
-     this.addRemotePlayer(this.players[1]);
+   this.puckPosition = {
+      x: this.gameFrame.frameX + this.gameFrame.frameWidth / 2, 
+      y: this.gameFrame.frameY + this.gameFrame.frameHeight / 2
+    }
+
+  
 
     this.anims.create({
       key: 'impactAnim',
@@ -134,6 +136,10 @@ class Game extends Phaser.Scene {
     this.paddle = this.physics.add.sprite(this.playerPosition.x, this.playerPosition.y, "paddle1").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
     this.puck = this.physics.add.sprite(this.defaultPuckPosition.x  , this.defaultPuckPosition.y , "puck").setDisplaySize(this.gameFrame.frameWidth/ 10, this.gameFrame.frameWidth/ 10)//.setOrigin(0.5, 0.5); 
 
+       // Render Player Avatars
+       this.renderPlayer(this.players[0] , 5 , 50);
+       this.renderPlayer(this.players[1] , this.scale.width - 50 , 50);
+       this.addRemotePlayer(this.players[1]);
 
     this.puck.body.setCircle(64, 64, 64);
     this.puck.body.setMass(2);
@@ -232,7 +238,7 @@ class Game extends Phaser.Scene {
  
     });
 
-    this.physicsManager.addCollider(this.paddle, this.gameFrame.frameParts);
+    // this.physicsManager.addCollider(this.paddle, this.gameFrame.frameParts);
   
      this.timer = this.time.addEvent({
       delay: 50, // ms
@@ -265,11 +271,15 @@ class Game extends Phaser.Scene {
 
   update() {
     this.resetPuckIfOutOfBounds(this.puck, this.gameFrame.bounds, 5);
+
+    const puckVirtualX = (this.puck.body.position.x - this.gameFrame.frameX) / this.gameFrame.scaleFactor;
+    const puckVirtualY = (this.puck.body.position.y - this.gameFrame.frameY) / this.gameFrame.scaleFactor;
+
+    this.puckPosition.x = puckVirtualX;
+    this.puckPosition.y = puckVirtualY;
+
     // Simulate remote player movement (Replace with actual WebSocket data)
-    if (this.remotePlayerX !== undefined) {
-      this.remotePlayer.paddle.x = this.remotePlayerX;
-      // this.remotePaddle.y = this.remotePlayerY;
-    }
+    
   }
 
   isPuckOutOfBounds(puck, worldBounds) {
@@ -319,29 +329,47 @@ class Game extends Phaser.Scene {
   addRemotePlayer(player){
     this.remotePlayer.name = player.name;
     this.remotePlayer.id = player.id;
-    this.remotePlayer.paddle = this.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + 50, "paddle2").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
+    this.remotePlayer.paddle = this.physics.add.sprite(this.gameFrame.frameX + this.gameFrame.frameWidth / 2, this.gameFrame.frameY + 50, "paddle2").setDisplaySize(this.gameFrame.frameWidth / 6 , this.gameFrame.frameWidth / 6).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
+    this.remotePlayer.paddle.body.setCircle(100, 30, 30);
+    this.remotePlayer.paddle.setInteractive(true);
+    this.remotePlayer.paddle.setDirectControl(true);
+    this.remotePlayer.paddle.setMass(1)
+    this.remotePlayer.paddle.setBounce(1);
+    // this.physics.add.collider(this.remotePlayer.paddle, this.gameFrame.frameParts)
+    this.physics.add.collider(this.puck, this.remotePlayer.paddle);
     // this.remotePlayer.paddle.setAngle(180)
   }
   
   
 
   sendPlayerPosition(x) {
-    console.log('Sending Player positions: ' , x);
-    Network.sendMessage('position', x);
+    // console.log('Sending Player positions: ' , x);
+    const positionData = {
+      puck: this.players[0].is_Host? this.puckPosition:null,
+      paddle: x,
+    }
+    Network.sendMessage('position', positionData);
   }
 
   receiveRemotePosition(virtual) {
-    console.log('receving Remote positions: ', virtual)
-    // console.log(this.gameFrame.frameX + this.gameFrame.frameWidth - x.x, this.gameFrame.frameY + this.gameFrame.frameHeight - x.y)
-    // Placeholder for receiving opponent's position
-    // this.remotePlayer.paddle.x = this.gameFrame.frameX + this.gameFrame.frameWidth - x.x;
-    // this.remotePlayer.paddle.y = this.gameFrame.frameY + this.gameFrame.frameHeight - x.y;
 
-    const flippedY = this.gameFrame.virtualHeight - virtual.y;
-    const flippedX = this.gameFrame.virtualWidth - virtual.x;
+    const {puck, paddle} = virtual;
+    // console.log('receving Remote positions: ', virtual)
 
+    const flippedY = this.gameFrame.virtualHeight - paddle.y;
+    const flippedX = this.gameFrame.virtualWidth - paddle.x;
     const screenX = flippedX * this.gameFrame.scaleFactor + this.gameFrame.frameX;
     const screenY = flippedY * this.gameFrame.scaleFactor + this.gameFrame.frameY;
+
+if(puck){
+    const puckFlippedY = this.gameFrame.virtualHeight - puck.y;
+    const puckFlippedX = this.gameFrame.virtualWidth - puck.x;  
+    const puckScreenX = puckFlippedX * this.gameFrame.scaleFactor + this.gameFrame.frameX;
+    const puckScreenY = puckFlippedY * this.gameFrame.scaleFactor + this.gameFrame.frameY;  
+
+
+    this.puck.setPosition(puckScreenX, puckScreenY);
+}
     // console.log("Receving:" , screenX, screenY - this.gameFrame.frameHeight);
     this.remotePlayer.paddle.setPosition(screenX, screenY);
   }
