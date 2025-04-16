@@ -140,9 +140,9 @@ class Boot extends Phaser.Scene {
         this.load.on('complete', () => {
             console.log('Assets loaded!');
 
-            // this.scene.start('PlayerJoinScene');
+            this.scene.start('PlayerJoinScene');
             // this.scale.resize(800, 1200);
-            this.scene.start('Game');
+            // this.scene.start('Game');
         });
 
         // ✅ **Start loading**

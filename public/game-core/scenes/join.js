@@ -148,7 +148,7 @@ class PlayerJoinScene extends Phaser.Scene {
             // message.forEach((player) => {
                 console.log('Player:', player);
                 await this.addPlayer(player);
-                Network.sendMessage('ready', { message: player.name + ' is Ready!' });
+               Network.sendMessage('ready', { message: player.name + ' is Ready!' });
             // });
             // await this.addPlayer();
         });
