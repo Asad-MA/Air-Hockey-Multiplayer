@@ -133,8 +133,10 @@ class Game extends Phaser.Scene {
       'scaleFactor': this.gameFrame.scaleFactor
     });
 
-    this.paddle = this.physics.add.sprite(this.playerPosition.x, this.playerPosition.y, "paddle1").setDisplaySize((this.gameFrame.virtualWidth*this.gameFrame.scaleFactor / 6)  , (this.gameFrame.virtualWidth*this.gameFrame.scaleFactor / 6) ).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
+    // this.paddle = this.physics.add.sprite(this.playerPosition.x, this.playerPosition.y, "paddle1").setDisplaySize((this.gameFrame.virtualWidth*this.gameFrame.scaleFactor / 6)  , (this.gameFrame.virtualWidth*this.gameFrame.scaleFactor / 6) ).setOrigin(0.5, 0.5); // this.scale.width / 2, this.scale.height - 50
     this.puck = this.physics.add.sprite(this.defaultPuckPosition.x  , this.defaultPuckPosition.y , "puck").setDisplaySize(this.gameFrame.virtualWidth/ 10, this.gameFrame.frameWidth/ 10)//.setOrigin(0.5, 0.5); 
+
+    this.paddle = new Paddle(this, this.playerPosition.x, this.playerPosition.y, "paddle1");
 
     this.paddle2 = this.physics.add.sprite(this.playerPosition.x, this.playerPosition.y, "paddle1").setDisplaySize((this.gameFrame.virtualWidth*this.gameFrame.scaleFactor / 6)  , (this.gameFrame.virtualWidth*this.gameFrame.scaleFactor / 6)  ).setOrigin(0.5, 0.5);
 
