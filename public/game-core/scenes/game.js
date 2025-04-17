@@ -122,8 +122,6 @@ class Game extends Phaser.Scene {
       repeat: 0
     });
 
-    
-
     console.table({
       'physics': this.game.config.physics.default,
       'frameX': this.gameFrame.frameX,
