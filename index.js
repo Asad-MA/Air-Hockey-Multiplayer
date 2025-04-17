@@ -8,12 +8,14 @@ import userRoutes from './routes/userRoutes.js';
 import apiRoutes from './routes/apiRoutes.js';
 import defaultAuth from './middleware/api/defaultAuth.js';
 import wss from './ws-channel.js';
+import { config } from './config/config.js';
 
 
 
 
 
 const app = express();
+app.locals.baseUrl = config.baseUrl;
 const PORT = process.env.PORT || 6000;
 
 // Middleware
