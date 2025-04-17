@@ -1,4 +1,4 @@
 export const config = {
-    baseUrl: 'http://192.168.43.247',
+    baseUrl: '192.168.43.247',
 
 };
