@@ -5,7 +5,7 @@ console.log("Lobby Room!!!");
 const play = document.getElementById("play-online");
 
 const status = document.getElementById("status");
-const serverUrl = "ws://127.0.0.1:2567";
+const serverUrl = "ws://192.168.43.251:2567";
 const client = new Colyseus.Client(serverUrl);
 client.auth.token = sessionStorage.getItem("token");
 

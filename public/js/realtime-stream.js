@@ -1,7 +1,7 @@
 console.log("Realtime Stream!");
 const playerCount = document.getElementById("player-count");
 
-const ws = new WebSocket("ws://localhost:3002");
+const ws = new WebSocket("ws://192.168.43.251:3002");
 
 ws.onopen = () => {
     console.log("Connected to WebSocket server");
