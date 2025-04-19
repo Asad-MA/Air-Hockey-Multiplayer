@@ -5,7 +5,19 @@ class Paddle extends Phaser.Physics.Arcade.Sprite {
         this.virtualHeight = 100;
         this.scaleFactor = scene.gameFrame.scaleFactor;
         scene.add.existing(this);
-        this.setDisplaySize(this.virtualWidth * this.scaleFactor , this.virtualWidth * this.scaleFactor);
+        scene.physics.add.existing(this);
+        this.body.setImmovable(true);
+        this.body.setDirectControl(true);
+        
+        console.log(this);
+
+        this.setInteractive({draggable: true});
+        scene.input.setDraggable(this);
+        this.setDisplaySize(this.virtualWidth , this.virtualWidth );
+        this.setCircle(this.body.halfWidth, 0, this.body.halfHeight - this.body.halfWidth);
+        this.setScale(this.scaleFactor / 3);
+        
+        // 
 
     }
 
