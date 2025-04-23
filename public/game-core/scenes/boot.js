@@ -86,7 +86,7 @@ class Boot extends Phaser.Scene {
         // Loading images
         this.load.image('background', 'textures/default-bg.png');
         this.load.image('gamebg', 'textures/background.png');
-        this.load.image("puck", "textures/puck-256x256.png");
+        this.load.image("puck", "textures/puck-128x128.png");
         this.load.image("paddle1", "textures/paddle-player.png");
         this.load.image("paddle2", "textures/paddle-remote.png");
         this.load.image("center-circle", "textures/center.png");

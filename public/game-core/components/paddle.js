@@ -8,6 +8,9 @@ class Paddle extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
         this.body.setImmovable(true);
         this.body.setDirectControl(true);
+        this.setFriction(0,0);
+        this.setMaxVelocity(800 , 800);
+        this.setMass(1);
         
         console.log(this);
 
@@ -15,7 +18,7 @@ class Paddle extends Phaser.Physics.Arcade.Sprite {
         scene.input.setDraggable(this);
         this.setDisplaySize(this.virtualWidth , this.virtualWidth );
         this.setCircle(this.body.halfWidth, 0, this.body.halfHeight - this.body.halfWidth);
-        this.setScale(this.scaleFactor / 3);
+        this.setScale(this.scaleFactor / 3.5);
         
         // 
 

@@ -37,7 +37,7 @@ class AuthService{
 
     }
 
-    async generateToken(user , expiry='5m' , type = 'access'){
+    async generateToken(user , expiry='1h' , type = 'access'){
         if(!user) throw new Error("Invalid Users OR Empty User Object");
         // console.log('User: ' , user);
         if(type == 'refresh') 

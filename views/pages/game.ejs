@@ -35,6 +35,22 @@
     filter: drop-shadow(0px 0px 105px black) drop-shadow(0px 0px 105px black);
     display: none;
 }
+
+.latency {
+    color: #fff;
+}
+
+.physics-logs {
+    color: #fff;
+    position: absolute;
+    background: #56917e;
+    width: 260px;
+    padding: 15px;
+    color: #000fff;
+    line-height: 2;
+    border-radius: 10px;
+    margin-top: 5px;
+}
     </style>
 </head>
 <body>
@@ -45,10 +61,16 @@
      <span class="game-logo">
         <img src="./game-core/assets/static/logo-light.png" alt="" srcset="">
      </span>
+     <div class="physics-logs">
+        <div class="latency"></div>
+
+     </div>
      <div id="game-screen"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.86.0/dist/phaser.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.86.0/dist/phaser.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/phaser@3.86.0/dist/phaser.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.86.0/dist/phaser.min.js"></script> -->
+    <script src="./game-core/framework/engine/phaser.js"></script>
+    <script src="./game-core/framework/engine/phaser.min.js"></script>
     <script src="./game-core/framework/server/colyseus.js"></script>
     <script type="module" src="./game-core/index.js"></script>
 </body>

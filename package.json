@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "concurrently \"npm run user\" \"npm run admin\"",
+    "start": "nodemon index.js",
     "user": "nodemon index.js",
     "admin": "nodemon admin/admin.js"
   },

@@ -3,6 +3,9 @@ const Client =   Colyseus.Client;
 import { INetworkService } from './INetworkService.js';
 import LatencyChecker from './LatencyChecker.js';
 import MessageHandler from './MessageHandler.js';
+import {config}  from '../../js/config.js';
+
+console.log(config)
 
 class ColyseusNetwork extends INetworkService {
     constructor(serverUrl , token) {
@@ -62,4 +65,4 @@ class ColyseusNetwork extends INetworkService {
     }
 }
 
-export default new ColyseusNetwork('ws://192.168.43.251:2567' , sessionStorage.getItem("token"));
+export default new ColyseusNetwork(`ws://${config.baseUrl}:2567` , sessionStorage.getItem("token"));

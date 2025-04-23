@@ -2,6 +2,10 @@ export class GameState {
     constructor(game) {
         this.timestamp = Date.now();
         this.game = game;
+        this.isGoal = false;
+        this.isPaused = false;
+        this.isGameOver = false;
+        this.isGameStarted = false;
         // console.log(this.game.gameFrame);
 
         this.puck = {
@@ -51,6 +55,7 @@ export class GameState {
 
     getState() {
         this.timestamp = Date.now();
+        
         return {
             timestamp: this.timestamp,
             puck: this.puck,
