@@ -4,29 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/global-styles.css">
+    <link rel="stylesheet" href="./styles/dashboard.css">
     <title>Air Hockey Online</title>
 </head>
 <body>
     <%- include('../partials/header') %>
-<h1>User Dashboard</h1>
-<h3>Welcome <%- name %></h3>
 
+    <div class="dashboard-layout d-flex gap-20 p-20">
+        <div class="ui-sidebar sidebar-left w-20per ">
+            <%- include('../partials/sidebar-left') %>
+        </div>
 
+        <div class="dashboard-content w-60per loading">
 
-<br>
+        </div>
 
-<button id="play-online">Play</button>
+        <div class="ui-sidebar sidebar-right w-20per loading">
 
-
-<a href="/logout">
-    <button>Logout</button>
-</a>
-
+        </div>
+    </div>
 
 <%- include('../partials/footer') %>
 <script>
     window.sessionStorage.setItem('token', "<%- token %>");
 </script>
+
 
 
     <script src="./game-core/framework/server/colyseus.js"></script>

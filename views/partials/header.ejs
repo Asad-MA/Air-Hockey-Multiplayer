@@ -1,6 +1,31 @@
 <!-- <base href="http://localhost:3001/"> -->
 <base href="http://<%= baseUrl %>:3001/">
-<header>
-    <p>Online Players: <span id="player-count">0</span></p>
+<header class="p-10 d-flex justify-between align-start">
+    <div class="text-center w-20per pt-20 pos-relative">
+        <a href="/" class="pos-absolute abs-full">
+            <img width="120" src="./img/logo.png" alt="site-logo" srcset="">
+        </a>
+    </div>
+    <div class="d-flex justify-end align-center gap-30">
+        <button class="icon-btn ui-default-btn" id="play-online">
+            <span class="btn-icon mr-5"><i class="fa-solid fa-play"></i></span>
+            <span class="btn-text text-uppercase text-sm">Play Game</span>
+        </button>
+        <p class="text-sm"><span id="player-count" class="text-sm">0</span> <span class="text-success text-sm">Online</span></p>
+        <span class="divider-vr h-20"></span>
+        <span class="ui-icon-default"><i class="fa-solid fa-bell"></i></span>
+        <span class="divider-vr h-20"></span>
+        <div class="user-meta d-flex img-box align-center gap-10">
+            <span class="text-sm text-gray"><%- name %></span>
+            <span class="box-img box-rounded w-50 h-50 bg-gray">
+                <img src="" alt="" srcset="">
+            </span>
+        </div>
+        
+            <button class="text-uppercase text-sm"><a href="/logout" class="text-uppercase d-block fill-area"></a>Logout</a></button>
+        
+    </div>
+    
+    <script src="https://kit.fontawesome.com/192402329c.js" crossorigin="anonymous"></script>
     <script type="module" src="./js/realtime-stream.js"></script>
 </header>

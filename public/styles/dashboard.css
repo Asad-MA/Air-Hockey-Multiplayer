@@ -1,0 +1,8 @@
+.dashboard-layout {
+    height: calc(100% - 130px);
+}
+
+.dashboard-layout > .loading{
+    background-color: #111015;
+    border-radius: 10px;
+}

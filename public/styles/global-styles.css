@@ -38,9 +38,10 @@
 
     /* buttons */
     --btn-bg: linear-gradient(45deg , #9b14ba , #c708cb);
-    --btn-padding: 12px 30px;
+    --btn-padding: 10px 25px;
     --btn-text-size: 14px;
     --btn-weight: 500;
+    --btn-line-height: 1.4;
 
     /* Dividers */
     --divider-color: #bbb2e6;
@@ -84,10 +85,14 @@ button{
     font-family: var(--btn-font-family);
     font-weight: var(--btn-weight);
     letter-spacing: var(--letter-spacing);
-    line-height: var(--text-line-height);
+    line-height: var(--btn-line-height);
     border:  none;
-    border-radius: 10px;
+    border-radius: 5px;
     cursor: pointer;
+}
+
+.mr-5{
+    margin-right: 5px;
 }
 
 ::placeholder{
@@ -131,9 +136,7 @@ h1, h2, h3, h4, h5, h6{
     text-transform: none;
 }
 
-.text-sm{
-    font-size: var(--text-size-sm);
-}
+
 
 .decoration-underline{
     text-decoration: underline;
@@ -245,12 +248,21 @@ h1, h2, h3, h4, h5, h6{
     align-items: center;
 }
 
+.align-start{
+    align-items: flex-start;
+}
+
+
 .justify-center{
     justify-content: center;
 }
 
 .justify-between{
     justify-content: space-between;
+}
+
+.justify-end{
+    justify-content: flex-end;
 }
 
 .text-center{
@@ -261,8 +273,30 @@ h1, h2, h3, h4, h5, h6{
     padding: 20px;
 }
 
+.p-10{
+    padding: 10px;
+}
+
+.w-20per{
+    width: 20%;
+}
+
+.w-60per{
+    width: 60%;
+}
+
+
 .pos-relative{
     position: relative;
+}
+
+.pos-absolute{
+    position: absolute;
+}
+
+.abs-full{
+    left: 0;
+    right: 0;
 }
 
 .overflow-hidden{
@@ -271,6 +305,22 @@ h1, h2, h3, h4, h5, h6{
 
 .width-50{
     width: 50%;
+}
+
+.w-50 {
+    width: 50px;
+}
+
+.h-50 {
+    height: 50px;
+}
+
+.box-rounded {
+    border-radius: 50%;
+}
+
+.bg-gray {
+    background: gray;
 }
 
 .d-grid{
@@ -349,8 +399,22 @@ input:focus {
   box-shadow: var(--input-focus-shadow);
 }
 
+.text-sm{
+    font-size: var(--text-size-sm);
+}
+
+.text-success{
+     color: #47ff7b;   
+}
+
 input[type="password"]{
     /* font-size:22px; */
+}
+
+.divider-vr {
+    width: 1px;
+    height: 20px;
+    background: #121119;
 }
 
 

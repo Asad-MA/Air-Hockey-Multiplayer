@@ -313,7 +313,7 @@ class Game extends Phaser.Scene {
     if (this.players[0].isHost)
       Network.sendMessage('pause', this.gameState.getState());
     this.pause();
-    this.infoOverlay.show('ALI CHOOPA Akhtarandoo', 2000);
+    this.infoOverlay.show('Goal', 2000);
     this.cameras.main.shake(500, 0.005)
     // this.cameras.main.flash(250, 255, 255, 255);
     this.tweens.add({

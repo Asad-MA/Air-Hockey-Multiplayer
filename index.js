@@ -36,6 +36,13 @@ app.use(express.static("public"));
 
 app.set('view engine', 'ejs');
 
+app.use((req, res, next) => {
+  res.locals.user = req.user || 'Guest';
+  res.locals.pageTitle = 'Page'; // default, can override in route
+  next();
+});
+
+
 app.use((err, req, res, next) => {
   res.status(err.status || 500).render("pages/error", {
       title: err.title || "Something Went Wrong",
