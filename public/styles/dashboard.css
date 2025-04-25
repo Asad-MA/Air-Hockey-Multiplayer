@@ -6,3 +6,31 @@
     background-color: #111015;
     border-radius: 10px;
 }
+
+.sidebar-item{
+    border: 1px solid #323138;
+    border-radius: 10px;
+    background: linear-gradient(120deg, #141318, #201f26 50%);
+    padding: 2px;
+    transition: 0.4s ease-in-out;
+}
+
+.sidebar-item i{
+    font-size: 20px;
+}
+
+.sidebar-item:hover {
+    background: linear-gradient(120deg, #471c88, #9114b6 70%);
+    border-color: #9114b6;
+    /* transition: 1s ease-in-out; */
+}
+
+.sidebar-item:hover::before {
+    background: linear-gradient(162deg, transparent 20%, #d8aa50, transparent 80%);
+    
+}
+
+.sidebar-item:hover .glassy-box {
+    background: linear-gradient(133deg, #673da5, #9114b6);
+    color: #ffb72d;
+}

@@ -9,7 +9,7 @@
     --text-size: clamp(14px , 2vw , 15px);
     --text-size-md: clamp(12px , 2vw , 14px);
     --text-size-sm: clamp(12px , 2vw , 13px);
-    --heading-size: clamp(28px , 7vw , 35px);;
+    --heading-size: clamp(28px , 7vw , 35px);
     --heading-letter-spacing: 0.02em;
     --letter-spacing: 0.02em;
     --anchor-text-size: 15px;
@@ -37,7 +37,7 @@
     --input-focus-shadow: 1px 1px 10px 0px rgb(192 10 200 / 30%);
 
     /* buttons */
-    --btn-bg: linear-gradient(45deg , #9b14ba , #c708cb);
+    --btn-bg: linear-gradient(120deg, #751bb8, #c708cb);
     --btn-padding: 10px 25px;
     --btn-text-size: 14px;
     --btn-weight: 500;
@@ -88,6 +88,10 @@ button{
     line-height: var(--btn-line-height);
     border:  none;
     border-radius: 5px;
+    cursor: pointer;
+}
+
+a{
     cursor: pointer;
 }
 
@@ -277,6 +281,18 @@ h1, h2, h3, h4, h5, h6{
     padding: 10px;
 }
 
+.p-2{
+    padding: 2px;
+}
+
+.rounded-10{
+    border-radius: 10px;
+}
+
+.w-40{
+    width: 40px;
+}
+
 .w-20per{
     width: 20%;
 }
@@ -292,6 +308,10 @@ h1, h2, h3, h4, h5, h6{
 
 .pos-absolute{
     position: absolute;
+}
+
+.border-default{
+    border: 1px solid #323138;
 }
 
 .abs-full{
@@ -313,6 +333,11 @@ h1, h2, h3, h4, h5, h6{
 
 .h-50 {
     height: 50px;
+}
+
+.shape-square{
+    aspect-ratio: 1 / 1;
+    vertical-align: middle;
 }
 
 .box-rounded {
@@ -373,6 +398,31 @@ h1, h2, h3, h4, h5, h6{
     opacity: 1;
     visibility: visible;
   }
+
+.glassy-box {
+    background: linear-gradient(133deg, #141218, #3d3b4a);
+    border-radius: 8px;
+    color: #908ca8;
+    font-size: 18px;
+    transition: 0.4s ease-in-out;
+}
+
+.glow-border-top {
+    position: relative;
+}
+
+.glow-border-top::before {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(162deg, transparent 20%, #adacb1, transparent 80%);
+    top: -1px;
+    left: 0;
+    content: '';
+    position: absolute;
+    color: #a5a3aa;
+    filter: drop-shadow(0px -2px 3px #a5a3aa);
+    transition: 0.4s ease-in-out;
+}
   
 
 footer.site-footer {
@@ -401,6 +451,7 @@ input:focus {
 
 .text-sm{
     font-size: var(--text-size-sm);
+    letter-spacing: 0.06em;
 }
 
 .text-success{
