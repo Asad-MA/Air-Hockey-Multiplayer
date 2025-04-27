@@ -6,6 +6,7 @@
     --background-color: #fff;
     --text-color: #fff;
     --link-color: #fff;
+    --text-gray: #908ca8;
     --text-size: clamp(14px , 2vw , 15px);
     --text-size-md: clamp(12px , 2vw , 14px);
     --text-size-sm: clamp(12px , 2vw , 13px);
@@ -424,6 +425,15 @@ h1, h2, h3, h4, h5, h6{
     width: -webkit-fill-available;
 }
 
+.py-10{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.gap-5{
+    gap: 5px;
+}
+
 .my-0{
     margin-top:0;
     margin-bottom: 0;
@@ -480,6 +490,20 @@ h1, h2, h3, h4, h5, h6{
     color: #a5a3aa;
     filter: drop-shadow(0px -2px 3px #a5a3aa);
     transition: 0.4s ease-in-out;
+}
+
+.text-gray{
+    color: var(--text-gray);
+}
+
+.flex-fill{
+    flex: 1 1 auto;
+}
+
+.ui-block {
+    padding: 10px;
+    background: linear-gradient(120deg, rgb(23 21 27 / 80%), rgb(42 41 50 / 80%));
+    border-radius: 10px;
 }
   
 
