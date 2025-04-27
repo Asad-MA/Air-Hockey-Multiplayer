@@ -1,5 +1,6 @@
 .dashboard-layout {
-    height: calc(100% - 130px);
+    height: calc(100% - 110px);
+    overflow-y: auto;
 }
 
 .dashboard-layout > .loading{
@@ -33,4 +34,93 @@
 .sidebar-item:hover .glassy-box {
     background: linear-gradient(133deg, #673da5, #9114b6);
     color: #ffb72d;
+}
+
+.charts-wrap{
+    min-height: 250px;
+}
+
+.user-details {
+    background: linear-gradient(334deg, #491c7f 30%, #7526b3);
+    border: 1px solid #59327f;
+    border-radius: 20px;
+}
+
+.key-value-box {
+    padding: 5px 18px;
+    background: rgb(0 0 0 / 20%);
+    border-radius: 5px;
+    height: 45px;
+     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* max-width: calc(23% - 5px); */
+
+    flex: 1 1 auto;
+    min-width: max-content;
+    text-align: center;
+    box-sizing: border-box;
+    gap: 10px;
+
+    
+}
+
+.top-boxes {
+    margin-left: 130px;
+}
+
+.user-metadata {
+    flex: 1 1 auto;
+}
+
+.user-avatar {
+    width: 120px;
+    height: 120px;
+    background: rgba(128, 128, 128, 0);
+    border-radius: 10px;
+    border: 5px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: -30px;
+}
+
+.display-name{
+    font-size: 25px;
+}
+
+.user-avatar-sm {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}
+
+.ui-table-col{
+    flex: 1 1 auto;
+    /* min-width: min-content; */
+}
+
+
+/* Leader Boards */
+.widget-title {
+    font-size: 22px;
+    font-weight: 500;
+}
+
+/* .box-key{
+    margin-right: 10px;
+} */
+
+
+@media all and (max-width: 1440px){
+    .md-hidden{
+        display: none;
+    }
+
+    .md-w-80per{
+        width: 80%;
+    }
 }

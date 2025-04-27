@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,33 +8,79 @@
     <link rel="stylesheet" href="./styles/dashboard.css">
     <title>Air Hockey Online</title>
 </head>
+
 <body>
     <%- include('../partials/header') %>
 
-    <div class="dashboard-layout d-flex gap-20 p-20">
-        <div class="ui-sidebar sidebar-left w-20per ">
-            <%- include('../partials/sidebar-left') %>
+        <div class="dashboard-layout d-flex gap-20 p-20">
+            <div class="ui-sidebar sidebar-left w-20per ">
+                <%- include('../partials/sidebar-left') %>
+            </div>
+
+            <div class="dashboard-content w-60per md-w-80per loading p-20 d-flex direction-col gap-30">
+                <div class="top-banner d-flex gap-10">
+                    <div class="user-details w-50per p-10 px-20">
+                        <div class="user-meta d-flex gap-20">
+                            <div class="user-avatar">
+
+                            </div>
+                            <div class="user-metadata">
+                                <h3 class="display-name my-0 text-uppercase"><%- name %></h3>
+                                <div class="d-flex justify-between align-center">
+                                    <span class="username text-sm">@username</span>
+                                    <span class="avtivity text-sm">Last Active: 2days</span>
+                                </div>
+                                <div class="ui-divider grad-purple"></div>
+                            </div>
+                        </div>
+                        <div class="user-stats justify-start">
+                            <div class="key-value-box top-boxes ">
+                                <span class="box-key text-sm">Game Played:</span>
+                                <span class="box-value font-bold text-sm">90</span>
+                            </div>
+                            <div class="key-value-box w-40per">
+                                <span class="box-key text-sm">Winning Streak:</span>
+                                <span class="box-value font-bold text-sm">90</span>
+                            </div>
+                            <div class="key-value-box">
+                                <span class="box-key text-sm">Lose:</span>
+                                <span class="box-value font-bold text-sm">10</span>
+                            </div>
+                            <div class="key-value-box">
+                                <span class="box-key text-sm">Win:</span>
+                                <span class="box-value font-bold text-sm">48</span>
+                            </div>
+                            <div class="key-value-box">
+                                <span class="box-key text-sm">Win%:</span>
+                                <span class="box-value font-bold text-sm">90</span>
+                            </div>
+                            <div class="key-value-box">
+                                <span class="box-key text-sm">Last Game:</span>
+                                <span class="box-value font-bold text-sm">Lose</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-50per rounded-10 bg-gray charts-wrap">
+
+                    </div>
+                </div>
+                <div class="ui-divider bg-gray"></div>
+            </div>
+
+            <div class="ui-sidebar sidebar-right w-20per md-hidden">
+                <%- include('../partials/leaderboards') %>
+            </div>
         </div>
 
-        <div class="dashboard-content w-60per loading">
-
-        </div>
-
-        <div class="ui-sidebar sidebar-right w-20per loading">
-
-        </div>
-    </div>
-
-<%- include('../partials/footer') %>
-<script>
-    window.sessionStorage.setItem('token', "<%- token %>");
-</script>
+        <%- include('../partials/footer') %>
+            <script>
+                window.sessionStorage.setItem('token', "<%- token %>");
+            </script>
 
 
 
-    <script src="./game-core/framework/server/colyseus.js"></script>
-    <script type="module" src="./js/rooms/lobbyroom.js"></script>
+            <script src="./game-core/framework/server/colyseus.js"></script>
+            <script type="module" src="./js/rooms/lobbyroom.js"></script>
 </body>
+
 </html>
-
-

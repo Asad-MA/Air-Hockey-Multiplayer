@@ -298,7 +298,7 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .w-60per{
-    width: 60%;
+    width: 80%;
 }
 
 
@@ -345,7 +345,7 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .bg-gray {
-    background: gray;
+    background: #323138;
 }
 
 .d-grid{
@@ -374,6 +374,64 @@ h1, h2, h3, h4, h5, h6{
     align-items: center;
     justify-content: center;
   }
+
+.w-10per {
+    width: 10%;
+}
+.w-20per {
+    width: 20%;
+    max-width: 20%;
+}
+.w-30per {
+    width: 30% !important;
+    max-width: 30% !important;
+}
+.w-40per {
+    /* width: !important; */
+    max-width: 40% !important;
+}
+.w-50per {
+    width: 50%;
+}
+
+.ui-divider {
+    height: 1px;
+    width: 100%;
+    margin: 15px 0;
+}
+
+.grad-purple {
+    background: #7d35bd;
+    filter: drop-shadow(0px 1px 1px rgb(0,0,0,27%));
+}
+
+.cbg-gray{
+    background-color: #0a090e;
+    filter: drop-shadow(0px 1px 2px rgba(48, 46, 59, 0.31));
+}
+
+.bg-grad-default{
+    background: linear-gradient(120deg, #471c88, #9114b6 70%);
+    border-color: #9114b6;
+    border: 1px solid #9114b6;
+}
+
+.glow-gold:before{
+    background: linear-gradient(162deg, transparent 20%, #d8aa50, transparent 80%) !important;
+}
+
+.w-full-available {
+    width: -webkit-fill-available;
+}
+
+.my-0{
+    margin-top:0;
+    margin-bottom: 0;
+}
+.px-20{
+    padding-left: 20px;
+    padding-right: 20px;
+}
   
   .tooltip {
     position: absolute;
