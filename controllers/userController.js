@@ -12,6 +12,7 @@ import bcrypt from 'bcrypt';
 import { version } from "mongoose";
 // Models
 import friendShip from "../models/friends.js";
+import Requests from "../models/requests.js";
 
 class UserController {
     async handleLogin(req , res) {
@@ -191,7 +192,6 @@ class UserController {
     }
 
     async handleFriendRequest(req, res){
-        console.log(1);
         const {to} = req.body;
         console.log(req.user , to);
         try{
