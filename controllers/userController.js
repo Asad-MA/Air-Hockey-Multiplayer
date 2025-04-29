@@ -200,21 +200,21 @@ class UserController {
 
             const hasAlreadyFriend = await friendShip.findOne({requester: user._id , recipent: friend._id});
 
-            if(hasAlreadyFriend) throw new Error(`You have already send friend request to ${friend.name}`);
+            if(hasAlreadyFriend) throw new Error(`You have already send friend request to <b>${friend.name}</b>`);
 
             // console.log(friend._id);
 
             await friendShip.create({requester: user._id , recipent: friend._id});
             res.status(200).send({
                 success:true,
-                message: `Friend request has been sent to ${friend.name}`
+                message: `Friend request has been sent to <b>${friend.name}</b>`
             })
         }
         catch(e){
             console.log(e.message);
             res.status(500).send({
                 success:false,
-                message: `Error while send Friend Request`
+                message: `${e.message}`
             })
         }
         

@@ -54,7 +54,6 @@ jQuery(document).ready(function($){
           notification.push('Done',`${data.message}`, { type: 'success', duration: 10000 });
         
       } catch (e) {
-        console.warn(e.message);
         notification.push(`Error`,e.message, { type: 'error', duration: 10000 });
       }
       
