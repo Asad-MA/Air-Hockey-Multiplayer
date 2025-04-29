@@ -35,6 +35,9 @@ userRoutes.post('/reset-password', userController.resetPassword);
 
 userRoutes.post('resend-verification-mail', userController.resendMail);
 
+// General Requests (Friend , Game , Challenge)
+userRoutes.post('/socail/add-friend' , authenticate  , userController.handleFriendRequest);
+
 // Game Routes
 userRoutes.get('/matchmaking', authenticate, (req, res) => res.render('pages/lobby'))
 

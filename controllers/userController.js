@@ -6,9 +6,12 @@ import userService from "../services/userService.js";
 import AuthService from "../services/authService.js";
 import verficationToken from "../models/verficationToken.js";
 import refreshTokenRepo from "../repos/refreshTokenRepo.js";
+import { client } from "../config/redis-connection.js";
 import { UAParser } from "ua-parser-js";
 import bcrypt from 'bcrypt';
 import { version } from "mongoose";
+// Models
+import friendShip from "../models/friends.js";
 
 class UserController {
     async handleLogin(req , res) {
@@ -185,6 +188,26 @@ class UserController {
                 error: err.message
             })
         }
+    }
+
+    async handleFriendRequest(req, res){
+        console.log(1);
+        const {to} = req.body;
+        console.log(req.user , to);
+        try{
+            const user =  await userRepo.findUserByEmail(req.user.email);
+            const friend = await userRepo.findUserByEmail(to);
+
+            console.log(friend._id);
+
+            await friendShip.create({requester: user._id , recipent: friend._id});
+        }
+        catch(e){
+            console.log(e.message());
+        }
+        res.status(200).send({
+            success: true,
+        })
     }
 
     forgotPassword() {
