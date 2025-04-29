@@ -6,7 +6,7 @@ const requestsValidator = {
         const {username , usermail , password, repeatPassword} = req.body;
 
         const rules = {
-            username: ["required", "min:3"],
+            username: ["required", "min:3",  "alphaNum"],
             usermail: ["required", "email"],
             password: ["required", "password"],
             repeatPassword: ["required", "match:password"]

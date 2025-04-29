@@ -21,14 +21,17 @@ class FormValidator {
                 if (rule === "password" && !this.isValidPassword(value)) {
                     this.addError(field, `<span>${field}</span> must be at least 6 characters, contain a capital letter, a number, a special character, and have no spaces.`);
                 }
+                if (rule === "alphaNum" && !this.isAlphaNumeric(value)) {
+                    this.addError(field, `<span>${field}</span> must contain only letters and numbers without spaces or special characters.`);
+                }
                 if (rule.startsWith("min:")) {
                     const minLength = parseInt(rule.split(":")[1], 10);
                     if (value.length < minLength) {
-                        this.addError(field, `${field} must be at least ${minLength} characters.`);
+                        this.addError(field, `<span>${field}</span> must be at least ${minLength} characters.`);
                     }
                 }
                 if (rule === "match:password" && value !== formData["password"]) {
-                    this.addError(field, `${field} must match the password.`);
+                    this.addError(field, `<span>${field}</span> must match the password.`);
                 }
             });
         }
@@ -56,7 +59,13 @@ class FormValidator {
         const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[A-Z])(?=\S+$).{6,}$/;
         return passwordRegex.test(password);
     }
+
+    isAlphaNumeric(value) {
+        const alphaNumRegex = /^[a-zA-Z0-9]+$/;
+        return alphaNumRegex.test(value);
+    }
 }
+
 
 export default FormValidator;
 
