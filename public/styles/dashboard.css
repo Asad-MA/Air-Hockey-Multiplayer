@@ -1,6 +1,5 @@
 .dashboard-layout {
     height: calc(100% - 110px);
-    overflow-y: auto;
 }
 
 .dashboard-layout > .loading{

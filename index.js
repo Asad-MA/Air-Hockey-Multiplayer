@@ -54,7 +54,7 @@ app.use((err, req, res, next) => {
 
 // API Routes
 // app.use('/api', defaultAuth);
-// app.use('/api', apiRoutes);
+app.use('/api', apiRoutes);
 
 
 

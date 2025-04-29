@@ -7,7 +7,7 @@ apiRoutes.get('/' , (req , res) => res.send('Hello World'));
 
 apiRoutes.get('/users' , API.getUsers);
 
-apiRoutes.get('/users/search' , API.getUsers);
+apiRoutes.get('/users/search' , API.search);
 
 apiRoutes.get('/user/:id' , API.getUser);
 

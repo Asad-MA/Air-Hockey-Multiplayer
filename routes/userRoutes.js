@@ -35,6 +35,9 @@ userRoutes.post('/reset-password', userController.resetPassword);
 
 userRoutes.post('resend-verification-mail', userController.resendMail);
 
+userRoutes.get('/friends' , authenticate , (req , res) => res.render('pages/friends' , { name: req.user.name, email: req.user.email, token: req.user.token }));
+
+
 // Game Routes
 userRoutes.get('/matchmaking', authenticate, (req, res) => res.render('pages/lobby'))
 

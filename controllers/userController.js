@@ -187,6 +187,26 @@ class UserController {
         }
     }
 
+    async search(req , res){
+        try {
+            const { q } = req.query;
+            const query = {};
+        
+            if (q) {
+              query.$or = [
+                { name: { $regex: q, $options: 'i' } },
+                { email: { $regex: q, $options: 'i' } },
+              ];
+            }
+        
+            const users = await User.find(query);
+        
+            res.json(users);
+          } catch (error) {
+            res.status(500).json({ message: error.message });
+          }
+    }
+
     forgotPassword() {
 
     }

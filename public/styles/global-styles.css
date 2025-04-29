@@ -11,6 +11,7 @@
     --text-size-md: clamp(12px , 2vw , 14px);
     --text-size-sm: clamp(12px , 2vw , 13px);
     --heading-size: clamp(28px , 7vw , 35px);
+    --heading-size-md: clamp(22px , 7vw , 25px);
     --heading-letter-spacing: 0.02em;
     --letter-spacing: 0.02em;
     --anchor-text-size: 15px;
@@ -71,8 +72,9 @@ body{
     background-color: var(--background-color);
     /* color: var(--text-color); */
     /* font-size: var(--text-size); */
-    height: 100vh;
+    /* height: 100vh; */
     background: #1f1e24;
+    /* overflow: hidden; */
 }
 
 img{
@@ -492,9 +494,7 @@ h1, h2, h3, h4, h5, h6{
     transition: 0.4s ease-in-out;
 }
 
-.text-gray{
-    color: var(--text-gray);
-}
+
 
 .flex-fill{
     flex: 1 1 auto;
@@ -580,6 +580,66 @@ input[type="password"]{
   .loader.active{
     display: block;
   }
+
+  .text-gray{
+    color: var(--text-gray) !important;
+}
+
+.list-style-none{
+    list-style-type: none;
+}
+
+.grad-dark1 {
+    background: linear-gradient(182deg, #111015, #1d1c24)  !important;
+}
+
+.grad-dark2 {
+    background: linear-gradient(270deg, #131218, #1d1c24)  !important;
+}
+
+.user-avatar-lg {
+    min-width: 90px;
+    width: 90px;
+    height: 90px;
+}
+
+.overflowY-auto{
+    overflow-y: auto;
+}
+
+.hidden{
+    display: none;
+}
+
+.hidden.active{
+    display: block;
+}
+
+.overlay{
+    display: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    background: radial-gradient(#09001e, #22061330);
+}
+
+.heading-md{
+    font-size: var(--heading-size-md);
+    font-weight: 500;
+}
+
+.z-index-10{
+    z-index: 10;
+    position: relative;
+}
+
+.active + .overlay{
+    display: block;
+    z-index: 1;
+}
   
   @keyframes googleLoader {
     0% { left: -50%; width: 50%; }
