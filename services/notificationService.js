@@ -1,0 +1,40 @@
+import { client } from '../config/redis-connection.js';
+
+class NotificationService {
+    constructor() {
+        this.types = ['chat', 'challenge', 'invite' , 'friend'];
+    }
+
+    async send(userId, type, message, extra = {}) {
+        if (!this.types.includes(type)) {
+            throw new Error(`Unsupported notification type: ${type}`);
+        }
+
+        const payload = JSON.stringify({
+            type,
+            message,
+            ...extra,
+            timestamp: Date.now()
+        });
+
+        await client.publish(`notifications:${userId}`, payload);
+        console.log(`Notification (${type}) sent to ${userId}`);
+    }
+
+    async storeOffline(userId, payload, ttlSeconds = 300) {
+        const key = `offline_notifications:${userId}`;
+
+        await client.rPush(key, JSON.stringify(payload));
+        await client.expire(key, ttlSeconds); // expire after 5 minutes
+        console.log(`Stored offline notification for ${userId} with TTL ${ttlSeconds}s`);
+    }
+
+    async fetchOffline(userId) {
+        const key = `offline_notifications:${userId}`;
+        const notifications = await client.lRange(key, 0, -1);
+        await client.del(key); // Clear after sending
+        return notifications.map(n => JSON.parse(n));
+    }
+}
+
+export const notificationService = new NotificationService();

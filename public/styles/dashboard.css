@@ -1,6 +1,5 @@
 .dashboard-layout {
     height: calc(100% - 110px);
-    overflow-y: auto;
 }
 
 .dashboard-layout > .loading{
@@ -96,6 +95,7 @@
     width: 40px;
     height: 40px;
     display: inline-block;
+    min-width: 40px;
 }
 
 .ui-table-col{
@@ -106,8 +106,15 @@
 
 /* Leader Boards */
 .widget-title {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 500;
+}
+
+.ui-table-row {
+    background: #292830;
+    border-radius: 7px;
+    min-height: 55px;
+    padding: 10px 14px
 }
 
 /* .box-key{

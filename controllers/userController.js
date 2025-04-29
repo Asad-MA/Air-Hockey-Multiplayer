@@ -6,9 +6,13 @@ import userService from "../services/userService.js";
 import AuthService from "../services/authService.js";
 import verficationToken from "../models/verficationToken.js";
 import refreshTokenRepo from "../repos/refreshTokenRepo.js";
+import { client } from "../config/redis-connection.js";
 import { UAParser } from "ua-parser-js";
 import bcrypt from 'bcrypt';
 import { version } from "mongoose";
+// Models
+import friendShip from "../models/friends.js";
+import Requests from "../models/requests.js";
 
 class UserController {
     async handleLogin(req , res) {
@@ -185,6 +189,45 @@ class UserController {
                 error: err.message
             })
         }
+    }
+
+    async handleFriendRequest(req, res){
+        const {to} = req.body;
+        console.log(req.user , to);
+        try{
+            const user =  await userRepo.findUserByEmail(req.user.email);
+            const friend = await userRepo.findUserByEmail(to);
+
+            console.log(friend._id);
+
+            await friendShip.create({requester: user._id , recipent: friend._id});
+        }
+        catch(e){
+            console.log(e.message());
+        }
+        res.status(200).send({
+            success: true,
+        })
+    }
+
+    async search(req , res){
+        try {
+            const { q } = req.query;
+            const query = {};
+        
+            if (q) {
+              query.$or = [
+                { name: { $regex: q, $options: 'i' } },
+                { email: { $regex: q, $options: 'i' } },
+              ];
+            }
+        
+            const users = await User.find(query);
+        
+            res.json(users);
+          } catch (error) {
+            res.status(500).json({ message: error.message });
+          }
     }
 
     forgotPassword() {

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/global-styles.css">
+    <link rel="stylesheet" href="./styles/dashboard.css">
+    <title>Air Hockey Online</title>
+</head>
+<style>
+   
+</style>
+<body>
+    <%- include('../partials/header') %>
+
+        <div class="dashboard-layout d-flex gap-20 p-20">
+            <div class="ui-sidebar sidebar-left w-20per ">
+                <%- include('../partials/sidebar-left') %>
+            </div>
+
+            <div class="dashboard-content w-60per md-w-80per loading p-20 d-flex direction-col gap-30  pos-relative">
+                <div class="serach-wrapper">
+                    <%- include('../partials/search') %>
+                </div>
+                <div class="friends-list ">
+                    <div class="widget-title"><h5 class="my-0 heading-md"><count>5</count> Friend's</h5></div>
+                    <div class="ui-divider bg-gray"></div>
+                    <div class="friends-widget overflowY-auto">
+
+
+                        <div class="ui-table-default d-flex direction-col gap-5 py-10">
+                            <div class="ui-table-row grad-dark1 d-flex align-center gap-10">
+                                <span class="ui-table-col text-sm">1</span>
+                                <span class="ui-table-col d-flex align-center gap-10 w-full-available">
+                                    <span class="user-avatar-lg box-img box-rounded bg-gray">
+
+                                    </span>
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">Ali</h5>
+                                        <div class="d-flex justify-between">
+                                            <span class="user-name text-sm text-gray">@username</span>
+                                            
+
+                                        </div>
+
+                                    </span>
+                                    <span class="d-flex align-center gap-20 text-gray">
+                                        <i class="fa-solid fa-envelope-open"></i>
+                                        <i class="fa-solid fa-user-minus"></i>
+                                        <i class="fa-solid fa-trophy"></i>
+                                    </span>
+                                </span>
+
+                            </div>
+
+                            <div class="ui-table-row grad-dark1 d-flex align-center gap-10">
+                                <span class="ui-table-col text-sm">2</span>
+                                <span class="ui-table-col d-flex align-center gap-10 w-full-available">
+                                    <span class="user-avatar-lg box-img box-rounded bg-gray">
+
+                                    </span>
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">Ali</h5>
+                                        <div class="d-flex justify-between">
+                                            <span class="user-name text-sm text-gray">@username</span>
+                                            
+
+                                        </div>
+
+                                    </span>
+                                    <span class="d-flex align-center gap-20 text-gray">
+                                        <i class="fa-solid fa-envelope-open"></i>
+                                        <i class="fa-solid fa-user-minus"></i>
+                                        <i class="fa-solid fa-trophy"></i>
+                                    </span>
+                                </span>
+
+                            </div>
+
+                            <div class="ui-table-row grad-dark1 d-flex align-center gap-10">
+                                <span class="ui-table-col text-sm">3</span>
+                                <span class="ui-table-col d-flex align-center gap-10 w-full-available">
+                                    <span class="user-avatar-lg box-img box-rounded bg-gray">
+
+                                    </span>
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">Ali</h5>
+                                        <div class="d-flex justify-between">
+                                            <span class="user-name text-sm text-gray">@username</span>
+                                            
+
+                                        </div>
+
+                                    </span>
+                                    <span class="d-flex align-center gap-20 text-gray">
+                                        <i class="fa-solid fa-envelope-open"></i>
+                                        <i class="fa-solid fa-user-minus"></i>
+                                        <i class="fa-solid fa-trophy"></i>
+                                    </span>
+                                </span>
+
+                            </div>
+
+                            <div class="ui-table-row grad-dark1 d-flex align-center gap-10">
+                                <span class="ui-table-col text-sm">1</span>
+                                <span class="ui-table-col d-flex align-center gap-10 w-full-available">
+                                    <span class="user-avatar-lg box-img box-rounded bg-gray">
+
+                                    </span>
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">Ali</h5>
+                                        <div class="d-flex justify-between">
+                                            <span class="user-name text-sm text-gray">@username</span>
+                                            
+
+                                        </div>
+
+                                    </span>
+                                    <span class="d-flex align-center gap-20 text-gray">
+                                        <i class="fa-solid fa-envelope-open"></i>
+                                        <i class="fa-solid fa-user-minus"></i>
+                                        <i class="fa-solid fa-trophy"></i>
+                                    </span>
+                                </span>
+
+                            </div>
+
+                            <div class="ui-table-row grad-dark1 d-flex align-center gap-10">
+                                <span class="ui-table-col text-sm">1</span>
+                                <span class="ui-table-col d-flex align-center gap-10 w-full-available">
+                                    <span class="user-avatar-lg box-img box-rounded bg-gray">
+
+                                    </span>
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">Ali</h5>
+                                        <div class="d-flex justify-between">
+                                            <span class="user-name text-sm text-gray">@username</span>
+                                            
+
+                                        </div>
+
+                                    </span>
+                                    <span class="d-flex align-center gap-20 text-gray">
+                                        <i class="fa-solid fa-envelope-open"></i>
+                                        <i class="fa-solid fa-user-minus"></i>
+                                        <i class="fa-solid fa-trophy"></i>
+                                    </span>
+                                </span>
+
+                            </div>
+
+                            <div class="ui-table-row grad-dark1 d-flex align-center gap-10">
+                                <span class="ui-table-col text-sm">1</span>
+                                <span class="ui-table-col d-flex align-center gap-10 w-full-available">
+                                    <span class="user-avatar-lg box-img box-rounded bg-gray">
+
+                                    </span>
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">Ali</h5>
+                                        <div class="d-flex justify-between">
+                                            <span class="user-name text-sm text-gray">@username</span>
+                                            
+
+                                        </div>
+
+                                    </span>
+                                    <span class="d-flex align-center gap-20 text-gray">
+                                        <i class="fa-solid fa-envelope-open"></i>
+                                        <i class="fa-solid fa-user-minus"></i>
+                                        <i class="fa-solid fa-trophy"></i>
+                                    </span>
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-sidebar sidebar-right w-20per md-hidden">
+                <%- include('../partials/leaderboards') %>
+            </div>
+        </div>
+
+        <%- include('../partials/footer') %>
