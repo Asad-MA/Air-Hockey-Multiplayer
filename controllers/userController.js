@@ -198,16 +198,26 @@ class UserController {
             const user =  await userRepo.findUserByEmail(req.user.email);
             const friend = await userRepo.findUserByEmail(to);
 
-            console.log(friend._id);
+            const hasAlreadyFriend = await friendShip.findOne({requester: user._id , recipent: friend._id});
+
+            if(hasAlreadyFriend) throw new Error(`You have already send friend request to ${friend.name}`);
+
+            // console.log(friend._id);
 
             await friendShip.create({requester: user._id , recipent: friend._id});
+            res.status(200).send({
+                success:true,
+                message: `Friend request has been sent to ${friend.name}`
+            })
         }
         catch(e){
-            console.log(e.message());
+            console.log(e.message);
+            res.status(500).send({
+                success:false,
+                message: `Error while send Friend Request`
+            })
         }
-        res.status(200).send({
-            success: true,
-        })
+        
     }
 
     async search(req , res){
