@@ -1,6 +1,5 @@
 .dashboard-layout {
     height: calc(100% - 110px);
-    overflow-y: auto;
 }
 
 .dashboard-layout > .loading{
@@ -107,7 +106,7 @@
 
 /* Leader Boards */
 .widget-title {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 500;
 }
 

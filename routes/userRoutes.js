@@ -38,6 +38,9 @@ userRoutes.post('resend-verification-mail', userController.resendMail);
 // General Requests (Friend , Game , Challenge)
 userRoutes.post('/socail/add-friend' , authenticate  , userController.handleFriendRequest);
 
+userRoutes.get('/friends' , authenticate , (req , res) => res.render('pages/friends' , { name: req.user.name, email: req.user.email, token: req.user.token }));
+
+
 // Game Routes
 userRoutes.get('/matchmaking', authenticate, (req, res) => res.render('pages/lobby'))
 

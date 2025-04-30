@@ -12,6 +12,7 @@ import bcrypt from 'bcrypt';
 import { version } from "mongoose";
 // Models
 import friendShip from "../models/friends.js";
+import Requests from "../models/requests.js";
 
 class UserController {
     async handleLogin(req , res) {
@@ -191,23 +192,52 @@ class UserController {
     }
 
     async handleFriendRequest(req, res){
-        console.log(1);
         const {to} = req.body;
         console.log(req.user , to);
         try{
             const user =  await userRepo.findUserByEmail(req.user.email);
             const friend = await userRepo.findUserByEmail(to);
 
-            console.log(friend._id);
+            const hasAlreadyFriend = await friendShip.findOne({requester: user._id , recipent: friend._id});
+
+            if(hasAlreadyFriend) throw new Error(`You have already send friend request to <b>${friend.name}</b>`);
+
+            // console.log(friend._id);
 
             await friendShip.create({requester: user._id , recipent: friend._id});
+            res.status(200).send({
+                success:true,
+                message: `Friend request has been sent to <b>${friend.name}</b>`
+            })
         }
         catch(e){
-            console.log(e.message());
+            console.log(e.message);
+            res.status(500).send({
+                success:false,
+                message: `${e.message}`
+            })
         }
-        res.status(200).send({
-            success: true,
-        })
+        
+    }
+
+    async search(req , res){
+        try {
+            const { q } = req.query;
+            const query = {};
+        
+            if (q) {
+              query.$or = [
+                { name: { $regex: q, $options: 'i' } },
+                { email: { $regex: q, $options: 'i' } },
+              ];
+            }
+        
+            const users = await User.find(query);
+        
+            res.json(users);
+          } catch (error) {
+            res.status(500).json({ message: error.message });
+          }
     }
 
     forgotPassword() {
