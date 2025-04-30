@@ -201,18 +201,28 @@ class UserController {
             const user =  await userRepo.findUserByEmail(req.user.email);
             const friend = await userRepo.findUserByEmail(to);
 
-            console.log(friend._id);
+            const hasAlreadyFriend = await friendShip.findOne({requester: user._id , recipent: friend._id});
+
+            if(hasAlreadyFriend) throw new Error(`You have already send friend request to <b>${friend.name}</b>`);
+
+            // console.log(friend._id);
 
             await friendShip.create({requester: user._id , recipent: friend._id});
 
             await NotificationServiceR.sendChat('user123', `New Friend Request`);
+            res.status(200).send({
+                success:true,
+                message: `Friend request has been sent to <b>${friend.name}</b>`
+            })
         }
         catch(e){
-            console.log(e.message());
+            console.log(e.message);
+            res.status(500).send({
+                success:false,
+                message: `${e.message}`
+            })
         }
-        res.status(200).send({
-            success: true,
-        })
+        
     }
 
     async search(req , res){
