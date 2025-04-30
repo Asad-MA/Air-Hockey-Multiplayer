@@ -37,4 +37,32 @@ class NotificationService {
     }
 }
 
-export const notificationService = new NotificationService();
+// export const notificationService = new NotificationService();
+
+// Using Redis Stream for reliable deelivery
+class NotificationServiceR {
+    static async send(userId, type, message) {
+      const streamKey = `notifications:${userId}`;
+      const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
+  
+      await redisClient.xAdd(streamKey, '*', { type, message }, {
+        TRIM: { strategy: 'MINID', threshold: fiveMinutesAgo }
+      });
+  
+      console.log(`Notification sent to ${userId}: ${message}`);
+    }
+  
+    static async sendChat(userId, message) {
+      return this.send(userId, 'chat', message);
+    }
+  
+    static async sendInvite(userId, message) {
+      return this.send(userId, 'invite', message);
+    }
+  
+    static async sendChallenge(userId, message) {
+      return this.send(userId, 'challenge', message);
+    }
+  }
+  
+  export default NotificationServiceR; 

@@ -14,6 +14,9 @@ import { version } from "mongoose";
 import friendShip from "../models/friends.js";
 import Requests from "../models/requests.js";
 
+// Notification Publisher
+import NotificationServiceR from "../services/notificationService.js";
+
 class UserController {
     async handleLogin(req , res) {
         try{
@@ -201,6 +204,8 @@ class UserController {
             console.log(friend._id);
 
             await friendShip.create({requester: user._id , recipent: friend._id});
+
+            await NotificationServiceR.sendChat('user123', `New Friend Request`);
         }
         catch(e){
             console.log(e.message());
