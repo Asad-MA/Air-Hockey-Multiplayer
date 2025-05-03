@@ -16,6 +16,7 @@ import Requests from "../models/requests.js";
 
 // Notification Publisher
 import {notificationService} from "../services/notificationService.js";
+import notifications from "../models/notifications.js";
 
 class UserController {
     async handleLogin(req , res) {
@@ -207,6 +208,13 @@ class UserController {
 
             // console.log(friend._id);
 
+            const request = await Requests.create({requester: user._id , recipent: friend._id , type: 'friend_request'})
+
+            await notifications.create({userId: friend._id , requestId: request._id , type:'normal' , message: `${friend.name} sends you friend request`})
+
+            console.log('Request Added:' , request);
+
+            
             await friendShip.create({requester: user._id , recipent: friend._id});
 
             await notificationService.send('user123', 'friend', `New Friend Request`);
