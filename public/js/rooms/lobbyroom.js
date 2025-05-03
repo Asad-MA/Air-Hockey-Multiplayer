@@ -29,7 +29,10 @@ play.addEventListener("click", () => {
       notifier.push(
         messages.waitingForPlayer.title,
         messages.waitingForPlayer.description,
-        { type: 'success', duration: 0 }
+        { type: 'success', duration: 0, actions: [
+          { label: 'Accept', callback: () => console.log('Accepted') },
+          { label: 'Reject', callback: () => console.log('Rejected') }
+      ] }
       );
       
       HandleRoom(room);
@@ -40,7 +43,10 @@ play.addEventListener("click", () => {
       notifier.push(
         'Error',
         `Error While Joining Room: ${e.message}`,
-        { type: 'error', duration: 5000 }
+        { type: 'error', duration: 5000, actions: [
+          { label: 'Accept', callback: () => console.log('Accepted') },
+          { label: 'Reject', callback: () => console.log('Rejected') }
+      ] }
       );
     });
 });

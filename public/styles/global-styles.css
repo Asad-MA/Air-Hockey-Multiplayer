@@ -94,6 +94,27 @@ button{
     cursor: pointer;
 }
 
+.notif-icon {
+    width: 55px;
+    height: 55px;
+    min-width: 55px;
+    background: linear-gradient(45deg, #1212125e, #32313875);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.notif-icon i {
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+}
+
 a{
     cursor: pointer;
 }
@@ -624,6 +645,8 @@ input[type="password"]{
     -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(3px);
     background: radial-gradient(#09001e, #22061330);
+    position: fixed;
+    overscroll-behavior: none;
 }
 
 .heading-md{
@@ -638,7 +661,7 @@ input[type="password"]{
 
 .active + .overlay{
     display: block;
-    z-index: 1;
+    z-index: 11;
 }
   
   @keyframes googleLoader {

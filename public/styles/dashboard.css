@@ -1,3 +1,54 @@
+/* Temp css */
+
+div#top-notification {
+    min-width: 300px;
+    position: absolute;
+    min-height: 500px;
+    background: linear-gradient(45deg, #17151c, #282630);
+    top: 70px;
+    transform: translateX(-200px);
+    border-radius: 10px;
+    z-index: 30;
+    box-shadow: 2px 2px 5px 1px #1110157a;
+    padding: 10px 14px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+[data-type="user"] .notif-icon i {
+    width: 47px;
+    height: 47px;
+    border-radius: 30px;
+    font-size: 22px;
+    color: #6a687b;
+}
+
+[data-type="user"] .notif-icon {
+    background: transparent !important;
+    border: 1px solid #3e3d49;
+}
+
+[data-type="user"] {
+    padding: 25px 1px !important;
+    border-bottom: 1px solid #272630 !important;
+}
+
+[data-type="user"] button.notif-close {
+    display: none;
+}
+
+[data-type="user"] .notif-message{
+    color: #908ca8;
+}
+
+[data-type="user"] .notif-title{
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    letter-spacing: 0.06em !important;
+}
+
+/* END */
+
 .dashboard-layout {
     height: calc(100% - 110px);
 }

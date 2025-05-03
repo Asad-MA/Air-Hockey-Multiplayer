@@ -15,7 +15,7 @@ import friendShip from "../models/friends.js";
 import Requests from "../models/requests.js";
 
 // Notification Publisher
-import NotificationServiceR from "../services/notificationService.js";
+import {notificationService} from "../services/notificationService.js";
 
 class UserController {
     async handleLogin(req , res) {
@@ -209,14 +209,14 @@ class UserController {
 
             await friendShip.create({requester: user._id , recipent: friend._id});
 
-            await NotificationServiceR.sendChat('user123', `New Friend Request`);
+            await notificationService.send('user123', 'friend', `New Friend Request`);
             res.status(200).send({
                 success:true,
                 message: `Friend request has been sent to <b>${friend.name}</b>`
             })
         }
         catch(e){
-            console.log(e.message);
+            console.log(e);
             res.status(500).send({
                 success:false,
                 message: `${e.message}`
