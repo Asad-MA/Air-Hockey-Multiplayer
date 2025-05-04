@@ -1,6 +1,58 @@
 import user from "../models/user.js";
+import Notification from '../models/notifications.js';
 
 const API = {};
+
+API.getNotifications = async (req, res) => {
+  try {
+    const {
+      userId,
+      type,
+      priority,
+      status,
+      startDate,
+      endDate,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+      page = 1,
+      limit = 10
+    } = req.query;
+
+    const filter = {};
+    if (userId) filter.userId = userId;
+    if (type) filter.type = type;
+    if (priority) filter.priority = priority;
+    if (status) filter.status = status;
+    if (startDate || endDate) {
+      filter.createdAt = {};
+      if (startDate) filter.createdAt.$gte = new Date(startDate);
+      if (endDate) filter.createdAt.$lte = new Date(endDate);
+    }
+
+    const notifications = await Notification
+      .find(filter)
+      .populate('userId', 'name email')       // optional: include user info
+      .populate('requestId', 'title status')   // optional: include request info
+      .sort({ [sortBy]: sortOrder === 'asc' ? 1 : -1 })
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+
+    const total = await Notification.countDocuments(filter);
+
+    res.status(200).json({
+      success: true,
+      data: notifications,
+      meta: {
+        total,
+        page: Number(page),
+        limit: Number(limit)
+      }
+    });
+  } catch (err) {
+    console.error('Error in getNotifications:', err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
 
 
 API.getUsers = async (req, res) => { 
@@ -31,5 +83,7 @@ API.search = async (req , res) => {
         res.status(500).json({ message: error.message });
       }
 }
+
+
 
 export default API;
