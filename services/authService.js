@@ -41,8 +41,8 @@ class AuthService{
         if(!user) throw new Error("Invalid Users OR Empty User Object");
         // console.log('User: ' , user);
         if(type == 'refresh') 
-            return jwt.sign({ userId: user._id || user.id ,name: user.name, email: user.email, type: type }, this.refreshSecret, { expiresIn:expiry });
-        return jwt.sign({ userId: user._id,name: user.name, email: user.email, type: type }, this.accessSecret, { expiresIn:expiry });
+            return jwt.sign({ userId: user._id || user.id ,name: user.name, displayName: user.displayName, email: user.email, type: type }, this.refreshSecret, { expiresIn:expiry });
+        return jwt.sign({ userId: user._id,name: user.name, displayName: user.displayName, email: user.email, type: type }, this.accessSecret, { expiresIn:expiry });
     }
 
     async login(email , password , rememberMe = false){

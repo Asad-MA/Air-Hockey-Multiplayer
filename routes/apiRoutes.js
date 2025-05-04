@@ -1,4 +1,5 @@
 import express from 'express';
+import authenticate from '../middleware/authenticate.js';
 import API from '../controllers/apiController.js';
 
 const apiRoutes = express.Router();
@@ -11,7 +12,7 @@ apiRoutes.get('/users/search' , API.search);
 
 apiRoutes.get('/user/:id' , API.getUser);
 
-apiRoutes.get('/notifications/' , API.getNotifications);
+apiRoutes.get('/notifications/', authenticate , API.getNotifications);
 
 
 

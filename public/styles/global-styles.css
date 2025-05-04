@@ -661,7 +661,7 @@ input[type="password"]{
 
 .active + .overlay{
     display: block;
-    z-index: 11;
+    /* z-index: 11; */
 }
   
   @keyframes googleLoader {
@@ -755,6 +755,60 @@ p.error-message > span{
     width: clamp(70px , 30vw , 170px);
 }
 
+.placeholder {
+    background: #222128;
+    padding: 1.5rem;
+    border-radius: 10px;
+    width: 300px;
+    overflow: hidden;
+    box-shadow: 1px 1px 3px 1px #1c1b22;
+  }
+
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: #27262e;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+  }
+
+  .skeleton::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150px;
+    height: 100%;
+    width: 150px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton.image {
+    height: 150px;
+    width: 100%;
+  }
+
+  .skeleton.text {
+    height: 16px;
+    width: 100%;
+  }
+
+  .skeleton.text.short {
+    width: 60%;
+  }
+
+  .loaded .placeholder{
+    display: none;
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-150px);
+    }
+    100% {
+      transform: translateX(200%);
+    }
+  }
 
 @media all and (max-width: 450px){
     .justify-center-xs{

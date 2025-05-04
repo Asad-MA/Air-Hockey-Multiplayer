@@ -22,7 +22,7 @@ userRoutes.get('/verify/:userId', verifyAccount, (req, res) => { res.render('pag
 
 userRoutes.get('/', authenticate, (req, res) => {
     console.log('User: ', req.user);
-    res.render('pages/dashboard', { name: req.user.name, email: req.user.email, token: req.user.token })
+    res.render('pages/dashboard', { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token }})
 })
 
 userRoutes.post('/register', requestsValidator.validateRegister, userController.handleRegister);
@@ -34,11 +34,6 @@ userRoutes.post('/reset-password-request', userController.handleResetPasswordReq
 userRoutes.post('/reset-password', userController.resetPassword);
 
 userRoutes.post('resend-verification-mail', userController.resendMail);
-
-// General Requests (Friend , Game , Challenge)
-userRoutes.post('/socail/add-friend' , authenticate  , userController.handleFriendRequest);
-
-userRoutes.get('/friends' , authenticate , (req , res) => res.render('pages/friends' , { name: req.user.name, email: req.user.email, token: req.user.token }));
 
 
 // Game Routes

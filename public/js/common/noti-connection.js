@@ -1,16 +1,15 @@
-import {NotificationManager} from "../modules/notificationManager.js";
+import { NotificationManager } from "../modules/notificationManager.js";
 
-    console.log('Notification Service is plugged-IN');
-    let socket;
-    const notifier = new NotificationManager();
-const userId = prompt("Enter your user ID:");
+console.log('Notification Service is plugged-IN');
+let socket;
+const notifier = new NotificationManager();
 
-function connectToNotificationServer(userId) {
+function connectToNotificationServer() {
   socket = new WebSocket('ws://localhost:3005');
 
   socket.addEventListener('open', () => {
-    socket.send(JSON.stringify({ type: 'register', userId }));
-    console.log(`Connected as ${userId}`);
+    // socket.send(JSON.stringify({ type: 'register', userId }));
+    // console.log(`Connected as ${userId}`);
   });
 
   socket.addEventListener('message', (event) => {
@@ -18,7 +17,14 @@ function connectToNotificationServer(userId) {
     console.log("📥 Notification received:", data);
 
     // Display in-app notification
-    notifier.push(data.type , data.message , { type: 'success', duration: 0 })
+    notifier.push(data.title, data.message, {
+      type: 'user',
+      duration: 0,
+      actions: [
+        { label: 'Accept', callback: () => console.log('Accepted') },
+        { label: 'Reject', callback: () => console.log('Rejected') }
+      ]
+    })
   });
 
   socket.addEventListener('close', () => {
@@ -26,5 +32,5 @@ function connectToNotificationServer(userId) {
   });
 }
 
-connectToNotificationServer(userId);
+connectToNotificationServer();
 

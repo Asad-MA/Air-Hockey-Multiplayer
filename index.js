@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
+import friendRoutes from './routes/friendRoutes.js';
 import apiRoutes from './routes/apiRoutes.js';
 import defaultAuth from './middleware/api/defaultAuth.js';
 import {client , connectRedis} from './config/redis-connection.js';
@@ -26,9 +27,9 @@ app.use(cookieParser());
 //app.use(express.urlencoded({ extended: true }));
 
 
-
+// Setting Up Routes
 app.use(userRoutes);
-
+app.use(friendRoutes);
 
 
 app.use(express.static("public"));
@@ -37,11 +38,11 @@ app.use(express.static("public"));
 
 app.set('view engine', 'ejs');
 
-app.use((req, res, next) => {
-  res.locals.user = req.user || 'Guest';
-  res.locals.pageTitle = 'Page'; // default, can override in route
-  next();
-});
+// app.use((req, res, next) => {
+//   req.locals.user = req.user || {};
+//   req.locals.pageTitle = 'Page'; // default, can override in route
+//   next();
+// });
 
 
 app.use((err, req, res, next) => {

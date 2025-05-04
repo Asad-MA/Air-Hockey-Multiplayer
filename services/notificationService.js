@@ -5,14 +5,15 @@ class NotificationService {
         this.types = ['chat', 'challenge', 'invite' , 'friend'];
     }
 
-    async send(userId, type, message, extra = {}) {
+    async send(userId, title, message, type, extra = {}) {
         if (!this.types.includes(type)) {
             throw new Error(`Unsupported notification type: ${type}`);
         }
 
         const payload = JSON.stringify({
-            type,
+            title,
             message,
+            type,
             ...extra,
             timestamp: Date.now()
         });

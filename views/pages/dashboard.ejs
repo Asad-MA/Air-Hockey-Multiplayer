@@ -25,9 +25,9 @@
 
                             </div>
                             <div class="user-metadata">
-                                <h3 class="display-name my-0 text-uppercase"><%- name %></h3>
+                                <h3 class="display-name my-0 text-uppercase"><%- user.displayName %></h3>
                                 <div class="d-flex justify-between align-center">
-                                    <span class="username text-sm">@username</span>
+                                    <span class="username text-sm">@<%- user.name %></span>
                                     <span class="avtivity text-sm">Last Active: 2days</span>
                                 </div>
                                 <div class="ui-divider grad-purple"></div>
@@ -289,7 +289,7 @@
 
         <%- include('../partials/footer') %>
             <script>
-                window.sessionStorage.setItem('token', "<%- token %>");
+                window.sessionStorage.setItem('token', "<%- user.token %>");
             </script>
 
 

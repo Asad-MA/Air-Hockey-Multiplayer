@@ -6,7 +6,6 @@ const API = {};
 API.getNotifications = async (req, res) => {
   try {
     const {
-      userId,
       type,
       priority,
       status,
@@ -18,8 +17,10 @@ API.getNotifications = async (req, res) => {
       limit = 10
     } = req.query;
 
-    const filter = {};
-    if (userId) filter.userId = userId;
+    const userId = req.user._id; // Provided by auth middleware
+    console.log('UserID' , req.user)
+    const filter = { userId };
+
     if (type) filter.type = type;
     if (priority) filter.priority = priority;
     if (status) filter.status = status;
@@ -31,8 +32,7 @@ API.getNotifications = async (req, res) => {
 
     const notifications = await Notification
       .find(filter)
-      .populate('userId', 'name email')       // optional: include user info
-      .populate('requestId', 'title status')   // optional: include request info
+      .populate('requestId', 'title status') // Optional: enrich data
       .sort({ [sortBy]: sortOrder === 'asc' ? 1 : -1 })
       .skip((page - 1) * limit)
       .limit(Number(limit));
@@ -53,6 +53,7 @@ API.getNotifications = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+
 
 
 API.getUsers = async (req, res) => { 
