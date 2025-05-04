@@ -15,4 +15,5 @@ HEADER_NOTIFIER.push('Action Required!', 'Please enable 2F Authentication to sec
     { label: 'Enable', callback: () => console.log('Accepted') },
     { label: 'Not Now', callback: () => console.log('Rejected') }
 ]});
+
 HEADER_NOTIFIER.push('Persistent Notice!', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel egestas dolor, nec dignissim metus.', { type: 'user', duration: 0 });
