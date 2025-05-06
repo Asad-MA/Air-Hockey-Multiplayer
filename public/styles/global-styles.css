@@ -643,8 +643,8 @@ input[type="password"]{
     height: 100%;
     width: 100%;
     -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
-    background: radial-gradient(#09001e, #22061330);
+    backdrop-filter: blur(0.5px);
+    background: radial-gradient(#00000003, #00000000);
     position: fixed;
     overscroll-behavior: none;
 }
@@ -762,6 +762,7 @@ p.error-message > span{
     width: 300px;
     overflow: hidden;
     box-shadow: 1px 1px 3px 1px #1c1b22;
+    margin-bottom: 10px;
   }
 
   .skeleton {

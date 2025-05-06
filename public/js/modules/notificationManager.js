@@ -40,11 +40,11 @@ if (this.actions.length) {
 
     this.actions.forEach(action => {
         const button = document.createElement('button');
-        button.textContent = action.label;
+        button.innerHTML = action.label;
         Object.assign(button.style, {
             background: 'transparent',
-            color: this.getColor().color,
-            border: `1px solid ${this.getColor().color}`,
+            color: '#fff',
+            border: `none`,
             borderRadius: '3px',
             padding: '5px 10px',
             fontSize: '13px',
@@ -168,16 +168,17 @@ if (this.actions.length) {
                     background: 'transparent',
                     borderColor: 'transparent',
                     shadow: 'none',
-                    color: '#908ca8',
+                    color: '#323038',
                     glow: 'rgb(34 178 157 / 30%)'
                 };
             default:
                 return {
-                    background: 'linear-gradient(90deg, #0078d76e, rgba(46, 45, 53, 0.6) 40%)',
-                    borderColor: '#62baff',
-                    shadow: 'rgba(98, 186, 255, 0.5) 0px 4px 10px',
-                    color: 'rgba(98, 186, 255, 1)',
-                    glow: ' rgba(34, 108, 178, 0.3) '
+                    background: 'transparent',
+                    borderColor: 'gray',
+                    shadow: 'none',
+                    color: '#323038',
+                    glow: 'transparent',
+                    border: '1px solid',
                 };
         }
     }
@@ -188,7 +189,7 @@ if (this.actions.length) {
             case 'error': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-xmark"></i>`;
             case 'warning': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-exclamation"></i>`;
             case 'user': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-user-astronaut"></i>`;
-            default: return `<i style="background: ${this.getColor().color}" class="fa-solid fa-exclamation"></i>`;
+            default: return `<i style="background: ${this.getColor().color}; " class="fa-solid fa-user-astronaut"></i>`;
         }
     }
 }
@@ -234,6 +235,7 @@ class NotificationManager {
             gap: '12px',
             overflowY: 'auto',
             overflowX: 'hidden',
+            padding: '10px'
         };
     
         if (customStyle) {

@@ -10,12 +10,13 @@ div#top-notification {
     border-radius: 10px;
     z-index: 30;
     box-shadow: 2px 2px 5px 1px #1110157a;
-    padding: 10px 14px;
+    padding: 14px 10px;
     max-height: 500px;
     overflow-y: auto;
 }
 
-[data-type="user"] .notif-icon i {
+[data-type="user"] .notif-icon i,
+[data-type="friend_request"] .notif-icon i {
     width: 47px;
     height: 47px;
     border-radius: 30px;
@@ -23,28 +24,41 @@ div#top-notification {
     color: #6a687b;
 }
 
-[data-type="user"] .notif-icon {
+[data-type="user"] .notif-icon,
+[data-type="friend_request"] .notif-icon {
     background: transparent !important;
     border: 1px solid #3e3d49;
 }
 
-[data-type="user"] {
-    padding: 25px 1px !important;
+[data-type="user"],
+[data-type="friend_request"] {
+    /* padding: 25px 1px !important; */
     border-bottom: 1px solid #272630 !important;
+    background: #222128 !important;
+    box-shadow: 1px 1px 3px 1px #1c1b22 !important;
+    border-radius: 7px !important;
+    margin-bottom: 10px;
 }
 
-[data-type="user"] button.notif-close {
+[data-type="user"] button.notif-close
+ {
     display: none;
 }
 
-[data-type="user"] .notif-message{
+[data-type="user"] .notif-message,
+[data-type="friend_request"] .notif-message{
     color: #908ca8;
 }
 
-[data-type="user"] .notif-title{
+[data-type="user"] .notif-title,
+[data-type="friend_request"] .notif-title{
     font-weight: 500 !important;
     font-size: 13px !important;
     letter-spacing: 0.06em !important;
+}
+
+.notif-content {
+    flex-grow: 1;
 }
 
 /* END */

@@ -2,7 +2,7 @@ import { client } from '../config/redis-connection.js';
 
 class NotificationService {
     constructor() {
-        this.types = ['chat', 'challenge', 'invite' , 'friend'];
+        this.types = ['chat', 'challenge', 'invite' , 'friend' , 'info' , 'warning' , 'error'];
     }
 
     async send(userId, title, message, type, extra = {}) {

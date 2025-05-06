@@ -1,4 +1,5 @@
 import { NotificationManager } from "../modules/notificationManager.js";
+import { acceptCallback , rejectCallback } from "./global.js";
 
 console.log('Notification Service is plugged-IN');
 let socket;
@@ -15,15 +16,17 @@ function connectToNotificationServer() {
   socket.addEventListener('message', (event) => {
     const data = JSON.parse(event.data);
     console.log("📥 Notification received:", data);
-
+    var actions = [];
+    if (data.type == 'friend_request')
+      actions = [
+        { label: '<i class="fa-solid fa-check"></i> Accept', callback: () => acceptCallback(data) },
+        { label: '<i class="fa-solid fa-xmark"></i> Reject', callback: () => rejectCallback(data) }
+      ]
     // Display in-app notification
     notifier.push(data.title, data.message, {
       type: 'user',
       duration: 0,
-      actions: [
-        { label: 'Accept', callback: () => console.log('Accepted') },
-        { label: 'Reject', callback: () => console.log('Rejected') }
-      ]
+      actions
     })
   });
 
