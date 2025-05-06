@@ -8,6 +8,7 @@ const authenticate = async (req, res, next) => {
     try {
         if (!token || !refreshtoken) throw new Error('Invalid Tokens!');
         const user = await AuthService.verifyToken(token);
+        console.log('Token verification case1' , user);
         req.user = {_id: user.userId ,  name: user.name, displayName: user.displayName, email: user.email , token: token}
         next();
     }
@@ -56,7 +57,7 @@ const authenticate = async (req, res, next) => {
             
             const user = await AuthService.verifyToken(refreshToken , 'refresh');
 
-            // console.log('Decoded Refresh Token:' , user);
+            console.log('Decoded Refresh Token:' , user);
 
             //  console.log(new Date(user.exp) , new Date(user.exp * 1000));
 

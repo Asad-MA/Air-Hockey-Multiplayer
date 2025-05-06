@@ -27,8 +27,8 @@ class AuthService{
 
     async refreshToken(oldToken){
         const decoded = await this.verifyToken(oldToken , 'refresh');
-        console.log('Refresh Decoded');
-        console.log(decoded); //Error Here
+     //   console.log('Refresh Decoded');
+       // console.log(decoded); //Error Here
         const expiry = decoded.exp;
         const newAccessToken = await this.generateToken(decoded); //timestampToHummanReadable(decoded.exp)
         const newRefreshToken = await this.generateToken(decoded , timeToStr(expiry) , 'refresh') //Exipry Issue (need to convert 10m/10d etc)
@@ -39,10 +39,10 @@ class AuthService{
 
     async generateToken(user , expiry='1h' , type = 'access'){
         if(!user) throw new Error("Invalid Users OR Empty User Object");
-        // console.log('User: ' , user);
+        console.log(`Token ${type}: ` , user);
         if(type == 'refresh') 
-            return jwt.sign({ userId: user._id || user.id ,name: user.name, displayName: user.displayName, email: user.email, type: type }, this.refreshSecret, { expiresIn:expiry });
-        return jwt.sign({ userId: user._id,name: user.name, displayName: user.displayName, email: user.email, type: type }, this.accessSecret, { expiresIn:expiry });
+            return jwt.sign({ userId: user.userId || user._id ,name: user.name, displayName: user.displayName, email: user.email, type: type }, this.refreshSecret, { expiresIn:expiry });
+        return jwt.sign({ userId: user.userId || user._id,name: user.name, displayName: user.displayName, email: user.email, type: type }, this.accessSecret, { expiresIn:expiry });
     }
 
     async login(email , password , rememberMe = false){

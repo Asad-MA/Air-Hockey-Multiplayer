@@ -223,9 +223,6 @@ class UserController {
 
     }
 
-    dashboard(req , res){
-
-    }
 
 }
 

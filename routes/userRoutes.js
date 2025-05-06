@@ -21,8 +21,12 @@ userRoutes.get('/reset-password/:userId', verifyResetPassword, (req, res) => { r
 userRoutes.get('/verify/:userId', verifyAccount, (req, res) => { res.render('pages/verify-account') });
 
 userRoutes.get('/', authenticate, (req, res) => {
-    console.log('User: ', req.user);
+    // console.log('User: ', req.user);
     res.render('pages/dashboard', { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token }})
+})
+
+userRoutes.get('/social/profile/:username' , authenticate , (req , res) => {
+    res.render('pages/profile',  { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token }});
 })
 
 userRoutes.post('/register', requestsValidator.validateRegister, userController.handleRegister);
