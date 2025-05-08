@@ -33,10 +33,10 @@ class FriendController {
         type: "friend_request",
       });
 
-      await notifications.create({
+      const noti = await notifications.create({
         userId: friend._id,
         requestId: request._id,
-        type: "friend_request",
+        type: "friend",
         title: `${user.name}`,
         message: `Sends you friend request!`,
       });
@@ -50,10 +50,7 @@ class FriendController {
       });
 
       await notificationService.send(
-        friend.email,
-        user.name,
-        `Just sends you friend request`,
-        "friend",
+       noti,
         { actions: ["accept", "reject"] }
       );
       res.status(200).send({
@@ -157,6 +154,8 @@ class FriendController {
       });
     }
   }
+
+
 
   async getFriends(req, res) {
     try {

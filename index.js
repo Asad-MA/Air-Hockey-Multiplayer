@@ -11,6 +11,7 @@ import defaultAuth from './middleware/api/defaultAuth.js';
 import {client , connectRedis} from './config/redis-connection.js';
 import wss from './ws-channel.js';
 import { config } from './config/config.js';
+import requestRoutes from './routes/requestRoutes.js';
 
 
 
@@ -30,7 +31,7 @@ app.use(cookieParser());
 // Setting Up Routes
 app.use(userRoutes);
 app.use(friendRoutes);
-
+app.use(requestRoutes);
 
 app.use(express.static("public"));
 

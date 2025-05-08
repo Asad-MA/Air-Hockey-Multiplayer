@@ -13,6 +13,8 @@ div#top-notification {
     padding: 14px 10px;
     max-height: 500px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 [data-type="user"] .notif-icon i,

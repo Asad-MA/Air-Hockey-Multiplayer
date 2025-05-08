@@ -1,6 +1,6 @@
 import { config } from '../config.js';
 import { NotificationManager } from "../modules/notificationManager.js";
-import { acceptCallback , rejectCallback } from "./global.js";
+import { acceptCallback, rejectCallback ,acceptChallenge, rejectChallenge } from "./global.js";
 
 jQuery(document).ready(function ($) {
     console.log('Presistant Notifications are Plugged in');
@@ -19,12 +19,18 @@ jQuery(document).ready(function ($) {
             if (!data.success) throw new Error('Something went wrong on our side.');
             data.data.forEach(notification => {
                 var actions = [];
-                if (notification.type == 'friend_request')
+                if (notification.type == 'friend')
                     actions = [
                         { label: '<i class="fa-solid fa-check"></i> Accept', callback: () => acceptCallback(notification) },
                         { label: '<i class="fa-solid fa-xmark"></i> Reject', callback: () => rejectCallback(notification) }
                     ]
-                HEADER_NOTIFIER.push(notification.title, notification.message, { type: notification.type, duration: 0, actions })
+
+                if (notification.type == 'challenge')
+                    actions = [
+                        { label: '<i class="fa-solid fa-check"></i> Accept', callback: () => acceptChallenge(notification) },
+                        { label: '<i class="fa-solid fa-xmark"></i> Reject', callback: () => rejectChallenge(notification) }
+                    ]
+                HEADER_NOTIFIER.push(notification.title, notification.message,notification.createdAt, { type: notification.type, duration: 0, actions })
             });
 
         })
@@ -36,7 +42,7 @@ jQuery(document).ready(function ($) {
     HEADER_NOTIFIER.enableClearBtn();
 
 
-    
+
 
 });
 

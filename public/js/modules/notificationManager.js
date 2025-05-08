@@ -1,5 +1,5 @@
 class Notification {
-    constructor(id, title, message, type, duration, dismissible, removeCallback, actions = []) {
+    constructor(id, title, message, type, duration, dismissible, createdAt, removeCallback, actions = []) {
         this.id = id;
         this.title = title;
         this.message = message;
@@ -9,6 +9,8 @@ class Notification {
         this.removeCallback = removeCallback;
         this.actions = actions;
         this.element = this.createElement();
+        this.createdAt = new Date(createdAt).getTime();
+
     }
 
 
@@ -22,7 +24,7 @@ class Notification {
     <div class="notif-content">
         <div class="d-flex justify-between align-center">
         <div class="notif-title">${this.title}</div>
-        <time style="margin-bottom" class="text-sm text-gray">11min ago</time>
+        <time style="margin-bottom" class="notif-time text-sm text-gray">Just Now</time>
         </div>
         <div class="notif-message text-sm">${this.message}</div>
         ${this.actions.length ? '<div class="notif-actions"></div>' : ''}
@@ -30,33 +32,33 @@ class Notification {
     ${this.dismissible ? '<button class="notif-close">&times;</button>' : ''}
 `;
 
-if (this.actions.length) {
-    const actionsContainer = notification.querySelector('.notif-actions');
-    Object.assign(actionsContainer.style, {
-        marginTop: '8px',
-        display: 'flex',
-        gap: '8px'
-    });
+        if (this.actions.length) {
+            const actionsContainer = notification.querySelector('.notif-actions');
+            Object.assign(actionsContainer.style, {
+                marginTop: '8px',
+                display: 'flex',
+                gap: '8px'
+            });
 
-    this.actions.forEach(action => {
-        const button = document.createElement('button');
-        button.innerHTML = action.label;
-        Object.assign(button.style, {
-            background: 'transparent',
-            color: '#fff',
-            border: `none`,
-            borderRadius: '3px',
-            padding: '5px 10px',
-            fontSize: '13px',
-            cursor: 'pointer',
-        });
-        button.addEventListener('click', () => {
-            action.callback();
-            this.remove(); // Optionally close after action
-        });
-        actionsContainer.appendChild(button);
-    });
-}
+            this.actions.forEach(action => {
+                const button = document.createElement('button');
+                button.innerHTML = action.label;
+                Object.assign(button.style, {
+                    background: 'transparent',
+                    color: '#fff',
+                    border: `none`,
+                    borderRadius: '3px',
+                    padding: '5px 10px',
+                    fontSize: '13px',
+                    cursor: 'pointer',
+                });
+                button.addEventListener('click', () => {
+                    action.callback();
+                    this.remove(); // Optionally close after action
+                });
+                actionsContainer.appendChild(button);
+            });
+        }
 
 
 
@@ -118,6 +120,39 @@ if (this.actions.length) {
             setTimeout(() => this.remove(), this.duration);
         }
 
+        const timeElement = notification.querySelector('.notif-time');
+        const updateTime = () => {
+            const now = new Date();
+            const diffMs = now - this.createdAt;
+        
+            const minutes = Math.floor(diffMs / 60000);
+            const hours = Math.floor(diffMs / 3600000);
+            const days = Math.floor(diffMs / 86400000);
+            const weeks = Math.floor(days / 7);
+            const months = Math.floor(days / 30);
+        
+            let text = 'Just now';
+            if (minutes > 0 && hours < 1) {
+                text = `${minutes} min ago`;
+            } else if (hours >= 1 && days < 1) {
+                text = `${hours} hour${hours > 1 ? 's' : ''} ago`;
+            } else if (days >= 1 && weeks < 1) {
+                text = `${days} day${days > 1 ? 's' : ''} ago`;
+            } else if (weeks >= 1 && months < 1) {
+                text = `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+            } else if (months >= 1) {
+                text = `${months} month${months > 1 ? 's' : ''} ago`;
+            }
+        
+            timeElement.textContent = text;
+        };
+        
+
+        // Update immediately and then every minute
+        updateTime();
+        this.timeInterval = setInterval(updateTime, 10000);
+
+
         return notification;
     }
 
@@ -129,6 +164,7 @@ if (this.actions.length) {
     }
 
     remove() {
+        clearInterval(this.timeInterval);
         this.element.style.opacity = '0';
         this.element.style.transform = 'translateX(100%)';
         setTimeout(() => {
@@ -163,7 +199,7 @@ if (this.actions.length) {
                     color: '#f3c523',
                     glow: 'rgb(243 197 35 / 30%)'
                 };
-                case 'user':
+            case 'user':
                 return {
                     background: 'transparent',
                     borderColor: 'transparent',
@@ -200,7 +236,7 @@ class NotificationManager {
         this.notifications = new Map();
         this.notificationId = 0;
     }
-    
+
 
     // createContainer(id) {
     //     const container = document.createElement('div');
@@ -227,7 +263,7 @@ class NotificationManager {
     createContainer(id, position, customStyle) {
         const container = document.createElement('div');
         container.id = id;
-    
+
         const baseStyles = {
             position: 'fixed',
             zIndex: '1000',
@@ -237,7 +273,7 @@ class NotificationManager {
             overflowX: 'hidden',
             padding: '10px'
         };
-    
+
         if (customStyle) {
             Object.assign(container.style, baseStyles, customStyle);
         } else {
@@ -277,16 +313,16 @@ class NotificationManager {
                     });
             }
         }
-    
+
         document.body.appendChild(container);
-    
-         
-        
-    
+
+
+
+
         return container;
     }
 
-    enableClearBtn(html = null){
+    enableClearBtn(html = null) {
         const clearBtn = document.createElement('button');
         clearBtn.innerHTML = html || 'Clear All';
         Object.assign(clearBtn.style, {
@@ -302,16 +338,16 @@ class NotificationManager {
         clearBtn.addEventListener('click', () => this.destroy());
         this.container.appendChild(clearBtn);
     }
-    
+
 
     generateId() {
         return `notif-${this.notificationId++}`;
     }
 
-    push(title, message, { type = 'info', duration = 3000, dismissible = true, actions = [] } = {}) {
+    push(title, message, createdAt, { type = 'info', duration = 3000, dismissible = true, actions = [] } = {}) {
         const id = this.generateId();
         const notification = new Notification(
-            id, title, message, type, duration, dismissible,
+            id, title, message, type, duration, dismissible,createdAt,
             (id) => this.remove(id),
             actions
         );

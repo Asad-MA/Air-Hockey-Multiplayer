@@ -5,21 +5,23 @@ class NotificationService {
         this.types = ['chat', 'challenge', 'invite' , 'friend' , 'info' , 'warning' , 'error'];
     }
 
-    async send(userId, title, message, type, extra = {}) {
+    async send({_id , requestId, userId, title, message, type, createdAt, to}, extra = {}) {
         if (!this.types.includes(type)) {
             throw new Error(`Unsupported notification type: ${type}`);
         }
 
         const payload = JSON.stringify({
+            _id , requestId, userId,to,
             title,
             message,
             type,
+            createdAt,
             ...extra,
             timestamp: Date.now()
         });
 
-        await client.publish(`notifications:${userId}`, payload);
-        console.log(`Notification (${type}) sent to ${userId}`);
+        await client.publish(`notifications:${to}`, payload);
+        console.log(`Notification (${type}) sent to ${to}`);
     }
 
     async storeOffline(userId, payload, ttlSeconds = 300) {
