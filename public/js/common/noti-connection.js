@@ -8,11 +8,6 @@ const notifier = new NotificationManager();
 function connectToNotificationServer() {
   socket = new WebSocket('ws://localhost:3005');
 
-  socket.addEventListener('open', () => {
-    // socket.send(JSON.stringify({ type: 'register', userId }));
-    // console.log(`Connected as ${userId}`);
-  });
-
   socket.addEventListener('message', (event) => {
     const data = JSON.parse(event.data);
     console.log("📥 Notification received:", data);
@@ -37,9 +32,19 @@ function connectToNotificationServer() {
   });
 
   socket.addEventListener('close', () => {
-    console.warn('Disconnected from notification server');
+    console.warn('Error while connecting to the notification server');
+    notifier.push('Notification Connection Closed !' , `You've been disconnected from the notification server. Click below to reconnect.`,new Date(), {
+      type: 'system',
+      duration: 0,
+      actions: [
+        {label: 'Reconnect' , callback: ()=> {connectToNotificationServer()}},
+        {label: 'Ignore' , callback: ()=>{}}
+      ]
+    })
   });
 }
 
 connectToNotificationServer();
+
+
 

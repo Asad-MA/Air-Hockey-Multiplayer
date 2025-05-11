@@ -225,6 +225,7 @@ class Notification {
             case 'error': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-xmark"></i>`;
             case 'warning': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-exclamation"></i>`;
             case 'user': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-user-astronaut"></i>`;
+            case 'system': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-desktop"></i>`;
             default: return `<i style="background: ${this.getColor().color}; " class="fa-solid fa-user-astronaut"></i>`;
         }
     }
