@@ -8,7 +8,7 @@ const notificationSchema = new mongoose.Schema({
     message: { type: String, required: true },
     priority: { type: String, enum: ['Low', 'Medium', 'High'], default: 'Medium' },
     status: { type: String, enum: ['Unread', 'Read'], default: 'Unread' },
-    
+    extra: { type: mongoose.Schema.Types.Mixed, default: {} },
     createdAt: { type: Date, default: Date.now }
 });
 

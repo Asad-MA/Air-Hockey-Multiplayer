@@ -9,7 +9,7 @@ const authenticate = async (req, res, next) => {
         if (!token || !refreshtoken) throw new Error('Invalid Tokens!');
         const user = await AuthService.verifyToken(token);
         // console.log('Token verification case1' , user);
-        req.user = {_id: user.userId ,  name: user.name, displayName: user.displayName, email: user.email , token: token}
+        req.user = {_id: user.userId ,  name: user.name, displayName: user.displayName, email: user.email , token: token, avatar: user.avatar}
         next();
     }
     catch (err) {
@@ -98,7 +98,7 @@ const authenticate = async (req, res, next) => {
 
             // call next() 
             // console.log(user);
-            req.user = { _id: user._id , name: user.name, displayName: user.displayName, email: user.email , token: token}
+            req.user = { _id: user._id , name: user.name, displayName: user.displayName, email: user.email , token: token ,  avatar: user.avatar}
 
             next();
             //If invalid

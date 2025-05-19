@@ -33,7 +33,7 @@ function connectToNotificationServer() {
 
   socket.addEventListener('close', () => {
     console.warn('Error while connecting to the notification server');
-    notifier.push('Notification Connection Closed !' , `You've been disconnected from the notification server. Click below to reconnect.`,new Date(), {
+    notifier.push('Notification Connection Closed!' , `You've been disconnected from the notification server. Click below to reconnect.`,new Date(), {
       type: 'system',
       duration: 0,
       actions: [

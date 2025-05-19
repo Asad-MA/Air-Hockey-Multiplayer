@@ -22,7 +22,7 @@ userRoutes.get('/verify/:userId', verifyAccount, (req, res) => { res.render('pag
 
 userRoutes.get('/', authenticate, (req, res) => {
     // console.log('User: ', req.user);
-    res.render('pages/dashboard', { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token }})
+    res.render('pages/dashboard', { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token, avatar: req.user.avatar }})
 })
 
 userRoutes.get('/social/profile/:username' , authenticate , (req , res) => {
@@ -44,7 +44,7 @@ userRoutes.post('resend-verification-mail', userController.resendMail);
 userRoutes.get('/matchmaking', authenticate, (req, res) => res.render('pages/lobby'))
 
 userRoutes.get('/play-live/:roomId', authenticate,  (req, res) => {
-    res.render('pages/game', { roomID: req.params.roomId, name: req.user?.name || 'placeholder' , email: req.user?.email || 'example@gmail.com' })
+    res.render('pages/game', { roomID: req.params.roomId,  user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token, avatar: req.user.avatar }})
 }
 );
 

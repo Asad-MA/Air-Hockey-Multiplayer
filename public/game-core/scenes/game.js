@@ -6,6 +6,7 @@ import ArcadePhysicsManager from '../physics/arcadePhysicsManager.js';
 import MatterPhysicsManager from '../physics/matterPhysicsManager.js';
 import { GameState } from '../gamestate.js';
 import { GameInfoOverlay } from '../utils/overlayInfo.js';
+import HUD from '../components/hud.js';
 
 
 class Game extends Phaser.Scene {
@@ -30,9 +31,11 @@ class Game extends Phaser.Scene {
 
   create() {
 
+
+
     this.music = this.sound.add('glitch', { volume: 0.8 });
     this.bgMusic = this.sound.add('bg-music', { volume: 0.3 });
-    // this.bgMusic.play({ loop: true });
+    this.bgMusic.play({ loop: true });
     this.bgMusicNeon = this.sound.add('neon', { volume: 0.05 });
     this.puckhit = this.sound.add('hit', { volume: 1 });
 
@@ -49,6 +52,7 @@ class Game extends Phaser.Scene {
     this.gameFrame = new GameWorld(this);
     this.gameState = new GameState(this);
     this.infoOverlay = new GameInfoOverlay(this);
+    this.hud = new HUD(this);
 
     console.log(this.gameFrame);
 
@@ -73,7 +77,7 @@ class Game extends Phaser.Scene {
 
     this.fixPaddlePosition();
 
-    if(!this.players[0].isHost)
+    if (!this.players[0].isHost)
       this.paddle.setCircle(1, this.paddle.body.halfWidth, this.paddle.body.halfHeight);
 
     // Render Player Avatars
@@ -83,7 +87,7 @@ class Game extends Phaser.Scene {
 
 
     this.physics.add.collider(this.paddle, this.gameFrame.frameParts)
-    this.physics.add.collider(this.puck, this.gameFrame.frameParts, (puck , frame) => {
+    this.physics.add.collider(this.puck, this.gameFrame.frameParts, (puck, frame) => {
       this.puckhit.play();
       // puck.body.setVelocity(puck.body.velocity.y*0.7 , puck.body.velocity.y*0.7);
     }
@@ -124,11 +128,13 @@ class Game extends Phaser.Scene {
       //   vy: puckVirtualVelocityY
       // });
     });
-    this.physics.add.overlap(this.puck, this.gameFrame.goals, () => {
+    this.physics.add.overlap(this.puck, this.gameFrame.goals, (puck, goal) => {
+      console.log(goal.texture.key);
       if (!this.players[0].isHost) return;
-      Network.sendMessage('Goal', {});
+
+      Network.sendMessage('Goal', { goal: goal.texture.key });
       // this.pause();
-      this.handleGoal();
+      this.handleGoal({ goal: goal.texture.key == 'goal-top' ? 'goal-bottom' : 'goal-top' });
     }, null, this);
 
     // When dragging, set the ball's position to follow the mouse pointer
@@ -137,10 +143,10 @@ class Game extends Phaser.Scene {
       const x = Phaser.Math.Clamp(pointer.x, this.gameFrame.frameX + 50, this.gameFrame.frameX + this.gameFrame.frameWidth - 50);
       const y = Phaser.Math.Clamp(pointer.y, this.gameFrame.frameY + 50, this.gameFrame.frameY + this.gameFrame.frameHeight - 50);
 
-      this.time.delayedCall(70 , ()=>{
+      this.time.delayedCall(70, () => {
         gameObject.setPosition(x, y);
       })
-      
+
 
 
       // In Player A's drag handler (old /)
@@ -148,9 +154,9 @@ class Game extends Phaser.Scene {
       const virtualY = (y - this.gameFrame.frameY) / this.gameFrame.scaleFactor;
       const vx = gameObject.body.velocity.x / this.gameFrame.scaleFactor;
       const vy = gameObject.body.velocity.y / this.gameFrame.scaleFactor;
-      
+
       this.gameState.updatePaddle('player1', virtualX, virtualY, vx, vy);
-     
+
       // console.log(this.gameState.getState().paddles.player1);
     });
 
@@ -181,7 +187,8 @@ class Game extends Phaser.Scene {
   }
 
 
-  update() {
+  update(delta) {
+
     this.resetPuckIfOutOfBounds(this.puck, this.gameFrame.bounds, 5);
 
     const puckVirtualX = (this.puck.body.position.x - this.gameFrame.frameX) / this.gameFrame.scaleFactor;
@@ -189,12 +196,12 @@ class Game extends Phaser.Scene {
     const puckVirtualVelocityX = this.puck.body.velocity.x / this.gameFrame.scaleFactor;
     const puckVirtualVelocityY = this.puck.body.velocity.y / this.gameFrame.scaleFactor;
 
-    this.gameState.updatePuck(puckVirtualX , puckVirtualY, puckVirtualVelocityX, puckVirtualVelocityY);
+    this.gameState.updatePuck(puckVirtualX, puckVirtualY, puckVirtualVelocityX, puckVirtualVelocityY);
     this.gameState.updateTimestamp();
     // this.gameState.
 
-    const d = Phaser.Math.Distance.Between(this.paddle.body.center.x , this.paddle.body.center.y , this.puck.body.center.x , this.puck.body.center.y);
-    this.isNearPaddle = d<100 ? true : false;
+    const d = Phaser.Math.Distance.Between(this.paddle.body.center.x, this.paddle.body.center.y, this.puck.body.center.x, this.puck.body.center.y);
+    this.isNearPaddle = d < 100 ? true : false;
 
     for (const part of this.gameFrame.frameParts) {
       const dF = Phaser.Math.Distance.Between(
@@ -203,15 +210,17 @@ class Game extends Phaser.Scene {
         part.x,
         part.y
       );
-    
+
       this.puckDistance = dF;
       this.isNearFrame = dF < 150;
-    
+
       if (dF < 150) break;
     }
-    
 
-    
+
+
+    // HUD Updates
+    // this.hud.update(delta);
     // Simulate remote player movement (Replace with actual WebSocket data)
 
   }
@@ -287,11 +296,19 @@ class Game extends Phaser.Scene {
     // Network.addMessageListener('remote_puck_data', (message) => this.receivePuckData(message));
 
     Network.addMessageListener('game_state', (message) => this.receiveGameState(message));
-    Network.addMessageListener('clientInputs', (message) => { this.receiveClientInputs(message)});
-    Network.addMessageListener('pause', (message) => {console.log('Host Pause');  this.pause();});
-    Network.addMessageListener('resume', (message) => { console.log('Host REsume'); this.resume()});
+    Network.addMessageListener('clientInputs', (message) => { this.receiveClientInputs(message) });
+    Network.addMessageListener('pause', (message) => { console.log('Host Pause'); this.pause(); });
+    Network.addMessageListener('resume', (message) => { console.log('Host REsume'); this.resume() });
     Network.addMessageListener('reset', (message) => this.reset());
-    Network.addMessageListener('Goal', (message) => { console.log("Host Goal"); this.handleGoal();});
+    Network.addMessageListener('Goal', (message) => { console.log("Host Goal"); this.handleGoal(message); });
+    Network.addMessageListener('match_timer', (time) => { console.log(time); this.hud.update(time.remaining); })
+    Network.addMessageListener('game_over', (message) => {
+      console.log(message);
+      const result = this.players[0].name == message.winner ? 'win' : 'lose'
+      this.scene.launch('GameOver', { result }); // or 'lose'
+      this.scene.pause(); // pause game scene if needed
+
+    })
   }
 
   fixPaddlePosition() {
@@ -301,14 +318,22 @@ class Game extends Phaser.Scene {
   }
 
   /*Handlers*/
-  handleGoal() {
+  handleGoal(data) {
+    console.log('Goal Data From Host:', data);
     if (this.gameState.isGoal) return;
     this.bgMusic.setVolume(0.1);
     this.music.play();
     // this.bgMusic.pl();
     this.gameState.isGoal = true;
 
-    
+    if (data.goal == 'goal-top') {
+      this.hud.addGoal('player1');
+    } else {
+      this.hud.addGoal('player2');
+    }
+
+    // this.hud.addGoal('player1');
+
     // Port network Here
     if (this.players[0].isHost)
       Network.sendMessage('pause', this.gameState.getState());
@@ -322,7 +347,7 @@ class Game extends Phaser.Scene {
       duration: 100,
       ease: 'Linear'
     });
-    
+
 
     this.time.delayedCall(2000, () => {
       this.reset();
@@ -335,8 +360,8 @@ class Game extends Phaser.Scene {
       this.resume();
       // Port network Here
       if (this.players[0].isHost)
-      Network.sendMessage('resume', this.gameState.getState());
-      
+        Network.sendMessage('resume', this.gameState.getState());
+
       this.bgMusic.setVolume(0.3);
     }, [], this);
   }
@@ -349,24 +374,24 @@ class Game extends Phaser.Scene {
   receiveClientInputs(input) {
     // console.log('Paddle2 Position: ' , input);
     // console.log('Client Inputs: ', input);
-    const { x, y, vx, vy , timeStamp } = input;
+    const { x, y, vx, vy, timeStamp } = input;
     const flippedY = this.gameFrame.virtualHeight - y;
     const flippedX = this.gameFrame.virtualWidth - x;
     const screenX = flippedX * this.gameFrame.scaleFactor + this.gameFrame.frameX //+ this.paddle2.body.halfWidth;
     const screenY = flippedY * this.gameFrame.scaleFactor + this.gameFrame.frameY// + this.paddle2.body.halfHeight;
 
-    this.gameState.getState().paddles.player2.timeStamp = timeStamp; 
+    this.gameState.getState().paddles.player2.timeStamp = timeStamp;
 
-    const delta = (Date.now() - timeStamp)> 0?(Date.now() - timeStamp) / 1000 : 0;
+    const delta = (Date.now() - timeStamp) > 0 ? (Date.now() - timeStamp) / 1000 : 0;
     const dx = vx * delta * this.gameFrame.scaleFactor;
     const dy = vy * delta * this.gameFrame.scaleFactor;
 
     // console.log("Receving:" , screenX, screenY - this.gameFrame.frameHeight);
     // this.remotePlayer.paddle.setPosition(screenX, screenY);
-    this.paddle2.setPosition(screenX , screenY );
+    this.paddle2.setPosition(screenX, screenY);
     // this.physics.moveTo(this.paddle2 , (screenX ) , (screenY ) ,  700)
     // this.paddle2.setVelocity(-vx*this.gameFrame.scaleFactor , -vy*this.gameFrame.scaleFactor)
-    
+
   }
 
   sendGameState() {
@@ -375,31 +400,31 @@ class Game extends Phaser.Scene {
   }
 
   receiveGameState(gameState) {
-    if(this.puck.body.touching.none === false) return;
-    
+    if (this.puck.body.touching.none === false) return;
+
     // console.log(Date.now() - gameState.paddles.player2.timeStamp);
     const { puck, paddles, timestamp } = gameState;
     // if(Date.now() - gameState.paddles.player2.timeStamp > 60) return;
     const diff = Date.now() - gameState.paddles.player2.timeStamp;
-    const delta = (!isNaN(diff)||diff>0) ? diff/1000 : 0;
+    const delta = (!isNaN(diff) || diff > 0) ? diff / 1000 : 0;
 
-     if(diff > 160) return;
+    if (diff > 160) return;
 
     var dx = ((this.puck.body.velocity.x) * delta) / this.gameFrame.scaleFactor;
     var dy = ((this.puck.body.velocity.y) * delta) / this.gameFrame.scaleFactor;
 
-    if(this.isNearPaddle || this.isNearFrame){
+    if (this.isNearPaddle || this.isNearFrame) {
       dx = 0;
       dy = 0;
     }
-  
 
-   
+
+
     // console.log('Latency: ', Date.now() - timestamp, 'ms');
 
 
 
-    const puckFlippedY = this.gameFrame.virtualHeight - puck.y  - this.puck.body.halfHeight;
+    const puckFlippedY = this.gameFrame.virtualHeight - puck.y - this.puck.body.halfHeight;
     const puckFlippedX = this.gameFrame.virtualWidth - puck.x - this.puck.body.halfWidth;
     const puckScreenX = puckFlippedX * this.gameFrame.scaleFactor + this.gameFrame.frameX;
     const puckScreenY = puckFlippedY * this.gameFrame.scaleFactor + this.gameFrame.frameY;
@@ -408,14 +433,14 @@ class Game extends Phaser.Scene {
 
     const currentPuckX = this.puck.body.position.x;
     const currentPuckY = this.puck.body.position.y;
-    const newPuckX = Phaser.Math.Linear(currentPuckX + this.puck.body.halfWidth,  puckScreenX + dx,  0.15);
-    const newPuckY = Phaser.Math.Linear(currentPuckY + this.puck.body.halfHeight , puckScreenY + dy,  0.15);
+    const newPuckX = Phaser.Math.Linear(currentPuckX + this.puck.body.halfWidth, puckScreenX + dx, 0.15);
+    const newPuckY = Phaser.Math.Linear(currentPuckY + this.puck.body.halfHeight, puckScreenY + dy, 0.15);
 
     this.puck.setPosition(newPuckX, newPuckY);
 
 
     this.logs.latency.innerHTML = `
-    Latency: ${delta*1000}ms
+    Latency: ${delta * 1000}ms
     <br>
     dx: ${Math.round(dx)}px
     <br> 
@@ -452,7 +477,7 @@ class Game extends Phaser.Scene {
     const currentVy = this.puck.body.velocity.y // this.gameFrame.scaleFactor;
 
     const newVx = Phaser.Math.Linear(currentVx, puckVelocityX, 0.89);
-    const newVy = Phaser.Math.Linear(currentVy, puckVelocityY, 0.89);  
+    const newVy = Phaser.Math.Linear(currentVy, puckVelocityY, 0.89);
 
     // this.puck.setVelocity(-puckVelocityX, -puckVelocityY);
 

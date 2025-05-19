@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true, index:true },
     password: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
-    avatar: { type: String },
+    avatar: { type: String , default: 'https://res.cloudinary.com/de6upiddr/image/upload/v1746959884/cartoon-P._Geerya_z3y17b.jpg' },
     status: { type: String},
     accountStatus: { type: String , default: 'active'},
     createdAt: { type: Date, default: Date.now }

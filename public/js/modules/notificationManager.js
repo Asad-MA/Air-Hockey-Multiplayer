@@ -22,12 +22,12 @@ class Notification {
         notification.innerHTML = `
     <div class="notif-icon">${this.getIcon()}</div>
     <div class="notif-content">
-        <div class="d-flex justify-between align-center">
+        <div class="d-flex justify-between align-start mb-10">
         <div class="notif-title">${this.title}</div>
         <time style="margin-bottom" class="notif-time text-sm text-gray">Just Now</time>
         </div>
         <div class="notif-message text-sm">${this.message}</div>
-        ${this.actions.length ? '<div class="notif-actions"></div>' : ''}
+        ${this.actions.length ? '<div class="notif-actions d-flex"></div>' : ''}
     </div>
     ${this.dismissible ? '<button class="notif-close">&times;</button>' : ''}
 `;
@@ -45,11 +45,11 @@ class Notification {
                 button.innerHTML = action.label;
                 Object.assign(button.style, {
                     background: 'transparent',
-                    color: '#fff',
+                    color: 'rgb(126 122 147)',
                     border: `none`,
                     borderRadius: '3px',
                     padding: '5px 10px',
-                    fontSize: '13px',
+                    fontSize: '12px',
                     cursor: 'pointer',
                 });
                 button.addEventListener('click', () => {
@@ -83,10 +83,10 @@ class Notification {
 
         const titleElement = notification.querySelector('.notif-title');
         Object.assign(titleElement.style, {
-            fontWeight: 'bold',
-            fontSize: '15px',
+            fontWeight: '500',
+            fontSize: '14px',
             textTransform: 'uppercase',
-            marginBottom: '5px'
+            marginBottom: '0px'
         });
 
         const titleMessage = notification.querySelector('.notif-message');
@@ -105,13 +105,14 @@ class Notification {
             Object.assign(closeButton.style, {
                 background: 'transparent',
                 border: 'none',
-                color: '#fff',
+                color: 'rgb(126 122 147)',
                 fontSize: '16px',
                 cursor: 'pointer',
                 // position: 'absolute',
                 top: '22px',
                 right: '25px',
-                padding: '2px'
+                padding: '2px',
+                transform: 'translate(10px, -18px)'
             });
             closeButton.addEventListener('click', () => this.remove());
         }
@@ -225,7 +226,7 @@ class Notification {
             case 'error': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-xmark"></i>`;
             case 'warning': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-exclamation"></i>`;
             case 'user': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-user-astronaut"></i>`;
-            case 'system': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-desktop"></i>`;
+            case 'system': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-gears"></i>`;
             default: return `<i style="background: ${this.getColor().color}; " class="fa-solid fa-user-astronaut"></i>`;
         }
     }

@@ -7,6 +7,7 @@ jQuery(document).ready(function($){
 
     OVERLAY.on('click' , function(){
         console.log('.');
+        $(this).siblings('.active-flex').removeClass('active-flex');
         $(this).siblings('.active').removeClass('active');
     });
 

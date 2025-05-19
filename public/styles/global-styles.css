@@ -115,6 +115,10 @@ button{
     border-radius: 30px;
 }
 
+time {
+    white-space: nowrap;
+}
+
 a{
     cursor: pointer;
 }
@@ -636,6 +640,10 @@ input[type="password"]{
     display: block;
 }
 
+.hidden.active-flex{
+    display: flex;
+}
+
 .overlay{
     display: none;
     top: 0;
@@ -660,6 +668,11 @@ input[type="password"]{
 }
 
 .active + .overlay{
+    display: block;
+    /* z-index: 11; */
+}
+
+.active-flex + .overlay{
     display: block;
     /* z-index: 11; */
 }

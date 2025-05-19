@@ -13,12 +13,12 @@ div#top-notification {
     padding: 14px 10px;
     max-height: 500px;
     overflow-y: auto;
-    display: flex;
     flex-direction: column-reverse;
 }
 
 [data-type="user"] .notif-icon i,
-[data-type="friend_request"] .notif-icon i {
+[data-type="friend"] .notif-icon i,
+[data-type="system"] .notif-icon i {
     width: 47px;
     height: 47px;
     border-radius: 30px;
@@ -27,13 +27,15 @@ div#top-notification {
 }
 
 [data-type="user"] .notif-icon,
-[data-type="friend_request"] .notif-icon {
+[data-type="friend"] .notif-icon,
+[data-type="system"] .notif-icon {
     background: transparent !important;
     border: 1px solid #3e3d49;
 }
 
 [data-type="user"],
-[data-type="friend_request"] {
+[data-type="friend"],
+[data-type="system"] {
     /* padding: 25px 1px !important; */
     border-bottom: 1px solid #272630 !important;
     background: #222128 !important;
@@ -48,12 +50,14 @@ div#top-notification {
 }
 
 [data-type="user"] .notif-message,
-[data-type="friend_request"] .notif-message{
+[data-type="friend"] .notif-message,
+[data-type="system"] .notif-message{
     color: #908ca8;
 }
 
 [data-type="user"] .notif-title,
-[data-type="friend_request"] .notif-title{
+[data-type="friend"] .notif-title,
+[data-type="system"] .notif-title{
     font-weight: 500 !important;
     font-size: 13px !important;
     letter-spacing: 0.06em !important;
@@ -61,6 +65,18 @@ div#top-notification {
 
 .notif-content {
     flex-grow: 1;
+}
+
+div#top-notification .notification {
+    background: #222128 !important;
+    border-radius: 5px !important;
+    border-bottom: 0px !important;
+    margin-bottom: 5px;
+    box-shadow: 3px 2px 3px 0 #0000002b !important;
+}
+
+.notification .notif-message{
+    color:#908ca8;
 }
 
 /* END */

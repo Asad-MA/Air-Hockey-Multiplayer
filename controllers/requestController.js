@@ -28,6 +28,7 @@ class RequestController {
                 type: "challenge",
                 title: `${user.name}`,
                 message: `You've been challenged!`,
+                extra: {}
             });
             noti.to = friend.email;
 
@@ -119,6 +120,9 @@ class RequestController {
 
               const requester = await userRepo.findUserById(request.requester);
         
+              // Publish Create Challenege Room
+              await notificationService.createChallenge(requester.email ,  req.user.email);
+
               // Publish notification
               await notificationService.send({
                 to: requester.email,

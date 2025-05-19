@@ -191,17 +191,17 @@ class GameWorld {
 
     // Make sure all the game elements are scaled accordingly to fit the screen
     scaleGameElements() {
-        this.frameParts.forEach(part => {
-            part.setDisplaySize(part.width * this.scaleFactor, part.height * this.scaleFactor);
-        });
+        // this.frameParts.forEach(part => {
+        //     part.setDisplaySize(part.width * this.scaleFactor, part.height * this.scaleFactor);
+        // });
 
-        // Adjust all paddles and puck accordingly
-        if (this.paddle) {
-            this.paddle.setDisplaySize(this.paddle.width * this.scaleFactor, this.paddle.height * this.scaleFactor);
-        }
-        if (this.puck) {
-            this.puck.setDisplaySize(this.puck.width * this.scaleFactor, this.puck.height * this.scaleFactor);
-        }
+        // // Adjust all paddles and puck accordingly
+        // if (this.paddle) {
+        //     this.paddle.setDisplaySize(this.paddle.width * this.scaleFactor, this.paddle.height * this.scaleFactor);
+        // }
+        // if (this.puck) {
+        //     this.puck.setDisplaySize(this.puck.width * this.scaleFactor, this.puck.height * this.scaleFactor);
+        // }
     }
 
     // Call this in `Game.create()` after you initialize your paddle and puck

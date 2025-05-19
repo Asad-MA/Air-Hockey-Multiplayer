@@ -8,7 +8,7 @@ jQuery(document).ready(function ($) {
     const notiWindow = $('.noti-window');
     const notiOpener = $('[data-noti-opener]');
 
-    notiOpener.on('click', () => notiWindow.toggleClass('active'));
+    notiOpener.on('click', () => notiWindow.toggleClass('active-flex'));
 
     fetch(`http://${config.baseUrl}:3001/api/notifications`, {
         method: 'GET'

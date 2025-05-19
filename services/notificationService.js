@@ -5,6 +5,16 @@ class NotificationService {
         this.types = ['chat', 'challenge', 'invite' , 'friend' , 'info' , 'warning' , 'error'];
     }
 
+    async createChallenge(challenger , accepter){
+        const payload = JSON.stringify({
+            challenger,
+            accepter,
+            timestamp: Date.now()
+        })
+
+        await client.publish('challenge_accepted' , payload);
+    }
+
     async send({_id , requestId, userId, title, message, type, createdAt, to}, extra = {}) {
         if (!this.types.includes(type)) {
             throw new Error(`Unsupported notification type: ${type}`);

@@ -7,6 +7,7 @@ const requestSchema = new mongoose.Schema({
     type: { type: String, required: true },
     
     status: { type: String, enum: ['Pending', 'Approved', 'Rejected'], default: 'Pending' },
+    extra: { type: mongoose.Schema.Types.Mixed, default: {} },
     createdAt: { type: Date, default: Date.now },
     // expiresAt: { type: Date },
     updatedAt: { type: Date, default: Date.now }

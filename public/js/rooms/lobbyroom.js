@@ -16,13 +16,35 @@ const notifier = new NotificationManager();
 
 let ROOM;
 
+
+/*Connecting to the lobby/PublicRoom */
+
+client.joinOrCreate("LOBBY" , {})
+.then(room => {
+  console.log("Room Joined Successfully!", room);
+
+  room.onMessage("challenge_room", async (data) => {
+    alert(`Room Id: "${data.roomId}"`);
+     window.location.href = "/play-live/" + data.roomId;
+  })
+
+  room.onLeave((code)=>{
+    console.log("client left the room:: Please reconnect");
+  })
+})
+
+
+
+/*END*/ 
+
+
 play.addEventListener("click", () => {
   const n1 = notifier.push( 
     messages.joiningOnline.title , 
     messages.joiningOnline.description, 
     { type: 'info', duration: 0 }
   );
-  client.joinOrCreate("LOBBY", { name: "LOBBY ROOM" })
+  client.joinOrCreate("MATCH_MAKING_QUEUE", { name: "LOBBY ROOM" })
     .then(room => {
       console.log("Room Joined Successfully!", room);
       notifier.remove(n1);
