@@ -1,0 +1,199 @@
+<div id="reward-container" class="reward-grid">
+  <div class="day-reward d-flex justify-center align-center direction-col">
+    <div class="coin-chest">
+      <img src="https://res.cloudinary.com/de6upiddr/image/upload/nfsb9k2jhw3woo05uvvd.png" alt="coins-chest" srcset="">
+
+    </div>
+    <div class="chest-content">
+      <h5 class="heading-md">Day 01</h5>
+      <span class="coins-count text-gray">300 coins</span>
+    </div>
+    <div class="reward-status">
+      <button class="btn-md">Claim</button>
+    </div>
+  </div>
+</div>
+<div class="claimed-popup">
+  <div class="coin-chest">
+    <img src="https://res.cloudinary.com/de6upiddr/image/upload/nfsb9k2jhw3woo05uvvd.png" alt="coins-chest" srcset="">
+  </div>
+   <div class="chest-content">
+                <h5 class="heading-lg text-capitalize">congratulations</h5>
+                <span class="coins-count weight-bold">300 Coins Rewarded</span>
+              </div>
+  <div class="reward-colledted">
+    <button class="btn-md btn-close-reward">Back</button>
+  </div>
+</div>
+
+<style>
+  .reward-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+  }
+
+  .day-reward {
+    text-align: center;
+    width: clamp(190px, 15%, 300px);
+    padding: 15px 10px 10px;
+    background: #222129;
+    border-radius: 7px;
+    gap: 14px;
+    flex-grow: 1;
+    transition: .5s ease;
+    cursor: pointer;
+  }
+
+  span.claimed-check {
+    padding: 8px 10px;
+    display: inline-block;
+  }
+
+  .coin-chest {
+    max-width: 100px;
+  }
+
+  .reward-status {
+    max-width: 100%;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .day-reward:hover {
+    background: linear-gradient(45deg, #1b0927, #4c134e54);
+    transition: .5s ease;
+  }
+
+  .reward-status button {
+    width: 100%;
+  }
+
+  .locked .coin-chest {
+    filter: grayscale(0.8);
+  }
+
+  .claimed .coin-chest {
+    filter: grayscale(0.5);
+  }
+
+  .available .coin-chest {
+    filter: grayscale(0.2);
+  }
+
+  .available {
+    background: linear-gradient(45deg, #7326b038, #8c1eb926);
+  }
+
+  .claimed {
+    background: linear-gradient(45deg, #ffffff1a, #1f1227b5);
+}
+
+  .reward-day.claimed {
+    background-color: lightgreen;
+    opacity: 1;
+  }
+
+  .claimed-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+        background: url(./img/rays.png), radial-gradient(#140d1ce6, #302d152b, #ffe48000);
+    background-position: center;
+    background-size: 50%, 100% 200%;
+    background-repeat: no-repeat;
+    z-index: 100000000;
+    gap: 20px;
+    backdrop-filter: blur(2px);
+    display: none;
+  }
+
+  .claimed-popup .coin-chest {
+    width: 300px !important;
+    max-width: 500px;
+    filter: drop-shadow(0px 0px 50px #7c6c33);
+  }
+</style>
+
+<script type="module">
+  import SFXPlayer from './js/modules/sfxPlayer.js';
+
+  const sfxPlayer = new SFXPlayer();
+    sfxPlayer.loadAll({
+        'chestOpen': 'https://res.cloudinary.com/de6upiddr/video/upload/v1749409004/coin-drop-229314_wilexe.mp3',
+    });
+
+  function loadDailyRewards() {
+    $.ajax({
+      url: '/api/rewards/daily/status',
+      success: function (data) {
+        const container = $('#reward-container');
+        container.empty();
+
+        data.days.forEach((day, index) => {
+          const $reward = $(`
+            <div class="day-reward d-flex justify-center align-center direction-col ${day.claimed ? 'claimed' : ''} ${day.available ? 'available' : 'locked'}">
+              <div class="coin-chest">
+                <img src="${day.claimed ? 'https://res.cloudinary.com/de6upiddr/image/upload/v1749406566/chest-claimed_ogg12u.png' : day.available ? 'https://res.cloudinary.com/de6upiddr/image/upload/v1749406566/chest-reward_qalbmd.png' : 'https://res.cloudinary.com/de6upiddr/image/upload/v1749406566/chest-close_l5yqbu.png'}" alt="coins-chest">
+              </div>
+              <div class="chest-content">
+                <h5 class="heading-xs">Day 0${index + 1}</h5>
+                <span class="coins-count text-gray">${day.reward} coins</span>
+              </div>
+              <div class="reward-status">
+                ${day.claimed
+              ? '<span class="claimed-check text-success text-sm">✔ Collected</span>'
+              : day.available
+                ? '<button class="btn-md claim-btn">Collect</button>'
+                : `<span class="claimed-check text-gray text-sm">Unlocked at Day 0${index + 1}</span>`
+            }
+              </div>
+            </div>
+          `);
+
+          // Attach claim handler if available
+          if (day.available) {
+            $reward.find('.claim-btn').on('click', function () {
+              $.ajax({
+                url: '/api/rewards/daily',
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+                success: function (res) {
+                  // alert(res.message + ' + ' + res.coinsEarned + ' coins');
+                  sfxPlayer.play('chestOpen');
+                  //Display the claimed popup
+                  $('.claimed-popup').css('display', 'flex');
+                  $('.claimed-popup .coins-count').text(res.coinsEarned + ' Coins Rewarded');
+                  loadDailyRewards(); // Refresh UI
+                },
+                error: function (err) {
+                  alert(err.responseJSON?.message || 'Error claiming reward');
+                }
+              });
+            });
+
+            
+          }
+          $('.btn-close-reward').on('click', function () {
+
+              $('.claimed-popup').css('display', 'none');
+            });
+
+          container.append($reward);
+        });
+      }
+    });
+  }
+
+  $(document).ready(loadDailyRewards);
+
+</script>

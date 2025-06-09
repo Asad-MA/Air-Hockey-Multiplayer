@@ -14,6 +14,15 @@ apiRoutes.get('/user/:id' , API.getUser);
 
 apiRoutes.get('/notifications/', authenticate , API.getNotifications);
 
+apiRoutes.get('/leaderboard', authenticate, API.getLeaderboard);
+
+apiRoutes.get('/match-history', authenticate, API.getMatchHistory);
+
+apiRoutes.get('/rewards/daily/status', authenticate, API.getRewardList);
+
+apiRoutes.post('/rewards/daily', authenticate, API.claimReward);
+
+
 
 
 export default apiRoutes;

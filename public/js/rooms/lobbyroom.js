@@ -24,13 +24,16 @@ client.joinOrCreate("LOBBY" , {})
   console.log("Room Joined Successfully!", room);
 
   room.onMessage("challenge_room", async (data) => {
-    alert(`Room Id: "${data.roomId}"`);
+    // alert(`Room Id: "${data.roomId}"`);
      window.location.href = "/play-live/" + data.roomId;
   })
 
   room.onLeave((code)=>{
     console.log("client left the room:: Please reconnect");
   })
+})
+.catch(e => {
+  alert("Error While Joining Room: " + e.message);
 })
 
 
@@ -39,15 +42,15 @@ client.joinOrCreate("LOBBY" , {})
 
 
 play.addEventListener("click", () => {
-  const n1 = notifier.push( 
-    messages.joiningOnline.title , 
-    messages.joiningOnline.description, 
-    { type: 'info', duration: 0 }
-  );
+  // const n1 = notifier.push( 
+  //   messages.joiningOnline.title , 
+  //   messages.joiningOnline.description, 
+  //   { type: 'info', duration: 0 }
+  // );
   client.joinOrCreate("MATCH_MAKING_QUEUE", { name: "LOBBY ROOM" })
     .then(room => {
       console.log("Room Joined Successfully!", room);
-      notifier.remove(n1);
+      // notifier.remove(n1);
       notifier.push(
         messages.waitingForPlayer.title,
         messages.waitingForPlayer.description,
@@ -61,14 +64,12 @@ play.addEventListener("click", () => {
       ROOM = room;
     })
     .catch(e => {
-      console.error("Error While Joining", e.message);
+      // console.error("Error While Joining", e.message);
       notifier.push(
         'Error',
-        `Error While Joining Room: ${e.message}`,
-        { type: 'error', duration: 5000, actions: [
-          { label: 'Accept', callback: () => console.log('Accepted') },
-          { label: 'Reject', callback: () => console.log('Rejected') }
-      ] }
+        `${e.message}`,
+        new Date(),
+        { type: 'system', duration: 0 }
       );
     });
 });
@@ -83,6 +84,8 @@ function HandleRoom(room) {
       { type: 'success', duration: 0 }
     );
 
+    
+
 
     room.leave();
 
@@ -96,6 +99,14 @@ function HandleRoom(room) {
   
 
   });
+  room.onMessage("error", async (message) => {
+    console.log("Error WHile Joining Known: ", message);
+    notifier.push(
+      'Error',
+      message,
+      { type: 'error', duration: 0 }
+    );
+  })
   room.onError((code, message) => {
     console.log("oops, error ocurred:");
     console.log(message);
@@ -106,7 +117,12 @@ function HandleRoom(room) {
     throw new Error("Room Left: " + code);
   });
   room.onMessage("error", (message) => {
-    throw new Error(message);
+    notifier.push(
+      'Error',
+      message,
+      { type: 'error', duration: 0 }
+    );
+    // throw new Error(message);
   });
 }
 

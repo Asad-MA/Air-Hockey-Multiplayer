@@ -9,6 +9,9 @@ const userSchema = new mongoose.Schema({
     avatar: { type: String , default: 'https://res.cloudinary.com/de6upiddr/image/upload/v1746959884/cartoon-P._Geerya_z3y17b.jpg' },
     status: { type: String},
     accountStatus: { type: String , default: 'active'},
+    coins: { type: Number, default: 5000 },
+    lastDailyReward: { type: Date },
+    dailyStreak: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now }
 }, {collection: "Users"});
 

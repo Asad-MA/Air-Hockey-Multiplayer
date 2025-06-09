@@ -2,6 +2,7 @@ import refreshTokenRepo from "../repos/refreshTokenRepo.js";
 import AuthService from "../services/authService.js";
 import {StrToTime , timeToStr} from '../utils/humanReadableDate.js'
 import { UAParser } from 'ua-parser-js';
+import { formatCurrency } from "../utils/formatCurrency.js";
 
 const authenticate = async (req, res, next) => {
     const { token, refreshtoken } = req.cookies;
@@ -9,7 +10,7 @@ const authenticate = async (req, res, next) => {
         if (!token || !refreshtoken) throw new Error('Invalid Tokens!');
         const user = await AuthService.verifyToken(token);
         // console.log('Token verification case1' , user);
-        req.user = {_id: user.userId ,  name: user.name, displayName: user.displayName, email: user.email , token: token, avatar: user.avatar}
+        req.user = {_id: user.userId ,  name: user.name, displayName: user.displayName, email: user.email , token: token, avatar: user.avatar , coins: formatCurrency(user.coins)}
         next();
     }
     catch (err) {
@@ -98,7 +99,7 @@ const authenticate = async (req, res, next) => {
 
             // call next() 
             // console.log(user);
-            req.user = { _id: user._id , name: user.name, displayName: user.displayName, email: user.email , token: token ,  avatar: user.avatar}
+            req.user = { _id: user._id , name: user.name, displayName: user.displayName, email: user.email , token: token ,  avatar: user.avatar , coins: formatCurrency(user.coins)};
 
             next();
             //If invalid

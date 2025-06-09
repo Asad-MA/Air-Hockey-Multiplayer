@@ -12,6 +12,7 @@ import {client , connectRedis} from './config/redis-connection.js';
 import wss from './ws-channel.js';
 import { config } from './config/config.js';
 import requestRoutes from './routes/requestRoutes.js';
+import statsRouter from './routes/statsRoutes.js';
 
 
 
@@ -32,6 +33,7 @@ app.use(cookieParser());
 app.use(userRoutes);
 app.use(friendRoutes);
 app.use(requestRoutes);
+app.use(statsRouter);
 
 app.use(express.static("public"));
 

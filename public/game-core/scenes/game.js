@@ -85,6 +85,40 @@ class Game extends Phaser.Scene {
     this.renderPlayer(this.players[1], this.scale.width - 50, 50);
     this.addRemotePlayer(this.players[1]);
 
+    // In create:
+const paddleRadius = this.paddle.displayWidth / 2;
+
+const paddleCircle = new Phaser.Geom.Circle(0, 0, paddleRadius);
+
+const emitter = this.add.particles(0, 0, 'trail', {
+  speed: 30, // Set to 0, we'll apply custom velocity
+  lifespan: 1000,
+  frequency: 10,
+  scale: { start: 0.2, end: 0 },
+  blendMode: 'ADD',
+  emitZone: {
+    type: 'edge',
+    source: paddleCircle,
+    quantity: 100,
+    seamless: false
+  }
+});
+
+emitter.startFollow(this.paddle);
+emitter.setDepth(0);
+
+// 🔁 Apply outward velocity to each emitted particle
+// emitter.on('particleEmit', (particle) => {
+//   const dx = particle.x - this.paddle.x;
+//   const dy = particle.y - this.paddle.y;
+//   const angle = Math.atan2(dy, dx);
+//   const speed = 90;
+
+//   particle.velocityX = Math.cos(angle) * speed;
+//   particle.velocityY = Math.sin(angle) * speed;
+// });
+
+
 
     this.physics.add.collider(this.paddle, this.gameFrame.frameParts)
     this.physics.add.collider(this.puck, this.gameFrame.frameParts, (puck, frame) => {
@@ -94,6 +128,7 @@ class Game extends Phaser.Scene {
     )
     this.physics.add.collider(this.puck, this.paddle, (puck, paddle) => {
       this.puckhit.play();
+      // emitter.explode(50, this.puck.body.position.x , this.puck.body.position.y);
       // console.log(this.puck.body.velocity);
       const puckVirtualX = (this.puck.body.position.x - this.gameFrame.frameX) / this.gameFrame.scaleFactor;
       const puckVirtualY = (this.puck.body.position.y - this.gameFrame.frameY) / this.gameFrame.scaleFactor;
@@ -143,7 +178,8 @@ class Game extends Phaser.Scene {
       const x = Phaser.Math.Clamp(pointer.x, this.gameFrame.frameX + 50, this.gameFrame.frameX + this.gameFrame.frameWidth - 50);
       const y = Phaser.Math.Clamp(pointer.y, this.gameFrame.frameY + 50, this.gameFrame.frameY + this.gameFrame.frameHeight - 50);
 
-      this.time.delayedCall(70, () => {
+      // Network delay
+      this.time.delayedCall(1, () => {
         gameObject.setPosition(x, y);
       })
 
@@ -159,6 +195,22 @@ class Game extends Phaser.Scene {
 
       // console.log(this.gameState.getState().paddles.player1);
     });
+
+
+    // In preload:
+    // small soft white dot
+
+
+    // emitter.setDepth(0);
+
+
+
+    this.events.on('update', () => {
+      // const speed = this.paddle.body.velocity.length();
+      // emitter.setFrequency(Math.max(50 , 100 - speed));
+    });
+
+
 
     this.registerListener();
 
@@ -304,9 +356,9 @@ class Game extends Phaser.Scene {
     Network.addMessageListener('match_timer', (time) => { console.log(time); this.hud.update(time.remaining); })
     Network.addMessageListener('game_over', (message) => {
       console.log(message);
-      const result = this.players[0].name == message.winner ? 'win' : 'lose'
-      this.scene.launch('GameOver', { result }); // or 'lose'
-      this.scene.pause(); // pause game scene if needed
+      let result = this.players[0].name == message.winner ? 'win' : 'lose'
+      if (message.winner == 'Draw') result = 'draw';
+      this.gameOver({ scores: message.scores, result });
 
     })
   }
@@ -509,6 +561,14 @@ class Game extends Phaser.Scene {
     this.gameState.isPaused = true;
 
 
+  }
+
+  gameOver(result) {
+    this.physics.world.pause();
+    this.gameLoopx.paused = true;
+    this.gameState.isPaused = true;
+    this.bgMusic.pause();
+    this.scene.launch('GameOver', { result });
   }
 
   resume() {

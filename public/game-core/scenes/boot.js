@@ -96,6 +96,7 @@ class Boot extends Phaser.Scene {
         this.load.image("top-half", "textures/top-half.png");
         this.load.image("bottom-half", "textures/bottom-half.png");
         this.load.image("vs", "textures/vs.png");
+        this.load.image("trail", "textures/particle.png");
 
         // Loading SFX
         this.load.audio("glitch" , "sfx/glitch-c.wav");

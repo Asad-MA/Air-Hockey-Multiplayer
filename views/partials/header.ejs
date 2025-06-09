@@ -13,6 +13,9 @@
         </button>
         <p class="text-sm"><span id="player-count" class="text-sm">0</span> <span class="text-success text-sm">Online</span></p>
         <span class="divider-vr h-20"></span>
+        <div class="game-coins d-flex  align-center gap-10"><img width="20" src="https://res.cloudinary.com/de6upiddr/image/upload/v1749232473/ynmuaabas41jbjkmjdpg.png" alt="" srcset=""> 
+            <span class="text-sm text-gray"><%- user.coins %></span></div>
+         <span class="divider-vr h-20"></span>
         <span class="ui-icon-default" data-noti-opener><i class="fa-solid fa-bell"></i></span>
         <div id="top-notification" class="float-window noti-window hidden">
             <div class="placeholder mb-10">
@@ -34,8 +37,8 @@
         <div class="overlay"></div>
         <div class="user-meta d-flex img-box align-center gap-10">
             <span class="text-sm text-gray"><%- user.displayName %></span>
-            <span class="box-img box-rounded w-50 h-50 bg-gray">
-                <img src="" alt="" srcset="">
+            <span class="box-img box-rounded w-50 h-50 bg-gray overflow-hidden">
+                <img src="<%- user.avatar %>" alt="" srcset="">
             </span>
         </div>
         

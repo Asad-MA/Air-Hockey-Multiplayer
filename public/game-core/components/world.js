@@ -6,7 +6,7 @@ class GameWorld {
         this.physicsManager = new ArcadePhysicsManager(scene);
         this.bounds = { x: 0, y: 0, width: 0, height: 0 };
         // Define the virtual world size
-        this.virtualWidth = 560;  // Fixed logical width
+        this.virtualWidth = 506;  // Fixed logical width
         this.virtualHeight = 900; // Fixed logical height
 
 

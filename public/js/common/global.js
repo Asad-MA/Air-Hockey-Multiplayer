@@ -1,8 +1,12 @@
 import { config } from '../config.js';
+import SFXPlayer from '../modules/sfxPlayer.js';
+
+
 
 
 jQuery(document).ready(function($){
     console.log("Global Loaded!");
+    
     const OVERLAY = $('.overlay');
 
     OVERLAY.on('click' , function(){

@@ -12,7 +12,7 @@
 <body>
     <%- include('../partials/header') %>
 
-        <div class="dashboard-layout d-flex gap-20 p-20">
+        <div class="dashboard-layout d-flex align-start gap-20 p-20">
             <div class="ui-sidebar sidebar-left w-20per ">
                 <%- include('../partials/sidebar-left') %>
             </div>
@@ -36,27 +36,27 @@
                         <div class="user-stats justify-start">
                             <div class="key-value-box top-boxes ">
                                 <span class="box-key text-sm">Game Played:</span>
-                                <span class="box-value font-bold text-sm">90</span>
+                                <span class="box-value font-bold text-sm" data-games-played>90</span>
                             </div>
                             <div class="key-value-box w-40per">
                                 <span class="box-key text-sm">Winning Streak:</span>
-                                <span class="box-value font-bold text-sm">90</span>
+                                <span class="box-value font-bold text-sm" data-win-streak>90</span>
                             </div>
                             <div class="key-value-box">
                                 <span class="box-key text-sm">Lose:</span>
-                                <span class="box-value font-bold text-sm">10</span>
+                                <span class="box-value font-bold text-sm" data-lose>10</span>
                             </div>
                             <div class="key-value-box">
                                 <span class="box-key text-sm">Win:</span>
-                                <span class="box-value font-bold text-sm">48</span>
+                                <span class="box-value font-bold text-sm" data-win>48</span>
                             </div>
                             <div class="key-value-box">
                                 <span class="box-key text-sm">Win%:</span>
-                                <span class="box-value font-bold text-sm">90</span>
+                                <span class="box-value font-bold text-sm" data-win-per>90</span>
                             </div>
                             <div class="key-value-box">
                                 <span class="box-key text-sm">Last Game:</span>
-                                <span class="box-value font-bold text-sm">Lose</span>
+                                <span class="box-value font-bold text-sm" data-last-game>Lose</span>
                             </div>
                         </div>
                     </div>
@@ -64,10 +64,105 @@
 
                     </div>
                 </div>
-                <div class="ui-divider bg-gray"></div>
-                <div class="ui-charts">
+                
+                <!-- <div class="ui-charts">
 
+                </div> -->
+                <div class="daily-rewards">
+                    <div class="reward-header text-center p-10">
+                        <h3 class="heading-md text-uppercase divider-heading">Daily Rewards</h3>
+                        <p class="text-sm text-gray">Claim your daily rewards and earn coins!</p>
+                    </div>
+                    <%- include('../partials/reward-list') %>
                 </div>
+
+                <div class="leaderboard-weekly">
+                    <div class="reward-header text-center p-10">
+                        <h3 class="heading-md text-uppercase divider-heading">Leader Boards</h3>
+                        <p class="text-sm text-gray">Top 3 Players of the Week!</p>
+                    </div>
+                    <div id="top3-weekly" class="top3-players-grid d-flex gap-30 align-end">
+                       
+                        <div class="top-player-box">
+                            <div class="player-avatar">
+                                <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959884/cartoon-P._Geerya_z3y17b.jpg"
+                                    alt="Player Avatar">
+                            </div>
+                            <div class="top-player-content">
+                                <div class="player-meta">
+                                <h3 class="player-d-name heading-xs">FIghting Falcon</h3>
+                                <!-- <span class="player-u-name">@redflag</span> -->
+                            </div>
+                            <div class="ui-divider bg-dark-gray"></div>
+                            <div class="player-b-stats d-flex gap-30 align-center">
+                                <div class="stat-block flex-grow d-flex justify-between align-center" >
+                                    <span class="stat-key text-sm text-gray">Last Played:</span>
+                                    <span class="stat-value text-sm">Lose</span>
+                                </div>
+                                <div class="divider-vr"></div>
+                                <div class="stat-block flex-grow d-flex justify-between align-center">
+                                    <span class="stat-key text-sm text-gray">Coin Earned</span>
+                                    <span class="stat-value text-sm">1.39M</span>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="top-player-box">
+                            <div class="player-avatar">
+                                <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959884/cartoon-P._Geerya_z3y17b.jpg"
+                                    alt="Player Avatar">
+                            </div>
+                            <div class="top-player-content">
+                                <div class="player-meta">
+                                    <span class="text-gray text-sm mb-5 d-in-block"><i class="fa-solid fa-star rank-star-pink"></i> Top Ranked</span>
+                                <h3 class="player-d-name heading-xs">FIghting Falcon</h3>
+                                <!-- <span class="player-u-name">@redflag</span> -->
+                            </div>
+                            <div class="ui-divider bg-dark-gray"></div>
+                            <div class="player-b-stats d-flex gap-30 align-center">
+                                <div class="stat-block flex-grow d-flex justify-between align-center" >
+                                    <span class="stat-key text-sm text-gray">Last Played:</span>
+                                    <span class="stat-value text-sm">Lose</span>
+                                </div>
+                                <div class="divider-vr"></div>
+                                <div class="stat-block flex-grow d-flex justify-between align-center">
+                                    <span class="stat-key text-sm text-gray">Coin Earned</span>
+                                    <span class="stat-value text-sm">1.39M</span>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="top-player-box">
+                            <div class="player-avatar">
+                                <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959884/cartoon-P._Geerya_z3y17b.jpg"
+                                    alt="Player Avatar">
+                            </div>
+                            <div class="top-player-content">
+                                <div class="player-meta">
+                                <h3 class="player-d-name heading-xs">FIghting Falcon</h3>
+                                <!-- <span class="player-u-name">@redflag</span> -->
+                            </div>
+                            <div class="ui-divider bg-dark-gray"></div>
+                            <div class="player-b-stats d-flex gap-30 align-center">
+                                <div class="stat-block flex-grow d-flex justify-between align-center" >
+                                    <span class="stat-key text-sm text-gray">Last Played:</span>
+                                    <span class="stat-value text-sm">Lose</span>
+                                </div>
+                                <div class="divider-vr"></div>
+                                <div class="stat-block flex-grow d-flex justify-between align-center">
+                                    <span class="stat-key text-sm text-gray">Coin Earned</span>
+                                    <span class="stat-value text-sm">1.39M</span>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+
+                <div class="ui-divider bg-dark-gray"></div>
                 <div class="user-widgets d-flex gap-20">
                     <div class="Recent-chats-widget flex-fill ui-block">
 
@@ -282,9 +377,9 @@
                 </div>
             </div>
 
-            <div class="ui-sidebar sidebar-right w-20per md-hidden">
+            <!-- <div class="ui-sidebar sidebar-right w-20per md-hidden">
                 <%- include('../partials/leaderboards') %>
-            </div>
+            </div> -->
         </div>
 
         <%- include('../partials/footer') %>
@@ -295,7 +390,7 @@
 
 
             
-            
+            <script type="module" src="./js/pages/dashboard.js"></script>
 </body>
 
 </html>

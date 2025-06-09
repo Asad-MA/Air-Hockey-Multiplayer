@@ -22,11 +22,11 @@ userRoutes.get('/verify/:userId', verifyAccount, (req, res) => { res.render('pag
 
 userRoutes.get('/', authenticate, (req, res) => {
     // console.log('User: ', req.user);
-    res.render('pages/dashboard', { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token, avatar: req.user.avatar }})
+    res.render('pages/dashboard', { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token, avatar: req.user.avatar, coins: req.user.coins }});
 })
 
 userRoutes.get('/social/profile/:username' , authenticate , (req , res) => {
-    res.render('pages/profile',  { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token }});
+    res.render('pages/profile',  { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token, avatar: req.user.avatar, coins: req.user.coins }, username: req.params.username });
 })
 
 userRoutes.post('/register', requestsValidator.validateRegister, userController.handleRegister);

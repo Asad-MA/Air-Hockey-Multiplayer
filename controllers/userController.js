@@ -65,7 +65,7 @@ class UserController {
 
         }
         catch(err){
-            res.status(500).send({
+            res.status(401).send({
                 message: "We couldn't authenticate your request. Please try again later.",
                 error: err.message,
                 success: false,
