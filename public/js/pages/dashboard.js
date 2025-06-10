@@ -100,7 +100,7 @@ jQuery(document).ready(function ($) {
         });
 
     //Get the match history
-    function getMatchHistory({ page = 1, limit = 10, sort = 'recent', result = 'all' }) {
+    function getMatchHistory({ page = 1, limit = 5, sort = 'recent', result = 'all' }) {
         const query = new URLSearchParams({ page, limit, sort, result });
         $.ajax({
             url: `/api/match-history?${query.toString()}`,
@@ -108,6 +108,44 @@ jQuery(document).ready(function ($) {
             success: function (data) {
                 console.log("Match History:", data);
                 // Process and display match history data
+                $('#match-history-table').empty();
+                data.matches.forEach((match , i) => {
+                    $('#match-history-table').append(`
+                        <div class="ui-table-row d-flex align-center gap-10 match-result-${match.result}">
+                                <span class="ui-table-col text-sm">${i+1}</span>
+                                <span class="ui-table-col d-flex gap-10 justify-between align-center w-full-available">
+                                    <div class="match-palyer text-left d-flex gap-10">
+                                        <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+                                            <img src="${match.player.avatar}" alt="Player 1 Avatar" class="w-full h-full box-rounded">
+                                        </span>
+                                        <span class="user-detail-sm w-full-available">
+                                            <h5 class="text-sm user-displayname my-0">${match.player.name}</h5>
+                                            <div class="">
+                                                <span class="user-name text-sm text-gray">Goals: ${match.player.score}</span>
+                                            </div>
+
+                                        </span>
+                                    </div>
+                                    <h3 class="history-verses heading-xs">VS</h3>
+                                     <div class="match-palyer text-right d-flex gap-10 justify-end">
+                                        
+                                        <span class="user-detail-sm w-full-available">
+                                            <h5 class="text-sm user-displayname my-0">${match.opponent.name}</h5>
+                                            <div class="">
+                                                <span class="user-name text-sm text-gray">Goals: ${match.opponent.score}</span>
+                                            </div>
+
+                                        </span>
+                                        <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+                                            <img src="${match.opponent.avatar}" alt="Player 2 Avatar" class="w-full h-full box-rounded">
+                                        </span>
+                                    </div>
+
+                                </span>
+
+                            </div>
+                        `)
+                    });
             },
             error: function (error) {
                 console.error("Error fetching match history:", error);

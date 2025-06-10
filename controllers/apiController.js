@@ -248,6 +248,8 @@ API.getMatchHistory = async (req, res) => {
       const me = isPlayer1 ? p1 : p2;
       const opponent = isPlayer1 ? p2 : p1;
 
+      console.log(record.winner, userId);
+
       return {
         matchId: record._id,
         startTime: record.startTime,
@@ -261,7 +263,7 @@ API.getMatchHistory = async (req, res) => {
           avatar: opponent.user.avatar,
           score: opponent.score,
         },
-        result: String(record.winner) === String(userId) ? 'win' : 'lose',
+        result: String(record.winner?._id) == String(userId) ? 'win' : 'lose',
       };
     });
 

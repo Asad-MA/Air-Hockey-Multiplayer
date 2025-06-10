@@ -269,6 +269,22 @@ div#top-notification .notification {
     width: 90px;
 }
 
+/* Match History */
+.ui-table-row.match-result-lose {
+    background: linear-gradient(90deg, #201f26 10%, #4b2f37);
+    border-left: 2px solid #a75d73;
+    border-radius: 0px;
+    padding: 20px 14px;
+}
+
+.ui-table-row.match-result-win {
+    background: linear-gradient(90deg, #201f26 10%, #1f4a4b);
+        border-left: 2px solid #1f4a4b;
+    border-radius: 0px;
+    padding: 20px 14px;
+}
+
+
 @media all and (max-width: 1440px){
     .md-hidden{
         display: none;

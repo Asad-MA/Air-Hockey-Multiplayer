@@ -384,12 +384,20 @@ header{
     justify-content: space-between;
 }
 
+
 .justify-end{
     justify-content: flex-end;
 }
 
 .text-center{
     text-align: center;
+}
+
+.text-right{
+    text-align: right;
+}
+.text-left{
+    text-align: left;
 }
 
 .p-20{
