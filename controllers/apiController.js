@@ -4,6 +4,7 @@ import gameRecord from "../models/gameRecord.js";
 
 // Helper function to get date range based on period
 import { getDateRange } from '../utils/dates.js';
+import { timeToStr } from "../utils/humanReadableDate.js";
 
 
 const API = {};
@@ -253,6 +254,9 @@ API.getMatchHistory = async (req, res) => {
       return {
         matchId: record._id,
         startTime: record.startTime,
+        endTime: record.endTime,
+        duration: record.endTime - record.startTime,
+        timeToStr: timeToStr(record.startTime),
         player: {
           name: me.user.displayName,
           avatar: me.user.avatar,

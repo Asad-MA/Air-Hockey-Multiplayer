@@ -5,7 +5,6 @@ import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
-import friendRoutes from './routes/friendRoutes.js';
 import apiRoutes from './routes/apiRoutes.js';
 import defaultAuth from './middleware/api/defaultAuth.js';
 import {client , connectRedis} from './config/redis-connection.js';
@@ -13,6 +12,7 @@ import wss from './ws-channel.js';
 import { config } from './config/config.js';
 import requestRoutes from './routes/requestRoutes.js';
 import statsRouter from './routes/statsRoutes.js';
+import socialRoutes from './routes/socialRoutes.js';
 
 
 
@@ -31,9 +31,10 @@ app.use(cookieParser());
 
 // Setting Up Routes
 app.use(userRoutes);
-app.use(friendRoutes);
+// app.use(friendRoutes);
 app.use(requestRoutes);
 app.use(statsRouter);
+app.use('/social' , socialRoutes);
 
 app.use(express.static("public"));
 

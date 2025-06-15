@@ -6,7 +6,7 @@ let socket;
 const notifier = new NotificationManager();
 
 function connectToNotificationServer() {
-  socket = new WebSocket('ws://localhost:3005');
+  socket = new WebSocket('ws://localhost:3005/notifications', []);
 
   socket.addEventListener('message', (event) => {
     const data = JSON.parse(event.data);
