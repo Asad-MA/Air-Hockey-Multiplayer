@@ -1,11 +1,11 @@
-import Database from '../config/db.js';
+import Database from './config/db.js';
 import express from 'express';
 import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
-import User from '../models/user.js';
-import verficationToken from '../models/verficationToken.js';
-import blacklistToken from '../models/blacklistToken.js';
+import User from './models/user.js';
+import verficationToken from './models/verficationToken.js';
+import blacklistToken from './models/blacklistToken.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import methodOverride from 'method-override';
@@ -34,7 +34,7 @@ app.get('/', async (req, res) => {
   const users = await User.find();
   const emailTokens = await verficationToken.find();
   const blacklistTokens = await blacklistToken.find();
-  res.render('users', { users , emailTokens , blacklistTokens});
+  res.render('dashboard', { users , emailTokens , blacklistTokens});
 });
 
 // Show Edit Form

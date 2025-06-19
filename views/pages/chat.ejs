@@ -9,7 +9,21 @@
     <title>CHAT | Air Hockey Online</title>
 </head>
 <style>
-   
+   .chat-window-wrap.flex-grow {
+    width: 70%;
+}
+
+.chat-users {
+    background: #201f26;
+    width: 100%;
+    max-width: 300px;
+}
+
+.chat-window-wrap {
+    background: #201f26;
+    width: 70%;
+    border-radius: 20px;
+}
 </style>
 <body>
     <%- include('../partials/header') %>
@@ -19,8 +33,16 @@
                 <%- include('../partials/sidebar-left') %>
             </div>
 
-            <div class="dashboard-content w-80per md-w-80per loading p-20 d-flex direction-col gap-30  pos-relative">
-                <h1>CHATS</h1>
+            <div class="dashboard-content w-80per md-w-80per loading p-20 d-flex direction-col gap-30  pos-relative flex-grow">
+                <div class="chat-wrapper d-flex gap-20 flex-grow">
+                    <div class="chat-users chat-sidebar">
+                        users
+                    </div>
+                    <div class="chat-window-wrap flex-grow">
+                        <div class="chat-window">chat-window</div>
+                        <div class="chat-sender-box">sendbox</div>
+                    </div>
+                </div>
             </div>
 
             

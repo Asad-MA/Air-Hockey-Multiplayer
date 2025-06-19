@@ -1,4 +1,71 @@
+/*  */
+.dashboard-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
 
+.dashboard-card {
+    min-width: 500px;
+}
+.full-width {
+    min-width: 100%;
+}
+
+ table td
+ {
+    background: #201f26 !important;
+    border-top: 0px solid #2d2c33;
+    padding: 1.5em .45em !important;
+    border-bottom: 0;
+    font: 400 12px 'Tomorrow';
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    text-align: center;
+  color: #908ca8
+}
+
+.dataTables_length{
+    display: none;
+}
+
+table{
+    padding-top: 10px !important;
+    border-radius: 10px !important;
+    overflow: hidden;
+}
+
+ table th
+ {
+    background: #201f26 !important;
+    border-top: 0px solid #2d2c33;
+    padding: 2em .45em !important;
+    border-bottom: 0;
+    font: 500 13px 'Tomorrow';
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    text-align: center;
+  color: #bab7ca
+}
+
+.gameserver-stats {
+    flex-grow: 1;
+    background: #16151a;
+    border-radius: 20px;
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    padding: 20px 10px;
+}
+
+.dashboard-chart {
+    border-radius: 20px;
+    overflow: hidden;
+    /* min-width: 400px; */
+    /* flex-grow: 1; */
+    background-color: #272630;
+}
+/* End */
 .dashboard-layout {
     height: calc(100% - 110px);
 }

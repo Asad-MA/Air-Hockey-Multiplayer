@@ -12,6 +12,7 @@ function connectToRTGS() {
         console.log("📥 Status update received:", data);
         switch (data.type) {
             case 'friendOnline':
+            case 'initialOnlineFriends':
                 renderActiveFriends(data.onlineFriends);
                 break;
             case 'friendOffline':
@@ -35,6 +36,7 @@ function connectToRTGS() {
 }
 
 function renderActiveFriends(activeFriends) {
+    console.log("Rendering active friends:", activeFriends);
     const activeFriendsList = $("#active-friends-table");
     // activeFriendsList.empty(); // Clear previous list
     $('[data-row="empty"]').hide();

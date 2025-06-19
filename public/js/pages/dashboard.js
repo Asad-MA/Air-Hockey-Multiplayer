@@ -64,6 +64,7 @@ jQuery(document).ready(function ($) {
             if (data) {
                 console.log('Leaderboard data:', data);
                 $('#top3-weekly').empty();
+                if(!data.length) $('#top3-weekly').append(`<div class="no-result-found flex-grow text-center"><i class="fa-solid fa-trophy text-gray" aria-hidden="true"></i><h4 class="heading-md text-gray text-center">Be the first champion of the week!</h4></div>`)
                 data.slice(0, 3).forEach((player , i) => {
                     let className = i==0?'top-ranked-weekly3':'top-runner-up';
                     $('#top3-weekly').append(`
@@ -98,6 +99,43 @@ jQuery(document).ready(function ($) {
                 // Process and display the leaderboard data as needed
             }
         });
+
+
+
+    // All Time Top Players
+     fetchLeaderboard({ period: 'all', sortBy: 'totalCoins', page: 1, limit: 5 })
+        .then(data => {
+            if (data) {
+                console.log('Leaderboard data:', data);
+                $('#top-players-table').empty();
+                if(!data.length) $('#top-players-table').append(`<div class="no-result-found flex-grow text-center"><i class="fa-solid fa-trophy text-gray" aria-hidden="true"></i><h4 class="heading-md text-gray text-center">Be the first champion of the week!</h4></div>`)
+                data.slice(0, 3).forEach((player , i) => {
+                    // let className = i==0?'top-ranked-weekly3':'top-runner-up';
+                    $('#top-players-table').append(`
+                        <div class="ui-table-row d-flex align-center gap-10">
+                                <span class="ui-table-col text-sm">${i}</span>
+                                <span class="ui-table-col d-flex gap-10 w-full-available">
+                                    <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+                                        <img src="${player.avatar}" alt="Player Avatar" class="w-full h-full box-rounded">
+                                    </span>
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">${player.displayName}</h5>
+                                        <div class="d-flex justify-between">
+                                            <span class="user-name text-sm text-gray">@username</span>
+                                            <span class="d-flex align-center text-sm gap-5 text-gray">${player.totalCoins} <img width="15" src="https://res.cloudinary.com/de6upiddr/image/upload/v1749232473/ynmuaabas41jbjkmjdpg.png" alt="" srcset=""></span>
+                                        </div>
+
+                                    </span>
+                                </span>
+
+                            </div>
+                    `);
+                });
+                
+                // Process and display the leaderboard data as needed
+            }
+        });
+
 
     //Get the match history
     function getMatchHistory({ page = 1, limit = 5, sort = 'recent', result = 'all' }) {

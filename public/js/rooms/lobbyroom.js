@@ -2,8 +2,9 @@ import {NotificationManager} from "../modules/notificationManager.js";
 import messages from "../messages.js";
 import { config } from "../config.js";
 
-console.log("Lobby Room!!!");
-const play = document.getElementById("play-online");
+jQuery(document).ready(function($) {
+  console.log("Lobby Room!!!");
+const play = $("[data-play-online]");
 
 const status = document.getElementById("status");
 const serverUrl = `ws://${config.baseUrl}:2567`;
@@ -41,7 +42,7 @@ client.joinOrCreate("LOBBY" , {})
 /*END*/ 
 
 
-play.addEventListener("click", () => {
+play.on("click", () => {
   // const n1 = notifier.push( 
   //   messages.joiningOnline.title , 
   //   messages.joiningOnline.description, 
@@ -52,12 +53,10 @@ play.addEventListener("click", () => {
       console.log("Room Joined Successfully!", room);
       // notifier.remove(n1);
       notifier.push(
-        messages.waitingForPlayer.title,
-        messages.waitingForPlayer.description,
-        { type: 'success', duration: 0, actions: [
-          { label: 'Accept', callback: () => console.log('Accepted') },
-          { label: 'Reject', callback: () => console.log('Rejected') }
-      ] }
+        'Matchmaking...',
+        'Searching for opponent...',
+        new Date(),
+        { type: 'loading', duration: 0,  }
       );
       
       HandleRoom(room);
@@ -67,7 +66,7 @@ play.addEventListener("click", () => {
       // console.error("Error While Joining", e.message);
       notifier.push(
         'Error',
-        `${e.message}`,
+        `${e.message || "Unknown Error While Joining. Maybe you already in a room or server is down."}`,
         new Date(),
         { type: 'system', duration: 0 }
       );
@@ -81,6 +80,7 @@ function HandleRoom(room) {
     notifier.push(
       messages.matchFound.title,
       messages.matchFound.description,
+      new Date(),
       { type: 'success', duration: 0 }
     );
 
@@ -104,6 +104,7 @@ function HandleRoom(room) {
     notifier.push(
       'Error',
       message,
+      new Date(),
       { type: 'error', duration: 0 }
     );
   })
@@ -120,6 +121,7 @@ function HandleRoom(room) {
     notifier.push(
       'Error',
       message,
+      new Date(),
       { type: 'error', duration: 0 }
     );
     // throw new Error(message);
@@ -128,3 +130,5 @@ function HandleRoom(room) {
 
 
 
+
+})

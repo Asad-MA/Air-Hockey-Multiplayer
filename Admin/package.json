@@ -1,8 +1,6 @@
 {
   "scripts": {
-    "start": "nodemon index.js",
-    "user": "nodemon index.js",
-    "admin": "nodemon admin/admin.js"
+    "start": "nodemon admin.js"
   },
   "type": "module",
   "dependencies": {

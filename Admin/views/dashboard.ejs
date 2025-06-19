@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/global-styles.css">
+    <link rel="stylesheet" href="/styles/dashboard.css">
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <title>Admin - Air Hockey Multiplayer</title>
+</head>
+
+<body>
+
+    <div class="dashboard-layout p-20">
+        <div class="reward-header text-center p-10" bis_skin_checked="1">
+            <h3 class="heading-md text-uppercase divider-heading">Game Server Stats</h3>
+            <p class="text-sm text-gray">Live performance and activity metrics!</p>
+        </div>
+
+        <div class="dashboard-content grid grid-cols-3 gap-4">
+            <div class="gameserver-stats">
+                <div class="dashboard-chart flex-grow">
+                    <h3 class="heading-sm text-uppercase text-center p-10 text-gray">CPU Usage %</h3>
+                    <div id="cpu-usage-chart" style="width:100%; height:400px;"></div>
+                </div>
+
+                <div class="dashboard-chart">
+                    <h3 class="heading-sm text-uppercase text-center text-gray p-10">RAM Usage</h3>
+                    <div id="memory-usage">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-card flex-grow full-width">
+                <div class="Recent-chats-widget flex-fill ui-block">
+
+                    <div class="widget-header glow-border-top glow-gold bg-grad-default text-center p-10 rounded-10">
+                        <h3 class="widget-title my-0">Active Rooms</h3>
+                    </div>
+                    <table id="rooms-table" class="display" style="width:100%">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Room Name</th>
+      <th>Room ID</th>
+      <th>Clients</th>
+      <th>Max Clients</th>
+      <th>Locked</th>
+      <th>Private</th>
+      <th>Unlisted</th>
+      <th>Elapsed Time</th>
+      <th>Created At</th>
+      <th>Process ID</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+
+                </div>
+            </div>
+
+             <div class="reward-header text-center p-10 full-width flex-grow">
+            <h3 class="heading-md text-uppercase divider-heading">User Stats</h3>
+            <p class="text-sm text-gray">Manage users and view User & Game related stats!</p>
+        </div>
+
+            <div class="dashboard-card flex-grow">
+                <div class="Recent-chats-widget flex-fill ui-block">
+
+                    <div class="widget-header glow-border-top glow-gold bg-grad-default text-center p-10 rounded-10">
+                        <h3 class="widget-title my-0">Recently Registered Users</h3>
+                    </div>
+                    <div class="ui-table-default d-flex direction-col gap-5 py-10" id="top-players-table">
+                        <div class="ui-table-row d-flex align-center gap-10">
+                            <span class="ui-table-col text-sm">1</span>
+                            <span class="ui-table-col d-flex gap-10 w-full-available">
+                                <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+
+                                </span>
+                                <span class="user-detail-sm w-full-available">
+                                    <h5 class="text-sm user-displayname my-0">Ali</h5>
+                                    <div class="d-flex justify-between">
+                                        <span class="user-name text-sm text-gray">@username</span>
+                                        <span class="d-flex align-center text-sm gap-5 text-gray">1.5k <i
+                                                class="fa-solid fa-ring"></i></span>
+                                    </div>
+
+                                </span>
+                            </span>
+
+                        </div>
+
+                        <div class="ui-table-row d-flex align-center gap-10">
+                            <span class="ui-table-col text-sm">2</span>
+                            <span class="ui-table-col d-flex gap-10 w-full-available">
+                                <a href="#">
+                                    <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+
+                                    </span>
+                                </a>
+                                <span class="user-detail-sm w-full-available">
+                                    <h5 class="text-sm user-displayname my-0 text-size-sm">Ali</h5>
+                                    <div class="d-flex justify-between">
+                                        <span class="user-name text-sm text-gray">@username</span>
+                                        <span class="d-flex align-center text-sm gap-5 text-gray">1.5k <i
+                                                class="fa-solid fa-ring"></i></span>
+                                    </div>
+
+                                </span>
+                            </span>
+
+                        </div>
+
+                        <div class="ui-table-row d-flex align-center gap-10">
+                            <span class="ui-table-col text-sm">3</span>
+                            <span class="ui-table-col d-flex gap-10 w-full-available">
+                                <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+
+                                </span>
+                                <span class="user-detail-sm w-full-available">
+                                    <h5 class="text-sm user-displayname my-0">Ali</h5>
+                                    <div class="d-flex justify-between">
+                                        <span class="user-name text-sm text-gray">@username</span>
+                                        <span class="d-flex align-center text-sm gap-5 text-gray">1.5k <i
+                                                class="fa-solid fa-ring"></i></span>
+                                    </div>
+
+                                </span>
+                            </span>
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="dashboard-card flex-grow">
+                <div class="Recent-chats-widget flex-fill ui-block">
+
+                    <div class="widget-header glow-border-top glow-gold bg-grad-default text-center p-10 rounded-10">
+                        <h3 class="widget-title my-0">Top Players</h3>
+                    </div>
+                    <div class="ui-table-default d-flex direction-col gap-5 py-10" id="top-players-table">
+                        <div class="ui-table-row d-flex align-center gap-10">
+                            <span class="ui-table-col text-sm">1</span>
+                            <span class="ui-table-col d-flex gap-10 w-full-available">
+                                <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+
+                                </span>
+                                <span class="user-detail-sm w-full-available">
+                                    <h5 class="text-sm user-displayname my-0">Ali</h5>
+                                    <div class="d-flex justify-between">
+                                        <span class="user-name text-sm text-gray">@username</span>
+                                        <span class="d-flex align-center text-sm gap-5 text-gray">1.5k <i
+                                                class="fa-solid fa-ring"></i></span>
+                                    </div>
+
+                                </span>
+                            </span>
+
+                        </div>
+
+                        <div class="ui-table-row d-flex align-center gap-10">
+                            <span class="ui-table-col text-sm">2</span>
+                            <span class="ui-table-col d-flex gap-10 w-full-available">
+                                <a href="#">
+                                    <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+
+                                    </span>
+                                </a>
+                                <span class="user-detail-sm w-full-available">
+                                    <h5 class="text-sm user-displayname my-0 text-size-sm">Ali</h5>
+                                    <div class="d-flex justify-between">
+                                        <span class="user-name text-sm text-gray">@username</span>
+                                        <span class="d-flex align-center text-sm gap-5 text-gray">1.5k <i
+                                                class="fa-solid fa-ring"></i></span>
+                                    </div>
+
+                                </span>
+                            </span>
+
+                        </div>
+
+                        <div class="ui-table-row d-flex align-center gap-10">
+                            <span class="ui-table-col text-sm">3</span>
+                            <span class="ui-table-col d-flex gap-10 w-full-available">
+                                <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+
+                                </span>
+                                <span class="user-detail-sm w-full-available">
+                                    <h5 class="text-sm user-displayname my-0">Ali</h5>
+                                    <div class="d-flex justify-between">
+                                        <span class="user-name text-sm text-gray">@username</span>
+                                        <span class="d-flex align-center text-sm gap-5 text-gray">1.5k <i
+                                                class="fa-solid fa-ring"></i></span>
+                                    </div>
+
+                                </span>
+                            </span>
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="dashboard-card flex-grow">
+                <div class="Recent-chats-widget flex-fill ui-block">
+
+                    <div class="widget-header glow-border-top glow-gold bg-grad-default text-center p-10 rounded-10">
+                        <h3 class="widget-title my-0">Top Players</h3>
+                    </div>
+                    <div class="ui-table-default d-flex direction-col gap-5 py-10" id="top-players-table">
+                        <div class="ui-table-row d-flex align-center gap-10">
+                            <span class="ui-table-col text-sm">1</span>
+                            <span class="ui-table-col d-flex gap-10 w-full-available">
+                                <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+
+                                </span>
+                                <span class="user-detail-sm w-full-available">
+                                    <h5 class="text-sm user-displayname my-0">Ali</h5>
+                                    <div class="d-flex justify-between">
+                                        <span class="user-name text-sm text-gray">@username</span>
+                                        <span class="d-flex align-center text-sm gap-5 text-gray">1.5k <i
+                                                class="fa-solid fa-ring"></i></span>
+                                    </div>
+
+                                </span>
+                            </span>
+
+                        </div>
+
+                        <div class="ui-table-row d-flex align-center gap-10">
+                            <span class="ui-table-col text-sm">2</span>
+                            <span class="ui-table-col d-flex gap-10 w-full-available">
+                                <a href="#">
+                                    <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+
+                                    </span>
+                                </a>
+                                <span class="user-detail-sm w-full-available">
+                                    <h5 class="text-sm user-displayname my-0 text-size-sm">Ali</h5>
+                                    <div class="d-flex justify-between">
+                                        <span class="user-name text-sm text-gray">@username</span>
+                                        <span class="d-flex align-center text-sm gap-5 text-gray">1.5k <i
+                                                class="fa-solid fa-ring"></i></span>
+                                    </div>
+
+                                </span>
+                            </span>
+
+                        </div>
+
+                        <div class="ui-table-row d-flex align-center gap-10">
+                            <span class="ui-table-col text-sm">3</span>
+                            <span class="ui-table-col d-flex gap-10 w-full-available">
+                                <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+
+                                </span>
+                                <span class="user-detail-sm w-full-available">
+                                    <h5 class="text-sm user-displayname my-0">Ali</h5>
+                                    <div class="d-flex justify-between">
+                                        <span class="user-name text-sm text-gray">@username</span>
+                                        <span class="d-flex align-center text-sm gap-5 text-gray">1.5k <i
+                                                class="fa-solid fa-ring"></i></span>
+                                    </div>
+
+                                </span>
+                            </span>
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="dashboard-card flex-grow">
+                <div class="history-widget flex-fill ui-block">
+
+                    <div class="widget-header glow-border-top glow-gold bg-grad-default text-center p-10 rounded-10">
+                        <h3 class="widget-title my-0">Matches History</h3>
+                    </div>
+                    <div class="ui-table-default d-flex direction-col gap-5 py-10 " id="match-history-table">
+                        <div class="ui-table-row d-flex align-center gap-10 match-result-win" bis_skin_checked="1">
+                            <span class="ui-table-col text-sm">1</span>
+                            <span class="ui-table-col d-flex gap-10 justify-between align-center w-full-available">
+                                <div class="match-palyer text-left d-flex gap-10" bis_skin_checked="1">
+                                    <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+                                        <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959878/cartoon-man-wearing-vr-glasses_rbaihe.jpg"
+                                            alt="Player 1 Avatar" class="w-full h-full box-rounded">
+                                    </span>
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">RedFlag25</h5>
+                                        <div class="" bis_skin_checked="1">
+                                            <span class="user-name text-sm text-gray">Goals: 2</span>
+                                        </div>
+
+                                    </span>
+                                </div>
+                                <h3 class="history-verses heading-xs">VS</h3>
+                                <div class="match-palyer text-right d-flex gap-10 justify-end" bis_skin_checked="1">
+
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">Falcon XS</h5>
+                                        <div class="" bis_skin_checked="1">
+                                            <span class="user-name text-sm text-gray">Goals: 0</span>
+                                        </div>
+
+                                    </span>
+                                    <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+                                        <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959884/cartoon-P._Geerya_z3y17b.jpg"
+                                            alt="Player 2 Avatar" class="w-full h-full box-rounded">
+                                    </span>
+                                </div>
+
+                            </span>
+
+                        </div>
+                        <div class="ui-table-row d-flex align-center gap-10 match-result-win" bis_skin_checked="1">
+                            <span class="ui-table-col text-sm">1</span>
+                            <span class="ui-table-col d-flex gap-10 justify-between align-center w-full-available">
+                                <div class="match-palyer text-left d-flex gap-10" bis_skin_checked="1">
+                                    <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+                                        <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959878/cartoon-man-wearing-vr-glasses_rbaihe.jpg"
+                                            alt="Player 1 Avatar" class="w-full h-full box-rounded">
+                                    </span>
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">RedFlag25</h5>
+                                        <div class="" bis_skin_checked="1">
+                                            <span class="user-name text-sm text-gray">Goals: 2</span>
+                                        </div>
+
+                                    </span>
+                                </div>
+                                <h3 class="history-verses heading-xs">VS</h3>
+                                <div class="match-palyer text-right d-flex gap-10 justify-end" bis_skin_checked="1">
+
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">Falcon XS</h5>
+                                        <div class="" bis_skin_checked="1">
+                                            <span class="user-name text-sm text-gray">Goals: 0</span>
+                                        </div>
+
+                                    </span>
+                                    <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+                                        <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959884/cartoon-P._Geerya_z3y17b.jpg"
+                                            alt="Player 2 Avatar" class="w-full h-full box-rounded">
+                                    </span>
+                                </div>
+
+                            </span>
+
+                        </div>
+                        <div class="ui-table-row d-flex align-center gap-10 match-result-win" bis_skin_checked="1">
+                            <span class="ui-table-col text-sm">1</span>
+                            <span class="ui-table-col d-flex gap-10 justify-between align-center w-full-available">
+                                <div class="match-palyer text-left d-flex gap-10" bis_skin_checked="1">
+                                    <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+                                        <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959878/cartoon-man-wearing-vr-glasses_rbaihe.jpg"
+                                            alt="Player 1 Avatar" class="w-full h-full box-rounded">
+                                    </span>
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">RedFlag25</h5>
+                                        <div class="" bis_skin_checked="1">
+                                            <span class="user-name text-sm text-gray">Goals: 2</span>
+                                        </div>
+
+                                    </span>
+                                </div>
+                                <h3 class="history-verses heading-xs">VS</h3>
+                                <div class="match-palyer text-right d-flex gap-10 justify-end" bis_skin_checked="1">
+
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">Falcon XS</h5>
+                                        <div class="" bis_skin_checked="1">
+                                            <span class="user-name text-sm text-gray">Goals: 0</span>
+                                        </div>
+
+                                    </span>
+                                    <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+                                        <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959884/cartoon-P._Geerya_z3y17b.jpg"
+                                            alt="Player 2 Avatar" class="w-full h-full box-rounded">
+                                    </span>
+                                </div>
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-footer">
+            <a href="/admin/logout" class="logout-button">Logout</a>
+        </div>
+    </div>
+    <script>
+
+        var SERVER_DATA = {
+            columns: [],
+            connections: 0,
+            memory: { totalMemMb: 0, freeMemMb: 0, usedMemMb: 0 },
+            cpu: 0,
+            rooms: [],
+        };
+
+        // Fetch data every second
+
+        const MEM_CHART = Highcharts.chart('memory-usage', {
+            chart: {
+                type: 'pie',
+                custom: {},
+                backgroundColor: "#272630",
+                width: 350,
+                events: {
+                    // render() {
+                    //     const chart = this,
+                    //         series = chart.series[0];
+                    //     let customLabel = chart.options.chart.custom.label;
+
+                    //     if (!customLabel) {
+                    //         customLabel = chart.options.chart.custom.label =
+                    //             chart.renderer.label(
+                    //                 'Total<br/>' +
+                    //                 '<strong>2 877 820</strong>'
+                    //             )
+                    //                 .css({
+                    //                     color: '#000',
+                    //                     textAnchor: 'middle'
+                    //                 })
+                    //                 .add();
+                    //     }
+
+                    //     const x = series.center[0] + chart.plotLeft,
+                    //         y = series.center[1] + chart.plotTop -
+                    //         (customLabel.attr('height') / 2);
+
+                    //     customLabel.attr({
+                    //         x,
+                    //         y
+                    //     });
+                    //     // Set font size based on chart diameter
+                    //     customLabel.css({
+                    //         fontSize: `${series.center[2] / 12}px`
+                    //     });
+                    // }
+                }
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: 'MB'
+                }
+            },
+            title: null,
+
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+
+            },
+            legend: {
+                enabled: true
+            },
+            plotOptions: {
+                series: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    borderRadius: 4,
+                    borderWidth: 0,
+                    dataLabels: [{
+                        enabled: false,
+                        distance: 20,
+                        format: '{point.name}'
+                    }, {
+                        enabled: true,
+                        distance: -15,
+                        format: '{point.y:.1f}GB',
+                        style: {
+                            fontFamily: 'Tomorrow, sans-serif',
+                            color: '#fff', // ← your desired color
+                            fontSize: '10px'
+                        }
+                    }],
+                    showInLegend: true
+                }
+            },
+            legend: {
+                itemStyle: {
+                    color: '#908ca8',         // ← your desired color
+                    fontFamily: 'Tomorrow, sans-serif' // ← your desired font
+                }
+            },
+
+            series: [{
+                name: 'Memory Percentage',
+                colorByPoint: true,
+                innerSize: '75%',
+                data: []
+            }]
+        });
+
+
+        Highcharts.chart('cpu-usage-chart', {
+            chart: {
+                type: 'areaspline',
+                animation: Highcharts.svg,
+                backgroundColor: "#272630",
+                marginRight: 10,
+                events: {
+                    load: function () {
+                        const series = this.series[0];
+
+                        // Simulate real-time CPU usage updates
+                        setInterval(function () {
+                            const x = (new Date()).getTime();
+                            const y = SERVER_DATA.cpu; // Replace this with real CPU data
+                            series.addPoint([x, y], true, true);
+                        }, 3000);
+                    }
+                }
+            },
+
+
+
+
+            time: { useUTC: false },
+
+            title: null,
+
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150,
+                gridLineWidth: 0,
+                labels: {
+                    style: {
+                        color: '#908ca8' // ← change to your desired color
+                    }
+                },
+            },
+
+            yAxis: {
+                title: { text: 'Usage %' },
+                min: 0,
+                max: 100,
+                gridLineWidth: 0,
+                labels: {
+                    style: {
+                        color: '#908ca8' // ← change to your desired color
+                    }
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#908ca8'
+                }]
+            },
+
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + Highcharts.dateFormat('%H:%M:%S', this.x) + '</b><br/>' +
+                        Highcharts.numberFormat(this.y, 2) + ' %';
+                }
+            },
+
+            legend: { enabled: false },
+
+            series: [{
+                name: 'CPU Usage',
+                marker: { enabled: false },
+                data: (function () {
+                    // Start with 20 points
+                    const data = [], time = (new Date()).getTime();
+                    for (let i = -5; i <= 0; i++) {
+                        data.push({ x: time + i * 1000, y: 0 });
+                    }
+                    return data;
+                })()
+            }]
+        });
+
+       let dataTable;
+
+  function msToTime(ms) {
+    const sec = Math.floor((ms / 1000) % 60);
+    const min = Math.floor((ms / 60000) % 60);
+    const hr = Math.floor(ms / 3600000);
+    return `${hr}h ${min}m ${sec}s`;
+  }
+
+  function loadRooms(data) {
+    const rows = data.rooms.map((room, index) => ([
+      index + 1,
+      room.name,
+      room.roomId,
+      room.clients,
+      room.maxClients,
+      room.locked ? 'Yes' : 'No',
+      room.private ? 'Yes' : 'No',
+      room.unlisted ? 'Yes' : 'No',
+      msToTime(room.elapsedTime),
+      new Date(room.createdAt).toLocaleString(),
+      room.processId
+    ]));
+
+    dataTable.clear().rows.add(rows).draw();
+  }
+
+  jQuery(document).ready(function ($) {
+    dataTable = $('#rooms-table').DataTable({
+      paging: true,
+      searching: false,
+      ordering: false,
+      info: false
+    });
+
+})
+
+   
+
+
+        function getServerStats() {
+            fetch('http://localhost:2567/monitor/api')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // Update the CPU usage chart with the fetched data
+                    SERVER_DATA = data;
+                })
+                .catch(error => console.error('Error fetching CPU usage data:', error));
+        }
+
+        setInterval(() => {
+            getServerStats();
+            const total = SERVER_DATA.memory.totalMemMb; // e.g. total GB
+            const used = SERVER_DATA.memory.usedMemMb;
+            const free = total - used;
+
+            MEM_CHART.series[0].setData([
+                { name: 'Used Memory', y: parseFloat((used / 1024).toFixed(2)) },
+                { name: 'Free Memory', y: parseFloat((free / 1024).toFixed(2)) }
+            ]);
+
+            loadRooms(SERVER_DATA);
+        }, 3000); 
+    </script>
+</body>
+
+</html>

@@ -210,12 +210,11 @@ class Notification {
                 };
             default:
                 return {
-                    background: 'transparent',
-                    borderColor: 'gray',
-                    shadow: 'none',
+                    background: '#222128 ',
+                    borderColor: '#3e3d49',
+                    shadow: '1px 1px 3px 1px #1c1b22 !important',
                     color: '#323038',
-                    glow: 'transparent',
-                    border: '1px solid',
+                    glow: 'transparent'
                 };
         }
     }
@@ -227,6 +226,7 @@ class Notification {
             case 'warning': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-exclamation"></i>`;
             case 'user': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-user-astronaut"></i>`;
             case 'system': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-gears"></i>`;
+            case 'loading': return `<i style="background: ${this.getColor().color}" class="fa-solid fa-circle-notch fa-spin"></i>`;
             default: return `<i style="background: ${this.getColor().color}; " class="fa-solid fa-user-astronaut"></i>`;
         }
     }
