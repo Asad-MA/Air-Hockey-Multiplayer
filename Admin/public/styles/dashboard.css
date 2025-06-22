@@ -44,7 +44,7 @@ table{
     font: 500 13px 'Tomorrow';
     letter-spacing: 0.5px;
     white-space: nowrap;
-    text-align: center;
+    text-align: center !important;
   color: #bab7ca
 }
 
@@ -64,6 +64,91 @@ table{
     /* min-width: 400px; */
     /* flex-grow: 1; */
     background-color: #272630;
+}
+
+.dashboard-widget {
+    background: linear-gradient(45deg, #272630, #181525);
+    padding: 30px 10px 50px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px 0px #00000040;
+}
+
+.service-icon img {
+    width: 40%;
+    min-width: 200px;
+    /* filter: brightness(6) saturate(100%) invert(85%) sepia(17%) saturate(376%) hue-rotate(122deg) brightness(88%) contrast(101%); */
+    /* filter: brightness(0) saturate(100%) invert(93%) sepia(7%) saturate(1988%) hue-rotate(95deg) brightness(91%) contrast(98%); */
+    
+    
+}
+
+.service-loading .service-icon img{
+    filter: brightness(0) saturate(100%) invert(56%) sepia(6%) saturate(1219%) hue-rotate(210deg) brightness(94%) contrast(86%);
+}
+
+.service-up .service-icon img{
+    filter: brightness(0) saturate(100%) invert(72%) sepia(42%) saturate(2650%) hue-rotate(109deg) brightness(101%) contrast(101%);
+}
+
+.service-down .service-icon img{
+    filter: brightness(0) saturate(100%) invert(52%) sepia(99%) saturate(3020%) hue-rotate(329deg) brightness(94%) contrast(105%);
+}
+
+
+.service-icon {
+    text-align: center;
+}
+
+.service-details {
+    margin-top: 30px;
+    min-width: 300px;
+}
+
+.match-result-winner2 {
+    background: linear-gradient(90deg, #4b2f37 20%, #1f4a4b) !important;
+    border-radius: 0px;
+    border-right: 2px solid #75d89fa1;
+}
+
+.match-result-winner1 {
+    background: linear-gradient(90deg, #1f4a4b  20%, #4b2f37) !important;
+    border-radius: 0px;
+    border-left: 2px solid #75d89fa1;
+}
+
+
+form#game-settings-form {display: grid;grid-template-columns: 1fr 1fr;grid-gap: 8px;color: #fff;}
+
+form#game-settings-form br {
+    display: none;
+}
+
+form#game-settings-form button {
+    grid-column: span 2;
+}
+
+form#game-settings-form label {
+    background: #201f26;
+    border-radius: 7px;
+    min-height: 55px;
+    padding: 10px 14px;
+    filter: drop-shadow(7px 4px 5px #00000024);
+    position: relative;
+    font-size: 13px;
+}
+
+form#game-settings-form label span {
+    position: absolute;
+    font-size: 13px;
+    top: 12px;
+    right: 15px;
+}
+
+form#game-settings-form label input {
+    cursor: pointer;
+    height: 35px;
+    border-radius: 0px;
+    box-shadow: none;
 }
 /* End */
 .dashboard-layout {

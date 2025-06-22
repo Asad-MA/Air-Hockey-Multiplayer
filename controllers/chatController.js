@@ -1,8 +1,12 @@
+import mongoose from 'mongoose';
 import Chat from '../models/chats.js';
+import message from '../models/message.js';
+import user from '../models/user.js';
 
 class ChatController {
     async startChat(req, res) {
-        const { userID, friendID } = req.body;
+        const { friendID } = req.body;
+        const userID = req.user._id;
 
         if (!userID || !friendID) {
             return res.status(400).json({ error: 'Both userID and friendID are required' });
@@ -33,15 +37,44 @@ class ChatController {
     }
 
     async getUserChats(req, res) {
-        const { userID } = req.params;
+        const userID = req.user._id; // From JWT
+
         try {
             const chats = await Chat.find({
                 $or: [{ userID }, { friendID: userID }]
-            }).populate('userID friendID', 'displayName avatar');
+            });
 
-            res.status(200).json(chats);
+            const results = await Promise.all(
+                chats.map(async (chat) => {
+                    const isUserA = chat.userID.toString() === userID.toString();
+                    const friendID = isUserA ? chat.friendID : chat.userID;
+
+                    const friend = await user.findById(friendID).select('displayName avatar');
+                    const lastMessage = await message.findOne({ chatID: chat._id })
+                        .sort({ createdAt: -1 })
+                        .select('message createdAt');
+
+                    return {
+                        chatID: chat._id,
+                        friend: {
+                            _id: friend._id,
+                            displayName: friend.displayName,
+                            avatar: friend.avatar
+                        },
+                        lastMessage: lastMessage?.message || '',
+                        lastMessageTime: lastMessage?.createdAt || null
+                    };
+                })
+            );
+
+            res.status(200).json(results);
         } catch (err) {
-            res.status(500).json({ error: 'Failed to load chats' });
+            console.log(err)
+            res.status(500).json({ error: 'Failed to load user chats' });
         }
     }
+
+
 }
+
+export default new ChatController;

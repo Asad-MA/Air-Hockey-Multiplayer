@@ -21,9 +21,9 @@ searchInput.addEventListener('input', () => {
       const response = await fetch(`/api/users/search?q=${encodeURIComponent(query)}`);
       const users = await response.json();
 
-      resultList.innerHTML = users.map(user => `<li data-username="${user.name}" data-useremail="${user.email}" class="text-sm p-10 d-flex align-center gap-10 justify-between">
-        <div class="d-flex align-center gap-20"><span class="user-avatar-sm bg-gray box-rounded"></span>${user.name}</div>
-        <span class="text-gray d-flex align-center gap-20"><i data-action="friend-request" class="fa-solid fa-user-plus"></i><i class="fa-solid fa-gamepad"></i></span></li>`).join('');
+      resultList.innerHTML = users.map(user => `<li data-username="${user.name}" data-id="${user._id}" data-useremail="${user.email}" class="text-sm p-10 d-flex align-center gap-10 justify-between">
+        <div class="d-flex align-center gap-20"><span class="user-avatar-sm bg-gray box-rounded"><img src="${user.avatar}"></span>${user.displayName}</div>
+        <span class="text-gray d-flex align-center gap-20"><i data-open-chat="${user._id}" data-username="${user.displayName}"  data-avatar="${user.avatar}" class="fa-solid fa-envelope-open" aria-hidden="true"></i><i data-action="friend-request" class="fa-solid fa-user-plus"></i><i class="fa-solid fa-gamepad"></i></span></li>`).join('');
 
         resultList.classList.add('active');
     } catch (error) {

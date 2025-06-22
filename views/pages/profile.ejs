@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/global-styles.css">
     <link rel="stylesheet" href="/styles/dashboard.css">
+    <link rel="stylesheet" href="/styles/profile.css">
     <title>Profile - Air Hockey Online</title>
 </head>
 <style>
-   
+
 </style>
+
 <body>
     <%- include('../partials/header') %>
 
@@ -20,8 +22,66 @@
             </div>
 
             <div class="dashboard-content w-60per md-w-80per loading p-20 d-flex direction-col gap-30  pos-relative">
-                <h1>USer Profile</h1>
+                <div class="profile">
+                    <div class="reward-header text-center p-10">
+                        <h3 class="heading-md text-uppercase divider-heading">Profile</h3>
+                        <p class="text-sm text-gray">Player profile and game stats!</p>
+                    </div>
+
+                    <div class="user-details p-10 px-20" bis_skin_checked="1">
+                        <div class="profile-meta text-center">
+                        <div class="profile-img">
+                            <img class="rounded-10" src="<%= profile.avatar %>" alt="Avatar" width="200">
+                        </div>
+                        <h2 class="heading-lg mb-0"><%= profile.displayName %></h2>
+                        <span class="d-block text-gray">@<%= profile.name %></span>
+                    </div>
+                        <div class="user-stats justify-start" bis_skin_checked="1">
+                            <div class="key-value-box top-boxes " bis_skin_checked="1">
+                                <span class="box-key ">Email:</span>
+                                <span class="box-value font-bold text-sm" data-email=""><%= profile.email %></span>
+                            </div>
+                            <div class="key-value-box top-boxes " bis_skin_checked="1">
+                                <span class="box-key ">Coins:</span>
+                                <span class="box-value font-bold text-sm" data-coins=""><%= profile.coins %></span>
+                            </div>
+                            <div class="key-value-box top-boxes " bis_skin_checked="1">
+                                <span class="box-key ">Registered:</span>
+                                <span class="box-value font-bold text-sm" data-registered-date=""><%= new Date(profile.createdAt).toDateString() %></span>
+                            </div>
+                            <div class="key-value-box top-boxes " bis_skin_checked="1">
+                                <span class="box-key ">Game Played:</span>
+                                <span class="box-value font-bold text-sm" data-games-played=""><%= stats.totalGames %></span>
+                            </div>
+                            <div class="key-value-box w-40per" bis_skin_checked="1">
+                                <span class="box-key ">Winning Streak:</span>
+                                <span class="box-value font-bold text-sm" data-win-streak=""><%= stats.winStreak %></span>
+                            </div>
+                            <div class="key-value-box" bis_skin_checked="1">
+                                <span class="box-key ">Loses:</span>
+                                <span class="box-value font-bold text-sm" data-lose=""><%= stats.totalLosses %></span>
+                            </div>
+                            <div class="key-value-box" bis_skin_checked="1">
+                                <span class="box-key ">Win:</span>
+                                <span class="box-value font-bold text-sm" data-win=""><%= stats.totalWins %></span>
+                            </div>
+                            <div class="key-value-box" bis_skin_checked="1">
+                                <span class="box-key ">Win%:</span>
+                                <span class="box-value font-bold text-sm" data-win-per=""><%= stats.winPercentage %>%</span>
+                            </div>
+                            <div class="key-value-box" bis_skin_checked="1">
+                                <span class="box-key ">Total Army:</span>
+                                <span class="box-value font-bold text-sm" data-last-game=""><%= stats.totalFriends %></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                   
+                </div>
+
             </div>
+
 
             <!-- <div class="ui-sidebar sidebar-right w-20per md-hidden">
                 <%- include('../partials/leaderboards') %>
@@ -30,6 +90,7 @@
 
         <%- include('../partials/footer') %>
 
-        <script defer type="module" src="/js/pages/friends.js"></script>
+            <script defer type="module" src="/js/pages/friends.js"></script>
 </body>
+
 </html>

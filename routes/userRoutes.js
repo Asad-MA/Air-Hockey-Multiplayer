@@ -1,5 +1,6 @@
 import express from 'express';
 import userController from '../controllers/userController.js';
+import API from '../controllers/apiController.js';
 import verifyAccount from "../middleware/verifyAccount.js";
 import verifyResetPassword from '../middleware/verify-reset-pass.js';
 import authenticate from '../middleware/authenticate.js';
@@ -25,9 +26,47 @@ userRoutes.get('/', authenticate, (req, res) => {
     res.render('pages/dashboard', { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token, avatar: req.user.avatar, coins: req.user.coins }});
 })
 
-userRoutes.get('/social/profile/:username' , authenticate , (req , res) => {
-    res.render('pages/profile',  { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token, avatar: req.user.avatar, coins: req.user.coins }, username: req.params.username });
-})
+userRoutes.get('/settings', [authenticate , API.getUserSettings], (req, res) => {
+    const { user } = req.profileData;
+    // console.log('User: ', req.user);
+    res.render('pages/settings', {
+    user: {
+      name: req.user.name,
+      displayName: req.user.displayName,
+      email: req.user.email,
+      token: req.user.token,
+      avatar: req.user.avatar,
+      coins: req.user.coins
+    },
+  });
+    })
+
+userRoutes.get('/social/profile/:username', [authenticate, API.getUserProfile], (req, res) => {
+  const { user, stats } = req.profileData;
+
+  res.render('pages/profile', {
+    user: {
+      name: req.user.name,
+      displayName: req.user.displayName,
+      email: req.user.email,
+      token: req.user.token,
+      avatar: req.user.avatar,
+      coins: req.user.coins
+    },
+    profile: {
+      name: user.name,
+      displayName: user.displayName,
+      email: user.email,
+      avatar: user.avatar,
+      coins: user.coins,
+      createdAt: user.createdAt
+    },
+    stats
+  });
+});
+
+
+
 
 userRoutes.post('/register', requestsValidator.validateRegister, userController.handleRegister);
 

@@ -1,0 +1,111 @@
+.chat-wrapper{
+    background: linear-gradient(45deg , #1a1820  , #201f26);
+    border-radius: 10px;
+    overflow: hidden;
+    /* height: 60%; */
+}
+
+.chat-users {
+    border-right: 1px solid #262331;
+    border-radius: 0px !important;
+    width: 100%;
+    max-width: 300px;
+}
+
+.chat-window-wrap {
+    width: 70%;
+    border-radius: 20px;
+    padding: 0px 0px 0px;
+}
+
+.chat-item{
+    transition: .3s ease;
+}
+
+.chat-item:hover{
+    transform: scale(1.03);
+}
+
+.search-user-wrap .fa-magnifying-glass{
+    display: none;
+}
+
+.search-user-wrap [data-action="friend-request"]{
+    display: none;
+}
+
+#resultList{
+    padding: 10px;
+}
+
+.chat-window{
+    height: calc(100% - 80px);
+    padding: 10px 20px;
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+.chat-sender-box{
+    height: 60px;
+    background: #262331;
+    padding: 0px;
+}
+
+.chat-header-box{
+    border-bottom: 1px solid #262331;
+    
+}
+
+.message-wrap{
+    padding-bottom: 20px;
+}
+
+textarea.chat-message {
+    background: transparent;
+    border: none;
+    width: calc(100% - 50px);
+    height: 100%;
+    padding: 20px 10px 10px;
+    text-indent: 5px;
+    outline: none;
+    resize:none;
+    font-family: 'Tomorrow';
+}
+
+.send-btn{
+     padding: 10px; 
+    width: 50px;
+}
+
+.message-content-wrap {
+    max-width: 50%;
+}
+
+.message-body {
+    background: linear-gradient(90deg , #1e1d24 , #2a2932);
+    padding: 10px 14px 14px;
+    border-radius: 50px;
+    border-bottom-left-radius: 0px;
+}
+
+.your_message .message-body {
+    background: linear-gradient(90deg , #8717b0 , #501c8d);
+    border-radius: 50px;
+    border-bottom-right-radius: 0px;
+}
+
+
+.message-body span{}
+
+.username{
+    margin-bottom: 5px;
+    display: block;
+}
+
+.your_message .username{
+    text-align: right;
+}
+
+span.username.text-xs {
+    font-size: 12px;
+}

@@ -2,6 +2,8 @@
 import express from 'express';
 import friendController from '../controllers/FriendController.js';
 import authenticate from '../middleware/authenticate.js';
+import chatController from '../controllers/chatController.js';
+import messageController from '../controllers/messageController.js';
 
 
 // Codebase
@@ -22,3 +24,13 @@ socialRoutes.post('/friends/get' , authenticate , friendController.getFriends);
 // 
 socialRoutes.get('/chat' , authenticate , (req , res) => res.render('pages/chat' , { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token }}));                  
 export default socialRoutes;
+
+// Start Chat
+socialRoutes.post('/chat/start' , authenticate , chatController.startChat);
+
+// Load Messages
+socialRoutes.get('/chat/messages/:chatID' , authenticate , messageController.getChatMessages);
+
+socialRoutes.post('/chat/messages/' , authenticate , messageController.sendMessage);
+
+socialRoutes.post('/chat/user/' ,  authenticate , chatController.getUserChats);

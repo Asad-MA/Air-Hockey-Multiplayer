@@ -41,6 +41,11 @@ jQuery(document).ready(function ($) {
             const result = await response.json();
             loader.removeClass("active");
             console.log("Result:", result);
+
+            if(!result.success){
+                result.status = 500;
+                 throw new Error(JSON.stringify(result));
+            }
             //console.log(response);
             if (!response.ok) {
                 result.status = response.status;

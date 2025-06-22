@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/global-styles.css">
+    <link rel="stylesheet" href="/styles/dashboard.css">
+    <link rel="stylesheet" href="/styles/settings.css">
+    <title>Settings | Air Hockey Online</title>
+</head>
+
+<body>
+    <%- include('../partials/header') %>
+
+        <div class="dashboard-layout d-flex gap-20 p-20">
+            <div class="ui-sidebar sidebar-left w-20per ">
+                <%- include('../partials/sidebar-left') %>
+            </div>
+
+            <div class="dashboard-content w-80per md-w-80per loading p-20 d-flex direction-col gap-30  pos-relative flex-grow">
+                <div class="reward-header text-center p-10">
+                        <h3 class="heading-md text-uppercase divider-heading">Profile Settings</h3>
+                        <p class="text-sm text-gray">Fine-tune your profile, avatar, and game identity!</p>
+                    </div>
+                <div class="settings-wrap d-flex gap-20">
+                    <div class="player-avatar pos-relative">
+                        <div class="edit-avatar-wrap pos-absolute">
+                            <span class="update-avatar"><i class="fa-solid fa-file-pen text-gray"></i></span>
+                            <span class="remove-avatar"><i class="fa-solid fa-delete-left text-gray"></i></span>
+                        </div>
+                        <img src="<%= user.avatar %>" width="100%">
+                    </div>
+                    <div class="settings-fields">
+                        <div class="setting-box d-flex align-center">
+                            <i class="fa-solid fa-user text-gray"></i>
+                            <input class="text-gray text-sm" type="text" name="" id="" placeholder="@username" value="<%= user.name %>" disabled autocomplete="false">
+                        </div>
+                        
+                        <div class="setting-box d-flex align-center">
+                            <i class="fa-solid fa-address-card text-gray"></i>
+                            <input class="text-gray text-sm" type="text" name="" id="" placeholder="Display name" value="<%= user.displayName %>" autocomplete="false">
+                        </div>
+                        <div class="setting-box d-flex align-center">
+                            <i class="fa-regular fa-envelope-open text-gray"></i>
+                            <input class="text-gray text-sm" type="email" name="" id="" placeholder="Email address" value="<%= user.email %>" autocomplete="false">
+                        </div>
+                        <!-- <div class="setting-box d-flex align-center">
+                           <i class="fa-regular fa-envelope-open text-gray"></i>
+                            <input class="text-gray text-sm" type="text" name="" id="" placeholder="Secondary Email" value="" autocomplete="false">
+                        </div> -->
+                        <div class="setting-box d-flex align-center">
+                           <i class="fa-solid fa-lock text-gray"></i>
+                            <input type="password" placeholder="Old Password" id="oldPassword" autocomplete="false">
+                        </div>
+                        <div class="setting-box d-flex align-center">
+                           <i class="fa-solid fa-lock text-gray"></i>
+                            <input type="password" placeholder="New Password" id="newPassword" autocomplete="false">
+                        </div>
+
+                        <div class="setting-box d-flex align-center">
+                           <i class="fa-solid fa-lock text-gray"></i>
+                            <input type="password" placeholder="Re-enter Password" id="confirmPassword" autocomplete="false">
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <button class="text-sm font-bold update-settings">Save And Update</button>
+            </div>
+
+            
+        </div>
+
+        <div class="avatars-popup">
+            <div class="reward-header text-center p-10">
+                        <h3 class="heading-md text-uppercase divider-heading">Avatars</h3>
+                        <p class="text-sm text-gray">Choose avatar that fits you best!</p>
+                    </div>
+            <div class="d-flex flex-wrap gap-10">
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/cartoon-man-wearing-glasses_uou4dv.jpg">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/cartoon-man-wearing-glasses_uou4dv.jpg" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1746959878/cartoon-jennifer_rxlyfu.jpg">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959878/cartoon-jennifer_rxlyfu.jpg" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1746959878/cartoon-Auston_Balkoni_rqqlmz.jpg">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959878/cartoon-Auston_Balkoni_rqqlmz.jpg" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1746959884/cartoon-P._Geerya_z3y17b.jpg">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959884/cartoon-P._Geerya_z3y17b.jpg" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1746959878/cartoon-man-wearing-glasses_1_fdux4j.jpg">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959878/cartoon-man-wearing-glasses_1_fdux4j.jpg" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1750576525/avatar-8_jhhszt.png">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1750576525/avatar-8_jhhszt.png" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1750576523/avatar-11_nohjpo.png">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1750576523/avatar-11_nohjpo.png" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1750576518/avatar-14_rxoxwm.png">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1750576518/avatar-14_rxoxwm.png" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1750576518/avatar-15_jnzwaf.png">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1750576518/avatar-15_jnzwaf.png" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1750576518/avatar-13_cv5qnt.png">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1750576518/avatar-13_cv5qnt.png" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1750576517/avatar-10_vcx7hx.png">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1750576517/avatar-10_vcx7hx.png" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1750576516/avatar-12_qa5txq.png">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1750576516/avatar-12_qa5txq.png" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1750576515/avatar-7_fhuovh.png">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1750576515/avatar-7_fhuovh.png" alt="" srcset="">
+                </div>
+                <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1750576516/avatar-9_dwt67c.png">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1750576516/avatar-9_dwt67c.png" alt="" srcset="">
+                </div>
+                <!-- <div class="avatar-item" data-url="https://res.cloudinary.com/de6upiddr/image/upload/v1746959878/cartoon-man-wearing-vr-glasses_rbaihe.jpg">
+                    <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959878/cartoon-man-wearing-vr-glasses_rbaihe.jpg" alt="" srcset="">
+                </div> -->
+            </div>
+            <button class="text-sm font-bold update-avatar-btn mt-20">Update Avatar</button>
+        </div>
+        <div class="popup-overlay"></div>
+
+        <%- include('../partials/footer') %>
+
+        <script defer type="module" src="/js/pages/settings.js"></script>
+</body>
+</html>

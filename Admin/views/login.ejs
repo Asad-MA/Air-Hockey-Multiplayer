@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/global-styles.css">
+    <link rel="stylesheet" href="./styles/login.css">
+    <script src="https://kit.fontawesome.com/192402329c.js" crossorigin="anonymous"></script>
+    
+    <title>Login - Air Hockey</title>
+</head>
+<body>
+    <div class="site-main bg-default d-flex direction-col gap-30">
+        <%- include('./partials/header-public') %>
+        <main class="site-content fill-space d-flex direction-col justify-center align-center">
+        <section class="form-container site-modal pos-relative overflow-hidden">
+            <div class="loader"></div>
+            <% if(typeof message !== "undefined" && message) { %>
+                <div class="genaric-success mb-30 mt-20">
+                    <p class="success-message">
+                        <i class="fa-solid fa-circle-check"></i> <%= message %>
+                    </p>
+                </div>
+            <% } %>
+            
+            <form method="post">
+                <h1 class="heading-lg text-center">HQ Login Node</h1>
+                <p class="text-center text-sm">Central access to gameplay intelligence.</p>
+                <div class="divider mb-30 mt-20"></div>
+                <div class="d-flex direction-col gap-10">
+                    <div><input type="email" name="email" id="" placeholder="Email address"></div>
+                    <div><input type="password" name="password" id="" placeholder="Secret key"></div>
+                </div>
+                
+                <div class="d-flex align-center mt-30 gap-30" >
+                    <button class="text-uppercase">Login</button>
+                    <span class="text-sm">
+                       Forgot (Secret Key OR Email)? Contact <a href="mailto:asadorasoo32@gmail.com">support/developers</a>
+                    </span>
+                </div>
+                <div class="d-flex align-center justify-between mt-30 gap-30 flex-wrap justify-center-xs">
+                    <label for="remember" class="styled-checkbox">
+                        
+                        <input type="checkbox" name="remember-me" id="remember">
+                        <span class="checkmark"></span>
+                        <span>Remember me</span>
+                    </label>
+                    
+                </div>
+            </form>
+        </section>
+    </main>
+        
+        <%- include('./partials/footer') %>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="./js/login.js"></script>
+</body>
+</html>
+
+

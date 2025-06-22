@@ -8,6 +8,7 @@
     --link-color: #fff;
     --text-gray: #908ca8;
     --text-size: clamp(14px , 2vw , 15px);
+    --text-size-lg: clamp(15px , 2vw , 20px);
     --text-size-md: clamp(12px , 2vw , 14px);
     --text-size-sm: clamp(12px , 2vw , 13px);
     --heading-size: clamp(28px , 7vw , 35px);
@@ -209,6 +210,7 @@ h1, h2, h3, h4, h5, h6{
 .ui-sidebar{
     position: sticky;
     top: 90px;
+    z-index: 1;
 }
 
 header{
@@ -238,6 +240,10 @@ header{
     width: 100%;
     height: 1px;
     background: #1d1b24;
+}
+
+.font-bold {
+    font-weight: 700 !important;
 }
 
 
@@ -719,13 +725,16 @@ input:focus {
     letter-spacing: 0.06em;
 }
 
+.text-lg{
+    font-size: var(--text-size-lg);
+    letter-spacing: 0.06em;
+}
+
 .text-success{
      color: #47ff7b;   
 }
 
-input[type="password"]{
-    /* font-size:22px; */
-}
+
 
 .divider-vr {
     width: 1px;
@@ -816,7 +825,7 @@ input[type="password"]{
     backdrop-filter: blur(0.5px);
     background: radial-gradient(#00000003, #00000000);
     position: fixed;
-    overscroll-behavior: none;
+    /* overscroll-behavior: none; */
 }
 
 .heading-md{
@@ -843,6 +852,10 @@ input[type="password"]{
 .active-flex + .overlay{
     display: block;
     /* z-index: 11; */
+}
+
+.cursor-pointer{
+    cursor: pointer;
 }
   
   @keyframes googleLoader {
@@ -928,7 +941,7 @@ p.error-message > span{
 
 .genaric-success > p{
     color: var(--success-color);
-    ine-height: var(--text-line-height);
+    line-height: var(--text-line-height);
     font-size: 14px;
 }
 
@@ -1047,7 +1060,9 @@ div#top-notification {
     font-size: 13px !important;
     letter-spacing: 0.06em !important;
 }
-
+.mb-0{
+    margin-bottom: 0 !important;
+}
 .notif-content {
     flex-grow: 1;
 }

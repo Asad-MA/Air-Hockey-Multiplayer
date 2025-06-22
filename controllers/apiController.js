@@ -1,6 +1,10 @@
 import user from "../models/user.js";
 import Notification from '../models/notifications.js';
 import gameRecord from "../models/gameRecord.js";
+import Friend from "../models/friends.js";
+import bcrypt from 'bcrypt';
+
+import mongoose from 'mongoose';
 
 // Helper function to get date range based on period
 import { getDateRange } from '../utils/dates.js';
@@ -24,7 +28,7 @@ API.getNotifications = async (req, res) => {
     } = req.query;
 
     const userId = req.user._id; // Provided by auth middleware
-    console.log('UserID' , req.user)
+    console.log('UserID', req.user)
     const filter = { userId };
 
     if (type) filter.type = type;
@@ -62,37 +66,100 @@ API.getNotifications = async (req, res) => {
 
 
 
-API.getUsers = async (req, res) => { 
-    const allUsers = await user.find();
-    res.status(200).json(allUsers);
-}
+API.getUsers = async (req, res) => {
+  try {
+    const {
+      page = 1,
+      limit = 10,
+      sortBy = 'createdAt',
+      order = 'desc',
+      search = '',
+      ...filters
+    } = req.query;
 
-API.getUser = (req, res) => {
-    res.send('Hello User');
-}
+    const query = {};
 
-API.search = async (req , res) => {
-    try {
-        const { q } = req.query;
-        const query = {};
-    
-        if (q) {
-          query.$or = [
-            { name: { $regex: q, $options: 'i' } },
-            { email: { $regex: q, $options: 'i' } },
-          ];
-        }
-    
-        const users = await user.find(query);
-    
-        res.json(users);
-      } catch (error) {
-        res.status(500).json({ message: error.message });
+    // Full-text search
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { displayName: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    // Simple filters (exact match)
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== '') {
+        query[key] = value;
       }
+    });
+
+    const skip = (page - 1) * limit;
+    const sortOption = { [sortBy]: order === 'desc' ? -1 : 1 };
+
+    const [users, total] = await Promise.all([
+      user.find(query)
+        .sort(sortOption)
+        .skip(skip)
+        .limit(Number(limit))
+        .select('name displayName email avatar coins dailyStreak isVerified accountStatus createdAt'),
+      user.countDocuments(query)
+    ]);
+
+    res.status(200).json({
+      currentPage: Number(page),
+      perPage: Number(limit),
+      totalUsers: total,
+      totalPages: Math.ceil(total / limit),
+      users
+    });
+  } catch (err) {
+    console.error('getUsers error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
+API.getUserSettings = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+
+    const userObj = await user.findById(userId);
+    if (!userObj) return res.status(404).json({ message: 'User not found' });
+
+    req.profileData = {
+      user: userObj,
+    };
+    next();
+  }
+  catch (e) {
+    console.error('Profile Settings Error:', e);
+    res.status(500).send('Server error' + e.message);
+  }
+}
+
+API.search = async (req, res) => {
+  try {
+    const { q } = req.query;
+    const query = {};
+
+    if (q) {
+      query.$or = [
+        { name: { $regex: q, $options: 'i' } },
+        { email: { $regex: q, $options: 'i' } },
+      ];
+    }
+
+    const users = await user.find(query);
+
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 }
 
 
-API.getLeaderboard = async (req, res)=>{
+API.getLeaderboard = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const sortBy = req.query.sortBy || 'totalCoins';
@@ -108,30 +175,36 @@ API.getLeaderboard = async (req, res)=>{
     const leaderboard = await gameRecord.aggregate([
       { $match: matchFilter },
       { $unwind: "$players" },
-      { $group: {
+      {
+        $group: {
           _id: "$players.user",
           totalCoins: { $sum: "$players.coinsEarned" },
           totalScore: { $sum: "$players.score" },
           gamesPlayed: { $sum: 1 },
-        }},
+        }
+      },
       { $sort: { [sortBy]: -1 } },
       { $skip: (page - 1) * limit },
       { $limit: limit },
-      { $lookup: {
+      {
+        $lookup: {
           from: "Users",
           localField: "_id",
           foreignField: "_id",
           as: "user"
-        }},
+        }
+      },
       { $unwind: "$user" },
-      { $project: {
+      {
+        $project: {
           userId: "$user._id",
           displayName: "$user.displayName",
           avatar: "$user.avatar",
           totalCoins: 1,
           totalScore: 1,
           gamesPlayed: 1
-        }}
+        }
+      }
     ]);
 
     res.json(leaderboard);
@@ -155,9 +228,9 @@ API.getRewardList = async (req, res) => {
   // const diff = last ? Math.floor((now - last) / (1000 * 60 * 60 * 24)) : null;
 
   const today = getDateOnly(new Date());
-const lastDate = User.lastDailyReward ? getDateOnly(new Date(User.lastDailyReward)) : null;
+  const lastDate = User.lastDailyReward ? getDateOnly(new Date(User.lastDailyReward)) : null;
 
-const diff = lastDate ? Math.floor((today - lastDate) / (1000 * 60 * 60 * 24)) : null;
+  const diff = lastDate ? Math.floor((today - lastDate) / (1000 * 60 * 60 * 24)) : null;
 
   const todayClaimed = diff === 0;
   const streak = User.dailyStreak;
@@ -184,10 +257,10 @@ API.claimReward = async (req, res) => {
   // const diff = last ? Math.floor((now - last) / (1000 * 60 * 60 * 24)) : null;
 
 
-const today = getDateOnly(new Date());
-const lastDate = User.lastDailyReward ? getDateOnly(new Date(User.lastDailyReward)) : null;
+  const today = getDateOnly(new Date());
+  const lastDate = User.lastDailyReward ? getDateOnly(new Date(User.lastDailyReward)) : null;
 
-const diff = lastDate ? Math.floor((today - lastDate) / (1000 * 60 * 60 * 24)) : null;
+  const diff = lastDate ? Math.floor((today - lastDate) / (1000 * 60 * 60 * 24)) : null;
 
 
   if (diff === 0) {
@@ -221,7 +294,7 @@ const diff = lastDate ? Math.floor((today - lastDate) / (1000 * 60 * 60 * 24)) :
   });
 }
 
-/* Match History */ 
+/* Match History *
 API.getMatchHistory = async (req, res) => {
   const userId = req.user._id;
   const page = parseInt(req.query.page) || 1;
@@ -274,6 +347,259 @@ API.getMatchHistory = async (req, res) => {
     res.json({ total, page, limit, matches: formatted });
   } catch (err) {
     res.status(500).json({ error: 'Server error', details: err.message });
+  }
+}
+
+*/
+
+API.getMatchHistory = async (req, res) => {
+  const userId = req.user?._id || null;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const sort = req.query.sort === 'oldest' ? 1 : -1;
+  const resultFilter = req.query.result;
+
+  const matchFilter = {};
+
+  if (userId) {
+    matchFilter['players.user'] = userId;
+
+    if (resultFilter === 'win') matchFilter.winner = userId;
+    if (resultFilter === 'lose') matchFilter.winner = { $ne: userId };
+  }
+
+  try {
+    const total = await gameRecord.countDocuments(matchFilter);
+
+    const records = await gameRecord.find(matchFilter)
+      .sort({ startTime: sort })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .populate('players.user', 'displayName avatar')
+      .populate('winner', 'displayName');
+
+    const formatted = records.map((record) => {
+      const [p1, p2] = record.players;
+
+      if (!userId) {
+        // If no user is provided, show both player info without marking "me"
+        return {
+          matchId: record._id,
+          startTime: record.startTime,
+          endTime: record.endTime,
+          duration: record.endTime - record.startTime,
+          timeToStr: timeToStr(record.startTime),
+          player1: {
+            name: p1.user.displayName,
+            avatar: p1.user.avatar,
+            score: p1.score,
+          },
+          player2: {
+            name: p2.user.displayName,
+            avatar: p2.user.avatar,
+            score: p2.score,
+          },
+          winner: record.winner?.displayName || 'N/A',
+        };
+      }
+
+      const isPlayer1 = String(p1.user._id) === String(userId);
+      const me = isPlayer1 ? p1 : p2;
+      const opponent = isPlayer1 ? p2 : p1;
+
+      return {
+        matchId: record._id,
+        startTime: record.startTime,
+        endTime: record.endTime,
+        duration: record.endTime - record.startTime,
+        timeToStr: timeToStr(record.startTime),
+        player: {
+          name: me.user.displayName,
+          avatar: me.user.avatar,
+          score: me.score,
+        },
+        opponent: {
+          name: opponent.user.displayName,
+          avatar: opponent.user.avatar,
+          score: opponent.score,
+        },
+        result: String(record.winner?._id) === String(userId) ? 'win' : 'lose',
+      };
+    });
+
+    res.json({ total, page, limit, matches: formatted });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error', details: err.message });
+  }
+};
+
+API.getMatchHistoryA = async (req, res) => {
+  const userId = req.params.userId || req.query.userId || null;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const sort = req.query.sort === 'oldest' ? 1 : -1;
+  const resultFilter = req.query.result;
+
+  const matchFilter = {};
+
+  if (userId) {
+    matchFilter['players.user'] = userId;
+
+    if (resultFilter === 'win') matchFilter.winner = userId;
+    if (resultFilter === 'lose') matchFilter.winner = { $ne: userId };
+  }
+
+  try {
+    const total = await gameRecord.countDocuments(matchFilter);
+
+    const records = await gameRecord.find(matchFilter)
+      .sort({ startTime: sort })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .populate('players.user', 'displayName avatar')
+      .populate('winner', 'displayName');
+
+    const formatted = records.map((record) => {
+      const [p1, p2] = record.players;
+
+      if (!userId) {
+        return {
+          matchId: record._id,
+          startTime: record.startTime,
+          endTime: record.endTime,
+          duration: record.endTime - record.startTime,
+          timeToStr: timeToStr(record.startTime),
+          player1: {
+            name: p1.user.displayName,
+            avatar: p1.user.avatar,
+            score: p1.score,
+          },
+          player2: {
+            name: p2.user.displayName,
+            avatar: p2.user.avatar,
+            score: p2.score,
+          },
+          winner: record.winner?.displayName || 'N/A',
+        };
+      }
+
+      const isPlayer1 = String(p1.user._id) === String(userId);
+      const me = isPlayer1 ? p1 : p2;
+      const opponent = isPlayer1 ? p2 : p1;
+
+      return {
+        matchId: record._id,
+        startTime: record.startTime,
+        endTime: record.endTime,
+        duration: record.endTime - record.startTime,
+        timeToStr: timeToStr(record.startTime),
+        player: {
+          name: me.user.displayName,
+          avatar: me.user.avatar,
+          score: me.score,
+        },
+        opponent: {
+          name: opponent.user.displayName,
+          avatar: opponent.user.avatar,
+          score: opponent.score,
+        },
+        result: String(record.winner?._id) === String(userId) ? 'win' : 'lose',
+      };
+    });
+
+    res.json({ total, page, limit, matches: formatted });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error', details: err.message });
+  }
+};
+
+
+API.getUserProfile = async (req, res, next) => {
+  try {
+    const username = req.params.username;
+
+    // 1. Find the user
+    const userObj = await user.findOne({ name: username }).select('-password');
+    if (!userObj) return res.status(404).send('User not found');
+
+    const userId = new mongoose.Types.ObjectId(userObj._id);
+
+    // 2. Get game records
+    const records = await gameRecord.find({ 'players.user': userId })
+      .sort({ endTime: -1 })
+      .select('winner');
+
+    const totalGames = records.length;
+    const totalWins = records.filter(r => r.winner?.toString() === userId.toString()).length;
+    const totalLosses = totalGames - totalWins;
+    const winPercentage = totalGames > 0 ? ((totalWins / totalGames) * 100).toFixed(2) : 0;
+
+    let winStreak = 0;
+    for (const record of records) {
+      if (record.winner?.toString() === userId.toString()) {
+        winStreak++;
+      } else break;
+    }
+
+    // 3. Friend info
+    const totalFriends = await Friend.countDocuments({
+      $or: [
+        { requester: userId, status: 'active' },
+        { recipent: userId, status: 'active' }
+      ]
+    });
+
+    // 4. Send to EJS
+    // req.user = 
+    req.profileData = {
+      user: userObj,
+      stats: {
+        totalGames,
+        totalWins,
+        totalLosses,
+        winPercentage,
+        winStreak,
+        totalFriends
+      }
+    };
+
+    next();
+
+  } catch (err) {
+    console.error('Profile Error:', err);
+    res.status(500).send('Server error');
+  }
+}
+
+API.updateProfileSettings = async (req, res) => {
+
+  try {
+    const userId = req.user._id;
+    const { displayName, email, avatar, newPassword, confirmPassword } = req.body;
+
+    const userObj = await user.findById(userId);
+    if (!userObj) return res.status(404).json({ message: 'User not found' });
+
+    // Update basic info
+    if (displayName) userObj.displayName = displayName;
+    if (email) userObj.email = email;
+    if (avatar) userObj.avatar = avatar;
+
+    // Update password only if both fields are filled
+    if (newPassword?.trim() && confirmPassword?.trim()) {
+      if (newPassword !== confirmPassword) {
+        return res.status(400).json({ message: 'Passwords do not match' });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      userObj.password = await bcrypt.hash(newPassword, salt);
+    }
+
+    await userObj.save();
+    res.json({ message: 'User updated successfully' });
+
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 }
 

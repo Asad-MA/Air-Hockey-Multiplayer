@@ -10,11 +10,16 @@ apiRoutes.get('/users' , API.getUsers);
 
 apiRoutes.get('/users/search' , API.search);
 
-apiRoutes.get('/user/:id' , API.getUser);
+apiRoutes.get('/user/:id' , API.getUserProfile);
+
 
 apiRoutes.get('/notifications/', authenticate , API.getNotifications);
 
-apiRoutes.get('/leaderboard', authenticate, API.getLeaderboard);
+apiRoutes.get('/leaderboard', API.getLeaderboard);
+
+apiRoutes.get('/matchhistory' , API.getMatchHistoryA);
+
+apiRoutes.get('/matchhistory/:userId' , API.getMatchHistoryA);
 
 apiRoutes.get('/match-history', authenticate, API.getMatchHistory);
 
@@ -22,7 +27,7 @@ apiRoutes.get('/rewards/daily/status', authenticate, API.getRewardList);
 
 apiRoutes.post('/rewards/daily', authenticate, API.claimReward);
 
-
+apiRoutes.post('/user/update-settings', authenticate, API.updateProfileSettings)
 
 
 export default apiRoutes;

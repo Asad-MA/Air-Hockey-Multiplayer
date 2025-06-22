@@ -6,25 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/global-styles.css">
     <link rel="stylesheet" href="/styles/dashboard.css">
+    <link rel="stylesheet" href="/styles/chat.css">
     <title>CHAT | Air Hockey Online</title>
 </head>
-<style>
-   .chat-window-wrap.flex-grow {
-    width: 70%;
-}
 
-.chat-users {
-    background: #201f26;
-    width: 100%;
-    max-width: 300px;
-}
-
-.chat-window-wrap {
-    background: #201f26;
-    width: 70%;
-    border-radius: 20px;
-}
-</style>
 <body>
     <%- include('../partials/header') %>
 
@@ -33,23 +18,73 @@
                 <%- include('../partials/sidebar-left') %>
             </div>
 
-            <div class="dashboard-content w-80per md-w-80per loading p-20 d-flex direction-col gap-30  pos-relative flex-grow">
-                <div class="chat-wrapper d-flex gap-20 flex-grow">
-                    <div class="chat-users chat-sidebar">
-                        users
+            <div
+                class="dashboard-content w-80per md-w-80per loading p-20 d-flex direction-col gap-30  pos-relative flex-grow">
+                <div class="chat-wrapper d-flex gap-0 flex-grow">
+                    <div class="chat-users chat-sidebar rounded-10">
+                        <div class="search-user-wrap p-10">
+                                <%- include('../partials/search') %>
+                        </div>
+                        <div class="added-users ui-table-default d-flex direction-col gap-5 p-10 cursor-pointer">
+                            <div class="ui-table-row d-flex align-center gap-10 chat-item">
+                                <span class="ui-table-col d-flex gap-10 w-full-available">
+                                    <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+                                        <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959884/cartoon-P._Geerya_z3y17b.jpg"
+                                            alt="Player Avatar" class="w-full h-full box-rounded">
+                                    </span>
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">Falcon XS</h5>
+                                        <div class="d-flex justify-between">
+                                            <span class="user-name text-sm text-gray">Last message text here...</span>
+                                        </div>
+
+                                    </span>
+                                </span>
+
+                            </div>
+                            <div class="ui-table-row d-flex align-center gap-10 chat-item">
+                                <span class="ui-table-col d-flex gap-10 w-full-available">
+                                    <span class="user-avatar-sm box-img box-rounded w-50 h-50 bg-gray">
+                                        <img src="https://res.cloudinary.com/de6upiddr/image/upload/v1746959884/cartoon-P._Geerya_z3y17b.jpg"
+                                            alt="Player Avatar" class="w-full h-full box-rounded">
+                                    </span>
+                                    <span class="user-detail-sm w-full-available">
+                                        <h5 class="text-sm user-displayname my-0">Falcon XS</h5>
+                                        <div class="d-flex justify-between">
+                                            <span class="user-name text-sm text-gray">Last message text here...</span>
+                                        </div>
+
+                                    </span>
+                                </span>
+
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="chat-window-wrap flex-grow">
-                        <div class="chat-window">chat-window</div>
-                        <div class="chat-sender-box">sendbox</div>
+                    <div class="chat-window-wrap flex-grow direction-col justify-between d-flex">
+                        <div class="chat-header-box p-10" data-chathead>
+                            <div class="chat-meta d-flex align-center gap-10">
+                                <div class="chater-avatar" data-chatavatar></div>
+                                <h3 class="heading-sm text-gray font-bold" data-chatname>CHat Name</h3>
+                            </div>
+                        </div>
+                        <div class="chat-window">
+                            
+                        </div>
+                        <div class="chat-sender-box d-flex">
+                            <textarea name="" placeholder="Talk to your teammate..." id="message-typer" class="chat-message text-gray text-sm"></textarea>
+                            <button class="send-btn" data-send-chat><i class="fa-solid fa-paper-plane text-white text-lg"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            
+
         </div>
 
         <%- include('../partials/footer') %>
 
-        <script defer type="module" src="/js/pages/friends.js"></script>
+            <script defer type="module" src="/js/pages/chat.js"></script>
 </body>
+
 </html>

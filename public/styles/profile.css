@@ -1,0 +1,23 @@
+.profile .user-details {
+    padding: 40px 10px 20px;
+    margin-top: 0px;
+    background: linear-gradient(45deg, #483556, #292733);
+    background: #201f26;
+    border: none;
+}
+
+.profile .top-boxes {
+    margin-left: 0px;
+}
+.profile-meta{
+    padding-bottom: 60px;
+}
+
+.profile .key-value-box {
+    height: 55px;
+    min-width: 300px;
+}
+
+.profile span.box-key {
+    font-weight: 700;
+}

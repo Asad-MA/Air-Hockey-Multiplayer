@@ -9,12 +9,12 @@
     <div class="d-flex justify-end align-center gap-30">
         <button class="icon-btn ui-default-btn" data-play-online>
             <span class="btn-icon mr-5"><i class="fa-solid fa-play"></i></span>
-            <span class="btn-text text-uppercase text-sm">Play Online</span>
+            <span class="btn-text text-uppercase text-sm font-bold">Play Online</span>
         </button>
-        <p class="text-sm"><span id="player-count" class="text-sm">0</span> <span class="text-success text-sm">Online</span></p>
+        <p class="text-sm font-bold"><span id="player-count" class="text-sm">0</span> <span class="text-success text-sm">Online</span></p>
         <span class="divider-vr h-20"></span>
         <div class="game-coins d-flex  align-center gap-10"><img width="20" src="https://res.cloudinary.com/de6upiddr/image/upload/v1749232473/ynmuaabas41jbjkmjdpg.png" alt="" srcset=""> 
-            <span class="text-sm text-gray"><%- user.coins %></span></div>
+            <span class="text-sm text-gray font-bold"><%- user.coins %></span></div>
          <span class="divider-vr h-20"></span>
         <span class="ui-icon-default" data-noti-opener><i class="fa-solid fa-bell"></i></span>
         <div id="top-notification" class="float-window noti-window hidden">
@@ -36,13 +36,13 @@
         </div>
         <div class="overlay"></div>
         <div class="user-meta d-flex img-box align-center gap-10">
-            <span class="text-sm text-gray"><%- user.displayName %></span>
+            <span class="text-sm text-gray font-bold"><%- user.displayName %></span>
             <span class="box-img box-rounded w-50 h-50 bg-gray overflow-hidden">
                 <img src="<%- user.avatar %>" alt="" srcset="">
             </span>
         </div>
         
-            <button class="text-uppercase text-sm"><a href="/logout" class="text-uppercase d-block fill-area">Logout</a></button>
+            <button class="text-uppercase text-sm"><a href="/logout" class="text-uppercase d-block fill-area text-sm font-bold decoration-none">Logout</a></button>
         
     </div>
     <script src="./js/libs/jQuery.js"></script>

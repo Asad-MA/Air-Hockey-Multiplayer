@@ -19,12 +19,14 @@ jQuery(document).ready(function($){
                                 <span class="ui-table-col text-sm">#${i + 1}</span>
                                 <span class="ui-table-col d-flex align-center gap-10 w-full-available">
                                     <span class="user-avatar-lg box-img box-rounded bg-gray">
-
+                                        <a href="social/profile/${friend.name}">
+                                            <img src="${friend.avatar}">
+                                        </a>
                                     </span>
                                     <span class="user-detail-sm w-full-available">
-                                        <h5 class="text-sm user-displayname my-0">${friend.displayName}</h5>
+                                        <a href="social/profile/${friend.name}"><h5 class="text-sm user-displayname my-0">${friend.displayName}</h5></a>
                                         <div class="d-flex justify-between">
-                                            <span class="user-name text-sm text-gray">@${friend.name}</span>
+                                           <a href="social/profile/${friend.name}"> <span class="user-name text-sm text-gray">@${friend.name}</span></a>
                                             
 
                                         </div>
