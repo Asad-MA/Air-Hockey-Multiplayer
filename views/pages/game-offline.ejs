@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Tomorrow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <%- include('../partials/header') %>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            overflow: hidden;
+            font-family: "Roboto", sans-serif;
+        }
+        header {
+            display: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        span.game-logo {
+    width: clamp(400px, 30vw, 500px);
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    filter: drop-shadow(0px 0px 105px black) drop-shadow(0px 0px 105px black);
+    display: none;
+}
+
+.latency {
+    color: #fff;
+}
+
+.physics-logs {
+    color: #fff;
+    position: absolute;
+    background: #56917e;
+    width: 260px;
+    padding: 15px;
+    color: #000fff;
+    line-height: 2;
+    border-radius: 10px;
+    margin-top: 5px;
+}
+    </style>
+</head>
+<body>
+    <!-- Game content goes here -->
+     <span class="game-logo">
+        <img src="./offline-v/assets/static/logo-light.png" alt="" srcset="">
+     </span>
+     
+     <div id="game-screen"></div>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/phaser@3.86.0/dist/phaser.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.86.0/dist/phaser.min.js"></script> -->
+    <script src="./offline-v/framework/engine/phaser.js"></script>
+    <script src="./offline-v/framework/engine/phaser.min.js"></script>
+    <script src="./offline-v/framework/server/colyseus.js"></script>
+    <script type="module" src="./offline-v/index.js"></script>
+</body>
+</html>

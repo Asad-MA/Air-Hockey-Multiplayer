@@ -87,4 +87,9 @@ userRoutes.get('/play-live/:roomId', authenticate,  (req, res) => {
 }
 );
 
+userRoutes.get('/play-offline/', authenticate,  (req, res) => {
+    res.render('pages/game-offline', { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token, avatar: req.user.avatar }})
+}
+);
+
 export default userRoutes;
