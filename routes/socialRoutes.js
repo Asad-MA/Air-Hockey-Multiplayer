@@ -20,6 +20,8 @@ socialRoutes.post('/friend/reject-request' , authenticate , friendController.rej
 
 socialRoutes.post('/friends/get' , authenticate , friendController.getFriends);
 
+socialRoutes.delete('/friends/remove/:friendID' , authenticate , friendController.removeFriend);
+
 
 // 
 socialRoutes.get('/chat' , authenticate , (req , res) => res.render('pages/chat' , { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token }}));                  

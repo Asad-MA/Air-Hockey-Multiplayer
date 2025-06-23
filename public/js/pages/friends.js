@@ -33,9 +33,9 @@ jQuery(document).ready(function($){
 
                                     </span>
                                     <span class="d-flex align-center gap-20 text-gray">
-                                        <i data-open-chat="${friend.email}" class="fa-solid fa-envelope-open"></i>
-                                        <i data-remove-friend="${friend.email}" class="fa-solid fa-user-minus"></i>
-                                        <i data-send-challenge="${friend.email}" class="fa-solid fa-trophy"></i>
+                                        <a href="/chat"><i data-open-chat="${friend.email}" class="fa-solid fa-envelope-open cursor-pointer"></i></a>
+                                        <i data-remove-friend="${friend._id}" class="fa-solid fa-user-minus cursor-pointer"></i>
+                                        <i data-send-challenge="${friend.email}" class="fa-solid fa-trophy cursor-pointer"></i>
                                     </span>
                                 </span>
 
@@ -46,6 +46,28 @@ jQuery(document).ready(function($){
             .catch(e => {
                 console.warn(e);
             })
+
+
+   $(document).on('click','[data-remove-friend]', function () {
+        const friendID = $(this).data('remove-friend');
+
+        if (!confirm('Are you sure you want to remove this friend?')) return;
+
+        $.ajax({
+            url: `/social/friends/remove/${friendID}`, // Adjust endpoint name as per your backend
+            type: 'DELETE',
+            contentType: 'application/json',
+            success: function (res) {
+                alert('Friend removed successfully');
+                // Optionally remove from UI
+                $(`[data-remove-friend="${friendID}"]`).closest('.friend-card').remove(); // adjust selector if needed
+            },
+            error: function (xhr) {
+                const err = xhr.responseJSON?.error || 'Failed to remove friend';
+                alert(err);
+            }
+        });
+    });
 
 
 });
