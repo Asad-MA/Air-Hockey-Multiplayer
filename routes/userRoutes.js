@@ -9,7 +9,7 @@ import path from "path";
 
 const userRoutes = express.Router();
 
-userRoutes.get('/login', (req, res) => { res.render('pages/login') })
+userRoutes.get('/login', (req, res) => { res.render('pages/login' , {query: req.query }) })
 
 userRoutes.get('/register', (req, res) => { res.render('pages/register') })
 

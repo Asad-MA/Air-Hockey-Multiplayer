@@ -3,12 +3,19 @@ import AuthService from "../services/authService.js";
 import {StrToTime , timeToStr} from '../utils/humanReadableDate.js'
 import { UAParser } from 'ua-parser-js';
 import { formatCurrency } from "../utils/formatCurrency.js";
+import USER from "../models/user.js";
 
 const authenticate = async (req, res, next) => {
     const { token, refreshtoken } = req.cookies;
     try {
         if (!token || !refreshtoken) throw new Error('Invalid Tokens!');
         const user = await AuthService.verifyToken(token);
+
+       const userData = await USER.findById(user.userId);
+    //    if(!userData) throw new Error('Invalid USer Account ');
+        if(userData.accountStatus == 'blocked')
+       return res.status(401).redirect('/login?error=account_blocked');
+
         // console.log('Token verification case1' , user);
         req.user = {_id: user.userId ,  name: user.name, displayName: user.displayName, email: user.email , token: token, avatar: user.avatar , coins: formatCurrency(user.coins)}
         next();

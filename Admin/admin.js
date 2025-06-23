@@ -12,6 +12,8 @@ import methodOverride from 'method-override';
 import GameSetting from './models/gameSettings.js';
 import authenticate from './middleware/authenticate.js';
 import { adminLogin } from './controllers/adminAuth.js';
+import getUserProfile from './controllers/userProfile.js';
+import {updateUserStatus} from './controllers/updateUsers.js';
 
 const app = express();
 const PORT = 4000; // Admin Panel on different port
@@ -44,11 +46,24 @@ app.get('/login', (req, res) => {
 
 app.post('/login', adminLogin);
 
+app.put('/user-status', authenticate, updateUserStatus);
 // Show Edit Form
-app.get('/edit/:id', async (req, res) => {
-    const user = await User.findById(req.params.id);
-    res.render('edit', { user });
+app.get('/edit/:username',  [authenticate, getUserProfile], (req, res) => {
+  const { user, stats } = req.profileData;
+
+  res.render('edit', {
+   user,
+    profile: {
+      name: user.name,
+      displayName: user.displayName,
+      email: user.email,
+      avatar: user.avatar,
+      coins: user.coins,
+      createdAt: user.createdAt
+    },
+    stats
   });
+});
   
   // Update User
   app.put('/edit/:id', async (req, res) => {

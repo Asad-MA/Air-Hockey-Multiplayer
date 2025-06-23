@@ -128,7 +128,7 @@ jQuery(document).ready(function () {
         if (data) {
             const rows = data.users.map((user, index) => ([
                 index + 1,
-                user.name,
+                `<a class="text-sm" target="_blank" href="/edit/${user.name}">${user.name}</a>`,
                 user.displayName,
                 user.email,
                 user.coins,

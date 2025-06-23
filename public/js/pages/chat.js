@@ -17,6 +17,15 @@ jQuery(document).ready(function ($) {
         loadChat(chatData);
     });
 
+    setInterval(()=>{
+        loadUserChats();
+        const chatID = chatHead.attr('data-chatid');
+        if(!chatID) return;
+        loadMessages(chatID);
+        $('.chat-window').scrollTop($('.chat-window')[0].scrollHeight);
+
+    } , 3000)
+
 
     sendBtn.on('click', function () {
         const chatID = chatHead.attr('data-chatid');
