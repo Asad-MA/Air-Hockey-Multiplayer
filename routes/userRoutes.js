@@ -6,6 +6,7 @@ import verifyResetPassword from '../middleware/verify-reset-pass.js';
 import authenticate from '../middleware/authenticate.js';
 import requestsValidator from "../middleware/validateUserRequests.js";
 import path from "path";
+import gameSettings from '../models/gameSettings.js';
 
 const userRoutes = express.Router();
 
@@ -87,8 +88,9 @@ userRoutes.post('resend-verification-mail', userController.resendMail);
 // Game Routes
 userRoutes.get('/matchmaking', authenticate, (req, res) => res.render('pages/lobby'))
 
-userRoutes.get('/play-live/:roomId', authenticate,  (req, res) => {
-    res.render('pages/game', { roomID: req.params.roomId,  user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token, avatar: req.user.avatar }})
+userRoutes.get('/play-live/:roomId', authenticate,  async (req, res) => {
+    const gameSetting =  await gameSettings.findById('685469d874509929e57f323c');
+    res.render('pages/game', {gameSetting,  roomID: req.params.roomId,  user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token, avatar: req.user.avatar }})
 }
 );
 

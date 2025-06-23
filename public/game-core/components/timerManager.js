@@ -1,7 +1,7 @@
 export default class TimerManager {
   constructor(scene) {
     this.scene = scene;
-    this.timeLeft = 600; // seconds
+    this.timeLeft = 600 // seconds
     this.isRunning = true;
     console.log(this.scene)
     this.createHUD();

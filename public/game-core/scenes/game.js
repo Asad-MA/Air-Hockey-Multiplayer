@@ -19,6 +19,17 @@ class Game extends Phaser.Scene {
     this.isNearPaddle = false;
     this.isNearFrame = false;
     // console.log = function () { };
+
+    this.gameSettings = {
+      puckMass: parseFloat(document.querySelector('#puck-mass').value),
+      paddleMass: parseFloat(document.querySelector('#paddle-mass').value),
+      puckSpeed: parseFloat(document.querySelector('#puck-speed').value),
+      paddleSpeed: parseFloat(document.querySelector('#paddle-speed').value),
+    }
+
+
+    console.log(this);
+
     this.logs = {
       latency: document.querySelector('.latency'),
     }

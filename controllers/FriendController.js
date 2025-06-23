@@ -92,12 +92,19 @@ class FriendController {
         { status: "Approved" }
       );
 
+
       // Publish notification
-      await notificationService.send(
-        requester.email,
-        req.user.displayName,
-        `Accepted your friend request!`,
-        "info"
+      await notificationService.send({
+        _id : 'old_work_flow_need_updates',
+        requestId: requestId._id,
+        userId: requester._id,
+        title: req.user.displayName,
+        message: `Accepted your friend request!`,
+        type: "info",
+        createdAt: Date.now(),
+        to: requester.email,
+
+      }
       );
 
       // Send Response

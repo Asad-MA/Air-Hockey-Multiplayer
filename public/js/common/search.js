@@ -41,7 +41,7 @@ jQuery(document).ready(function($){
       console.log();
      
       try {
-        const response = await fetch('/socail/friends/add', {
+        const response = await fetch('/social/friends/add', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

@@ -106,20 +106,25 @@ graphics.destroy(); // Remove graphics from scene
 const bg = this.add.image(0, 0, 'rematchGradientBtn').setOrigin(0.5);
 
 // Add text
-const rematchText = this.add.text(0, 0, 'Rematch', {
-  fontSize: '24px',
+
+const goBack = this.add.text(0, 0, 'Back to Lobby', {
+  fontSize: '20px',
   color: '#ffffff',
-  fontFamily: 'Arial'
+  fontFamily: 'Tomorrow'
 }).setOrigin(0.5);
 
 // Combine into container
-const button = this.add.container(width / 2, height - 250, [bg, rematchText])
+
+  const buttons = this.add.container(width / 2, height - 200, [bg, goBack])
   .setSize(buttonWidth, buttonHeight)
   .setInteractive({ useHandCursor: true })
   .on('pointerdown', () => {
-    console.log('Rematch clicked');
+    console.log('Go back clicked');
+
+    window.location.href = 'http://localhost:3001/';
     // Add rematch logic here
   });
+
 
   }
 

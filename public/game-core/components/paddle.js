@@ -9,8 +9,8 @@ class Paddle extends Phaser.Physics.Arcade.Sprite {
         this.body.setImmovable(true);
         this.body.setDirectControl(true);
         this.setFriction(0,0);
-        this.setMaxVelocity(2000 , 2000);
-        this.setMass(1);
+        this.setMaxVelocity(this.scene.gameSettings.paddleSpeed , this.scene.gameSettings.paddleSpeed);
+        this.setMass(this.scene.gameSettings.paddleMass);
         
         console.log(this);
 
