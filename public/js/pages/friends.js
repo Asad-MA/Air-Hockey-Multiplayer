@@ -18,15 +18,15 @@ jQuery(document).ready(function($){
                         <div class="ui-table-row grad-dark1 d-flex align-center gap-10">
                                 <span class="ui-table-col text-sm">#${i + 1}</span>
                                 <span class="ui-table-col d-flex align-center gap-10 w-full-available">
-                                    <span class="user-avatar-lg box-img box-rounded bg-gray">
-                                        <a href="social/profile/${friend.name}">
+                                    <span class="user-avatar-lg box-img box-rounded bg-gray overflow-hidden">
+                                        <a class="decoration-none" href="social/profile/${friend.name}">
                                             <img src="${friend.avatar}">
                                         </a>
                                     </span>
                                     <span class="user-detail-sm w-full-available">
-                                        <a href="social/profile/${friend.name}"><h5 class="text-sm user-displayname my-0">${friend.displayName}</h5></a>
+                                        <a class="decoration-none" href="social/profile/${friend.name}"><h5 class="text-sm user-displayname my-0">${friend.displayName}</h5></a>
                                         <div class="d-flex justify-between">
-                                           <a href="social/profile/${friend.name}"> <span class="user-name text-sm text-gray">@${friend.name}</span></a>
+                                           <a class="decoration-none" href="social/profile/${friend.name}"> <span class="user-name text-sm text-gray">@${friend.name}</span></a>
                                             
 
                                         </div>

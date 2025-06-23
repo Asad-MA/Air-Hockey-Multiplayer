@@ -166,7 +166,7 @@ class FriendController {
           $or: [{ requester: _id }, { recipent: _id }],
           status: "active",
         })
-        .populate("requester recipent", "name displayName email");
+        .populate("requester recipent", "name displayName email avatar");
 
       const friends = friendships.map((f) => {
         const requester = f.requester;
@@ -178,7 +178,7 @@ class FriendController {
           : requester;
       });
 
-      console.log(`Friends of ${req.user.displayName} : `, friends);
+      // console.log(`Friends of ${req.user.displayName} : `, friends);
 
       res.status(200).send({
         success: true,

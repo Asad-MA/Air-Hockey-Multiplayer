@@ -43,12 +43,6 @@ export default class GameOver extends Phaser.Scene {
     const animKey = this.result.result === 'win' ? 'winner' : 'loser';
     const spriteKey = this.result.result === 'win' ? 'winner' : 'loser';
 
-    // const glow = this.add.sprite(width / 2 - 30, height / 2 - 100, spriteKey);
-    // glow.setTint(0xffff00);       // Glow color (yellow)
-    // glow.setAlpha(0.2);           // Make it transparent
-    // glow.setScale(1.2);           // Slightly larger for glow effect
-    // glow.setDepth(2);             // Behind the main sprite
-
     // In front
 
     const emitter = this.add.particles(0, 0, 'trail', {

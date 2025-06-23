@@ -13,9 +13,11 @@ class Game extends Phaser.Scene {
   constructor() {
     super({ key: 'Game' });
     this.isGoal = false;
-    this.remoteGoals = 0;
+    this.playerGoals = 0;
+    this.pcGoals = 0;
     this.isNearPaddle = false;
     this.isNearFrame = false;
+    this.matchDuration = 60000;
   }
 
   preload() {
@@ -24,7 +26,7 @@ class Game extends Phaser.Scene {
 
   create() {
     this.bgMusic = this.sound.add('bg-music', { volume: 0.3 });
-    this.bgMusic.play({ loop: true });
+    // this.bgMusic.play({ loop: true });
     this.puckhit = this.sound.add('hit', { volume: 1 });
 
     this.scaleFactor = this.sys.game.config.physics.scaleFactor;
@@ -73,43 +75,138 @@ class Game extends Phaser.Scene {
       this.time.delayedCall(1, () => gameObject.setPosition(x, y));
     });
 
+    // this.puck.setVelocity(400, 300);
+
     this.infoOverlay.show('Game Started', 2000);
     this.time.delayedCall(2000, () => {
       this.infoOverlay.hide();
       this.startGame();
     });
+
+    this.time.addEvent({
+      delay: 1000, // milliseconds
+      callback: () => {
+       // console.log('Every second' , this.matchDuration);
+
+       if(this.matchDuration <= 0){
+        console.log("GAME OVER")
+        console.log(`PC Goals: ${this.pcGoals}\nPlayer Goals: ${this.playerGoals} `);
+        this.gameOver({playerGoals: this.playerGoals , pcGoals: this.pcGoals , result: this.playerGoals > this.pcGoals? 'win' : 'lose'});
+        return ;
+       }
+
+        this.matchDuration-=1000;
+        this.hud.update(this.matchDuration);
+
+      },
+      callbackScope: this,
+      loop: true
+    });
+
   }
 
   update() {
     this.resetPuckIfOutOfBounds(this.puck, this.gameFrame.bounds, 5);
 
-    const d = Phaser.Math.Distance.Between(
-      this.paddle.body.center.x, this.paddle.body.center.y,
-      this.puck.body.center.x, this.puck.body.center.y
-    );
-    this.isNearPaddle = d < 100;
+   // === Advanced AI Paddle Logic ===
 
-    for (const part of this.gameFrame.frameParts) {
-      const dF = Phaser.Math.Distance.Between(
-        this.puck.body.position.x, this.puck.body.position.y,
-        part.x, part.y
-      );
-      this.puckDistance = dF;
-      this.isNearFrame = dF < 150;
-      if (dF < 150) break;
-    }
+const puck = this.puck;
+const paddle = this.paddle2;
+const frameX = this.gameFrame.frameX;
+const frameY = this.gameFrame.frameY;
+const frameWidth = this.gameFrame.frameWidth;
+const frameHeight = this.gameFrame.frameHeight;
 
-    // Simple AI: follow puck X slowly
-    const dx = this.puck.x - this.paddle2.x;
-    this.paddle2.setVelocity(dx * 3, 0);
+const puckPos = puck.getCenter();
+const paddlePos = paddle.getCenter();
+
+const isPuckInAIHalf = puck.y < frameY + frameHeight / 2;
+
+// AI Parameters (can be tuned dynamically for difficulty)
+const reactionDelay = 50; // milliseconds
+const reactionChance = 0.95; // 90% chance to react (10% chance to "ignore" momentarily)
+const jitter = 0; // pixels to randomly offset movement
+const speed = 0.08; // lower is slower and smoother
+// Retreat cooldown (after hitting puck)
+if (!this.aiRetreatUntil) this.aiRetreatUntil = 0;
+if (!this.idlePuckTimer) this.idlePuckTimer = null;
+
+const isPuckNearCenterOrAI = puck.y < frameY + frameHeight * 0.6 && puck.body.speed < 20;
+
+if (isPuckNearCenterOrAI) {
+  if (!this.idlePuckTimer) {
+    this.idlePuckTimer = this.time.now + 2000;
+  } else if (this.time.now > this.idlePuckTimer) {
+    this.forceAIStrike = true;
+  }
+} else {
+  this.idlePuckTimer = null;
+  this.forceAIStrike = false;
+}
+
+
+
+// Add a reaction timer if not already set
+if (!this.aiNextUpdate || this.aiNextUpdate < this.time.now) {
+  this.aiShouldReact = Math.random() < reactionChance;
+  this.aiTargetX = puck.x + Phaser.Math.Between(-jitter, jitter);
+  this.aiTargetY = puck.y + Phaser.Math.Between(-jitter, jitter);
+
+  // Predict puck's position 200ms ahead
+  const predictedX = puck.x + puck.body.velocity.x * 0.4;
+  const predictedY = puck.y + puck.body.velocity.y * 0.4;
+
+  const justHit = Phaser.Math.Distance.Between(paddle.x, paddle.y, puck.x, puck.y) < 60 &&
+                puck.body.velocity.y > 0;
+
+if (justHit) {
+  this.aiRetreatUntil = this.time.now + 300; // Retreat for 300ms after hit
+}
+
+if (this.time.now < this.aiRetreatUntil) {
+  // Retreat mode: go back to center-defensive position
+  this.aiTargetX = Phaser.Math.Clamp(frameX + frameWidth / 2 + Phaser.Math.Between(-20, 20), frameX + 40, frameX + frameWidth - 40);
+  this.aiTargetY = frameY + 80;
+} else if (isPuckInAIHalf && puck.body.velocity.y > 0 && this.aiShouldReact) {
+  // Attack logic as before
+  const predictedX = puck.x + puck.body.velocity.x * 0.2;
+  const predictedY = puck.y + puck.body.velocity.y * 0.2;
+
+  this.aiTargetX = Phaser.Math.Clamp(predictedX, frameX + 40, frameX + frameWidth - 40);
+  this.aiTargetY = Phaser.Math.Clamp(predictedY, frameY + 50, frameY + frameHeight / 2 - 50);
+}
+else if ((isPuckInAIHalf && puck.body.velocity.y > 0 && this.aiShouldReact) || this.forceAIStrike) {
+  // Attack mode (normal or forced)
+  const predictedX = puck.x + puck.body.velocity.x * 0.4;
+  const predictedY = puck.y + puck.body.velocity.y * 0.4;
+
+  this.aiTargetX = Phaser.Math.Clamp(predictedX, frameX + 20, frameX + frameWidth - 20);
+  this.aiTargetY = Phaser.Math.Clamp(predictedY, frameY + 20, frameY + frameHeight / 2 - 20);
+ } else {
+  // Idle defense
+  this.aiTargetX = Phaser.Math.Clamp(frameX + frameWidth / 2 + Phaser.Math.Between(-30, 30), frameX + 40, frameX + frameWidth - 40);
+  this.aiTargetY = frameY + 60;
+}
+
+
+  this.aiNextUpdate = this.time.now + reactionDelay;
+}
+
+// Smooth movement toward target
+paddle.x += (this.aiTargetX - paddle.x) * speed;
+paddle.y += (this.aiTargetY - paddle.y) * speed;
+
+
   }
 
   handleGoal(goal) {
+    console.log(`PC Goals: ${this.pcGoals}\nPlayer Goals: ${this.playerGoals} `);
     if (this.gameState.isGoal) return;
     this.gameState.isGoal = true;
     this.bgMusic.setVolume(0.1);
     this.sound.play('glitch');
     this.hud.addGoal(goal === 'goal-top' ? 'player1' : 'player2');
+    goal === 'goal-top' ? this.pcGoals++ : this.playerGoals ++ ;
     this.pause();
     this.infoOverlay.show('Goal', 2000);
     this.cameras.main.shake(500, 0.005);
@@ -150,6 +247,28 @@ class Game extends Phaser.Scene {
 
   startGame() {
     this.gameState.isPaused = false;
+  }
+
+  gameOver(result) {
+    this.physics.world.pause();
+    // this.gameLoopx.paused = true;
+    this.gameState.isPaused = true;
+    this.bgMusic.pause();
+    this.scene.launch('GameOver', { result });
+  }
+
+  reset() {
+    console.log("Reset Game State");
+    this.gameState.reset();
+    // this.gameState.reset();
+    this.puck.setVelocity(0, 0);
+    this.paddle.setVelocity(0, 0);
+    this.paddle.setPosition(this.gameState.paddles.player1.x, this.gameState.paddles.player1.y);
+    this.paddle2.setPosition(this.gameState.paddles.player2.x, this.gameState.paddles.player2.y);
+    this.puck.setPosition(this.gameState.puck.x, this.gameState.puck.y);
+    this.gameState.isGoal = false;
+    this.puck.setVisible(true);
+    this.fixPaddlePosition();
   }
 }
 

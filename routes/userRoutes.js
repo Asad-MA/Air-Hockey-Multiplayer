@@ -26,6 +26,11 @@ userRoutes.get('/', authenticate, (req, res) => {
     res.render('pages/dashboard', { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token, avatar: req.user.avatar, coins: req.user.coins }});
 })
 
+userRoutes.get('/leaderboards', authenticate, (req, res) => {
+    // console.log('User: ', req.user);
+    res.render('pages/leaderboards', { user: {name: req.user.name, displayName: req.user.displayName, email: req.user.email, token: req.user.token, avatar: req.user.avatar, coins: req.user.coins }});
+})
+
 userRoutes.get('/settings', [authenticate , API.getUserSettings], (req, res) => {
     const { user } = req.profileData;
     // console.log('User: ', req.user);

@@ -9,12 +9,12 @@ export default class GameOver extends Phaser.Scene {
   }
 
   preload(){
-    this.players = this.scene.get('PlayerJoinScene').players;
+    // this.players = this.scene.get('PlayerJoinScene').players;
   }
 
   create() {
 
-    console.log(this.players);
+    // console.log(this.players);
     const { width, height } = this.scale;
 
     // Glassy transparent overlay
@@ -67,31 +67,31 @@ export default class GameOver extends Phaser.Scene {
 
     emitter.startFollow(spritte);
 
-    this.add.text(width / 2, height / 2 , `Your Score: ${this.result.scores[this.players[0].name]}`, {
+    this.add.text(width / 2, height / 2 , `Your Score: ${this.result.playerGoals}`, {
       fontSize: '18px',
       fontFamily: 'Impact',
       color: '#ffffff'
     }).setOrigin(0.5 , 0.5);
 
     
-    this.add.text(width / 2, height / 2 + 40, `Opponent Score: ${this.result.scores[this.players[1].name]}`, {
+    this.add.text(width / 2, height / 2 + 40, `Opponent Score: ${this.result.pcGoals}`, {
       fontSize: '18px',
       fontFamily: 'Impact',
       color: '#ffffff'
     }).setOrigin(0.5 , 0.5);
 
-    const G = this.result.scores[this.players[0].name];
-    const C = this.result.scores[this.players[1].name];
-    const D = G - C;
+    // const G = this.result.scores[this.players[0].name];
+    // const C = this.result.scores[this.players[1].name];
+    // const D = G - C;
 
-    const Points = (G * 20) - (C * 10) + (D * 5)
+    // const Points = (G * 20) - (C * 10) + (D * 5)
 
     
-    this.add.text(width / 2, height / 2 + 80, `Points Earned: ${Points}`, {
-      fontSize: '18px',
-      fontFamily: 'Impact',
-      color: '#ffffff'
-    }).setOrigin(0.5 , 0.5);
+    // this.add.text(width / 2, height / 2 + 80, `Points Earned: ${Points}`, {
+    //   fontSize: '18px',
+    //   fontFamily: 'Impact',
+    //   color: '#ffffff'
+    // }).setOrigin(0.5 , 0.5);
 
   const buttonWidth = 200;
 const buttonHeight = 50;
@@ -112,10 +112,16 @@ graphics.destroy(); // Remove graphics from scene
 const bg = this.add.image(0, 0, 'rematchGradientBtn').setOrigin(0.5);
 
 // Add text
-const rematchText = this.add.text(0, 0, 'Rematch', {
-  fontSize: '24px',
+const rematchText = this.add.text(0, 0, 'Retry', {
+  fontSize: '20px',
   color: '#ffffff',
-  fontFamily: 'Arial'
+  fontFamily: 'Tomorrow'
+}).setOrigin(0.5);
+
+const goBack = this.add.text(0, 0, 'Back to Lobby', {
+  fontSize: '20px',
+  color: '#ffffff',
+  fontFamily: 'Tomorrow'
 }).setOrigin(0.5);
 
 // Combine into container
@@ -124,6 +130,17 @@ const button = this.add.container(width / 2, height - 250, [bg, rematchText])
   .setInteractive({ useHandCursor: true })
   .on('pointerdown', () => {
     console.log('Rematch clicked');
+    this.scene.start('Game');
+    // Add rematch logic here
+  });
+
+  const buttons = this.add.container(width / 2, height - 300, [bg, goBack])
+  .setSize(buttonWidth, buttonHeight)
+  .setInteractive({ useHandCursor: true })
+  .on('pointerdown', () => {
+    console.log('Go back clicked');
+
+    window.location.href = 'http://localhost:3001/';
     // Add rematch logic here
   });
 

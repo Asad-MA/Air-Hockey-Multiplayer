@@ -12,6 +12,26 @@
     min-width: 100%;
 }
 
+   .table-wrap {
+    display: none;
+}
+
+.table-wrap.active {
+    display: block;
+}
+
+.active-tab {
+    transform: scale(1.1);
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.active-tab span{
+    color: #fff !important;
+}
+
  table td
  {
     background: #201f26 !important;

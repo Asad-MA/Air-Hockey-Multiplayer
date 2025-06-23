@@ -1,4 +1,4 @@
-import Network from '../networking/network.js';
+// import Network from '../networking/network.js';
 
 class PlayerJoinScene extends Phaser.Scene {
     constructor() {

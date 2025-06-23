@@ -134,7 +134,23 @@
                             class="widget-header glow-border-top glow-gold bg-grad-default text-center p-10 rounded-10">
                             <h3 class="widget-title my-0">LeaderBoards</h3>
                         </div>
-                        <table id="leaderboards-table" class="display" style="width:100%">
+                        
+
+
+                        <div class="tabs-wrapper d-flex gap-20 justify-center p-10">
+                        <div class="table-tab cursor-pointer active-tab" data-tab="table-weekly">
+                            <span class="text-sm text-gray">Weekly</span>
+                        </div>
+                        <div class="table-tab cursor-pointer" data-tab="table-monthly">
+                            <span class="text-sm text-gray">Monthly</span>
+                        </div>
+                        <div class="table-tab cursor-pointer" data-tab="table-allTime">
+                            <span class="text-sm text-gray">All Time</span>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap table-weekly active">
+                    <table id="leaderboards-weekly">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -147,7 +163,40 @@
                             </thead>
                             <tbody></tbody>
                         </table>
+                    </div>
 
+                    <div class="table-wrap table-monthly">
+                    <table id="leaderboards-monthly">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>User Name</th>
+                                    <th>Games Played</th>
+                                    <th>Coins Earned</th>
+                                    <th>Goal Scored</th>
+
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="table-wrap table-allTime">
+                    <table id="leaderboards-allTime">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>User Name</th>
+                                    <th>Games Played</th>
+                                    <th>Coins Earned</th>
+                                    <th>Goal Scored</th>
+
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
 
                     </div>
                 </div>
