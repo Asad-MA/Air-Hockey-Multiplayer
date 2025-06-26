@@ -112,6 +112,7 @@ class Boot extends Phaser.Scene {
         this.load.spritesheet("top-right", "textures/top-right.png", { frameWidth: 1667, frameHeight: 2911 });
         this.load.spritesheet("bottom-left", "textures/bottom-left.png", { frameWidth: 1667, frameHeight: 2911 });
         this.load.spritesheet("bottom-right", "textures/bottom-right.png", { frameWidth: 1667, frameHeight: 2911 });
+        this.load.spritesheet("GOAL" , "textures/kickoff.png" , {frameWidth: 404.5 , frameHeight: 299});
 
         this.load.spritesheet("winner", "textures/win.png", { frameWidth: 484.6, frameHeight: 271 });
         this.load.spritesheet("loser", "textures/lose.png", { frameWidth: 484.5, frameHeight: 271 });

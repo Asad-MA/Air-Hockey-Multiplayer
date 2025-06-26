@@ -25,7 +25,9 @@ class Game extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(0, 0, 'gameBackground').setOrigin(0).setDisplaySize(this.scale.width, this.scale.height).setDepth(-1);
+    // this.add.image(0, 0, 'gameBackground').setOrigin(0).setDisplaySize(this.scale.width, this.scale.height).setDepth(-1);
+    this.cameras.main.setBackgroundColor('#020017');
+
     this.bgMusic = this.sound.add('bg-music', { volume: 0.3 });
     // this.bgMusic.play({ loop: true });
     this.puckhit = this.sound.add('hit', { volume: 1 });
@@ -56,57 +58,66 @@ class Game extends Phaser.Scene {
 
 
     const brust = this.add.particles(0,0,'trail',{
-      speed: 120,
-      lifespan: 400,
+      speed: 150,
+      lifespan: 600,
       quantity: 20,
-      scale: { start: 0.02, end: 0 },
+      scale: { start: 0.015, end: 0 },
       blendMode: 'ADD',
       on: false  // Important: prevent continuous emission
     });
 
     const brust2 = this.add.particles(0,0,'trail2',{
       speed: 150,
-      lifespan: 400,
+      lifespan: 600,
       quantity: 20,
-      scale: { start: 0.02, end: 0 },
+      scale: { start: 0.015, end: 0 },
       blendMode: 'ADD',
       on: false // Important: prevent continuous emission
     });
+
+    const brust3 = this.add.particles(0,0,'trail',{
+      speed: 700,
+      lifespan: 300,
+      quantity: 20,
+      scale: { start: 0.15, end: 0 },
+      blendMode: 'ADD',
+      on: false // Important: prevent continuous emission
+    });
+
+    // brust3.startFollow(this.gameFrame.goals);
 
 
 
     const emitter = this.add.particles(0, 0, 'trail', {
       speed: 60,
-      lifespan: 800,
+      lifespan: 900,
       frequency: 100,
       scale: { start: 0.02, end: 0 },
       blendMode: 'ADD',
-      // emitZone: {
-      //   type: 'edge',
-      //   source: new Phaser.Geom.Circle(0, 0, this.paddle.displayWidth / 2),
-      //   quantity: 100
-      // }
+   
     });
     emitter.startFollow(this.paddle);
     emitter.setDepth(0);
 
     const emitter2 = this.add.particles(0, 0, 'trail2', {
       speed: 60,
-      lifespan: 800,
+      lifespan: 900,
       frequency: 100,
       scale: { start: 0.02, end: 0 },
       blendMode: 'ADD',
-      // emitZone: {
-      //   type: 'edge',
-      //   source: new Phaser.Geom.Circle(0, 0, this.paddle.displayWidth / 2),
-      //   quantity: 100
-      // }
+      
     });
     emitter2.startFollow(this.paddle2);
     emitter2.setDepth(0);
 
     this.physics.add.collider(this.paddle, this.gameFrame.frameParts);
-    this.physics.add.collider(this.puck, this.gameFrame.frameParts, () => {this.puckhit.stop(); this.puckhit.play()});
+    this.physics.add.collider(this.puck, this.gameFrame.frameParts, (puck , frame) => {
+      this.puckhit.stop(); 
+      this.puckhit.play();
+      const contactX = (puck.x + frame.x) / 2;
+      const contactY = (puck.y + frame.y) / 2;
+       brust.explode(25, contactX, contactY);
+    });
     this.physics.add.collider(this.puck, this.paddle, (puck , paddle) => {
       this.puckhit.stop();
       this.puckhit.play();
@@ -123,6 +134,7 @@ class Game extends Phaser.Scene {
       brust2.explode(25, contactX, contactY);
     });
     this.physics.add.overlap(this.puck, this.gameFrame.goals, (puck, goal) => {
+      brust3.explode(500, this.gameFrame.frameX + this.gameFrame.frameWidth /2 , this.gameFrame.frameHeight / 2);
       this.handleGoal(goal.texture.key === 'goal-top' ? 'goal-bottom' : 'goal-top');
     });
 
@@ -134,7 +146,7 @@ class Game extends Phaser.Scene {
 
     // this.puck.setVelocity(400, 300);
 
-    this.infoOverlay.show('Game Started', 2000);
+    this.infoOverlay.show('GOAL', 2000);
     this.time.delayedCall(2000, () => {
       this.infoOverlay.hide();
       this.startGame();
@@ -180,10 +192,10 @@ class Game extends Phaser.Scene {
     const isPuckInAIHalf = puck.y < frameY + frameHeight / 2;
 
     // AI Parameters (can be tuned dynamically for difficulty)
-    const reactionDelay = 50; // milliseconds
-    const reactionChance = 0.95; // 90% chance to react (10% chance to "ignore" momentarily)
+    const reactionDelay = 100; // milliseconds
+    const reactionChance = 0.7; // 90% chance to react (10% chance to "ignore" momentarily)
     const jitter = 100;// pixels to randomly offset movement
-    const speed = 0.08; // lower is slower and smoother
+    const speed = 0.05; // lower is slower and smoother
     // Retreat cooldown (after hitting puck)
     if (!this.aiRetreatUntil) this.aiRetreatUntil = 0;
     if (!this.idlePuckTimer) this.idlePuckTimer = null;
@@ -273,7 +285,7 @@ class Game extends Phaser.Scene {
     this.hud.addGoal(goal === 'goal-top' ? 'player1' : 'player2');
     goal === 'goal-top' ? this.pcGoals++ : this.playerGoals++;
     this.pause();
-    this.infoOverlay.show('Goal', 2000);
+    this.infoOverlay.show('GOAL', 2000);
     this.cameras.main.shake(500, 0.005);
     this.tweens.add({ targets: this.puck, alpha: 0, duration: 100 });
     this.time.delayedCall(2000, () => {

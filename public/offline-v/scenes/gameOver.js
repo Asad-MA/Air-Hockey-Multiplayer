@@ -51,21 +51,21 @@ export default class GameOver extends Phaser.Scene {
 
     // In front
 
-    const emitter = this.add.particles(0, 0, 'trail', {
-      speed: 50,
-       lifespan: 2000,
-      //  quantity: 10,
-      frequency: 10,
-       angle: { min: 0, max: 360 },
-      scale: { start: 0.5, end: 0 },
-      blendMode: 'ADD',
+    // const emitter = this.add.particles(0, 0, 'trail', {
+    //   speed: 50,
+    //    lifespan: 2000,
+    //   //  quantity: 10,
+    //   frequency: 10,
+    //    angle: { min: 0, max: 360 },
+    //   scale: { start: 0.5, end: 0 },
+    //   blendMode: 'ADD',
      
-    });
+    // });
     
 
     const spritte = this.add.sprite(width / 2 - 30, height / 2 - 100, spriteKey).setOrigin(0.5).play(animKey);
 
-    emitter.startFollow(spritte);
+    // emitter.startFollow(spritte);
 
     this.add.text(width / 2, height / 2 , `Your Score: ${this.result.playerGoals}`, {
       fontSize: '18px',
