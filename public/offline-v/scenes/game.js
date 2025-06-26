@@ -52,7 +52,7 @@ class Game extends Phaser.Scene {
 
 
     const brust = this.add.particles(0,0,'trail',{
-      speed: 100,
+      speed: 120,
       lifespan: 400,
       quantity: 20,
       scale: { start: 0.02, end: 0 },
@@ -61,7 +61,7 @@ class Game extends Phaser.Scene {
     });
 
     const brust2 = this.add.particles(0,0,'trail2',{
-      speed: 100,
+      speed: 150,
       lifespan: 400,
       quantity: 20,
       scale: { start: 0.02, end: 0 },
@@ -73,7 +73,7 @@ class Game extends Phaser.Scene {
 
     const emitter = this.add.particles(0, 0, 'trail', {
       speed: 60,
-      lifespan: 1100,
+      lifespan: 800,
       frequency: 100,
       scale: { start: 0.02, end: 0 },
       blendMode: 'ADD',
@@ -88,7 +88,7 @@ class Game extends Phaser.Scene {
 
     const emitter2 = this.add.particles(0, 0, 'trail2', {
       speed: 60,
-      lifespan: 1100,
+      lifespan: 800,
       frequency: 100,
       scale: { start: 0.02, end: 0 },
       blendMode: 'ADD',
