@@ -48,7 +48,7 @@ const config = {
         touch: true
     },
     audio: {
-        disableWebAudio: false
+        disableWebAudio: true
     },
     render: {
         antialias: true,

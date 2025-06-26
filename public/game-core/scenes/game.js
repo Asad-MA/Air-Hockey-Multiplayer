@@ -345,14 +345,14 @@ emitter.setDepth(0);
     Network.sendMessage('position', playerPosition);
   }
 
-  resize() {
-    this.gameFrame.frameParts.forEach(part => part.destroy());
-    this.puck.destroy();
-    this.paddle.destroy();
-    this.gameFrame.bg.destroy()
-    //this.create()
-    //this.gameFrame = new GameWorld(this);
-  }
+  // resize() {
+  //   this.gameFrame.frameParts.forEach(part => part.destroy());
+  //   this.puck.destroy();
+  //   this.paddle.destroy();
+  //   this.gameFrame.bg.destroy()
+  //   //this.create()
+  //   //this.gameFrame = new GameWorld(this);
+  // }
 
   registerListener() {
     // Network.addMessageListener('remote_position', (message) => this.receiveRemotePosition(message));

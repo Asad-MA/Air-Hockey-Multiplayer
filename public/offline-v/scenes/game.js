@@ -25,6 +25,10 @@ class Game extends Phaser.Scene {
   }
 
   create() {
+
+     
+
+
     this.bgMusic = this.sound.add('bg-music', { volume: 0.3 });
     // this.bgMusic.play({ loop: true });
     this.puckhit = this.sound.add('hit', { volume: 1 });
@@ -38,6 +42,10 @@ class Game extends Phaser.Scene {
     this.gameState = new GameState(this);
     this.infoOverlay = new GameInfoOverlay(this);
     this.hud = new HUD(this);
+
+
+    this.physics.world.setBounds(this.gameFrame.frameX, this.gameFrame.frameY, this.gameFrame.frameWidth, this.gameFrame.frameHeight);
+
 
     this.puck = new Puck(this, this.gameState.puck.x, this.gameState.puck.y, 'puck');
     this.paddle = new Paddle(this, this.gameState.paddles.player1.x, this.gameState.paddles.player1.y, 'paddle1');
