@@ -43,7 +43,7 @@ class Game extends Phaser.Scene {
   create() {
 
 
-
+    this.add.image(0, 0, 'background').setOrigin(0).setDisplaySize(this.scale.width, this.scale.height).setDepth(-1);
     this.music = this.sound.add('glitch', { volume: 0.8 });
     this.bgMusic = this.sound.add('bg-music', { volume: 0.3 });
     this.bgMusic.play({ loop: true });
@@ -345,14 +345,14 @@ emitter.setDepth(0);
     Network.sendMessage('position', playerPosition);
   }
 
-  // resize() {
-  //   this.gameFrame.frameParts.forEach(part => part.destroy());
-  //   this.puck.destroy();
-  //   this.paddle.destroy();
-  //   this.gameFrame.bg.destroy()
-  //   //this.create()
-  //   //this.gameFrame = new GameWorld(this);
-  // }
+  resize() {
+    // this.gameFrame.frameParts.forEach(part => part.destroy());
+    // this.puck.destroy();
+    // this.paddle.destroy();
+    // this.gameFrame.bg.destroy()
+    //this.create()
+    //this.gameFrame = new GameWorld(this);
+  }
 
   registerListener() {
     // Network.addMessageListener('remote_position', (message) => this.receiveRemotePosition(message));

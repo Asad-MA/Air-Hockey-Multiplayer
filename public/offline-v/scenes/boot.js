@@ -7,7 +7,7 @@ class Boot extends Phaser.Scene {
 
     preload() {
         // Set base URL (if needed)
-        this.load.setBaseURL('./game-core/assets/');
+        this.load.setBaseURL('./offline-v/assets/');
 
         // Set background color
         this.cameras.main.setBackgroundColor('#222');
@@ -84,10 +84,11 @@ class Boot extends Phaser.Scene {
 
         // ✅ Load assets (NO `async: true` because it's invalid in Phaser)
         // Loading images
+        this.load.image('gameBackground', 'textures/game-bg.jpg');
         this.load.image('background', 'textures/default-bg.png');
         this.load.image('gamebg', 'textures/background.png');
         this.load.image("puck", "textures/puck-128x128.png");
-        this.load.image("paddle1", "textures/paddle-player.png");
+        this.load.image("paddle1", "textures/paddle-fill.png");
         this.load.image("paddle2", "textures/paddle-remote.png");
         this.load.image("center-circle", "textures/center.png");
         this.load.image("center-line", "textures/center-line.png");
@@ -97,6 +98,7 @@ class Boot extends Phaser.Scene {
         this.load.image("bottom-half", "textures/bottom-half.png");
         this.load.image("vs", "textures/vs.png");
         this.load.image("trail", "textures/particle.png");
+        this.load.image("trail2", "textures/particle-2.png");
 
         // Loading SFX
         this.load.audio("glitch" , "sfx/glitch-c.wav");

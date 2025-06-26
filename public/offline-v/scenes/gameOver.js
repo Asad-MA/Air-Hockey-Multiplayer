@@ -130,6 +130,7 @@ const button = this.add.container(width / 2, height - 250, [bg, rematchText])
   .setInteractive({ useHandCursor: true })
   .on('pointerdown', () => {
     console.log('Rematch clicked');
+    this.scene.get('Game').matchDuration = 60000;
     this.scene.start('Game');
     // Add rematch logic here
   });

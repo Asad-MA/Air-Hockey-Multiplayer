@@ -84,6 +84,7 @@ class Boot extends Phaser.Scene {
 
         // ✅ Load assets (NO `async: true` because it's invalid in Phaser)
         // Loading images
+        this.load.image('gameBackground' , '/textures/game-bg.jpg');
         this.load.image('background', 'textures/default-bg.png');
         this.load.image('gamebg', 'textures/background.png');
         this.load.image("puck", "textures/puck-128x128.png");
