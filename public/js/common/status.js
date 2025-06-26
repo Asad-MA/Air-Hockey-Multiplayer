@@ -1,7 +1,7 @@
 jQuery(document).ready(function() {
 
 function connectToRTGS() {
-    const socket = new WebSocket(`ws://localhost:3005/status`, []);
+    const socket = new WebSocket(`ws://${config.baseUrl}:3005/status`, []);
 
     socket.onopen = function() {
         console.log("Connected to RTGS [status traking]");
