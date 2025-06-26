@@ -21,12 +21,12 @@ const config = {
         debug: true,
         scaleFactor: window.devicePixelRatio,//isMobile ? 2 : 1,
         arcade:{
-            debug: false,
+            debug: true,
             fps: 60,
             gravity: { y: 0 , x: 0 },
-            debugShowBody: true,
-            debugShowStaticBody: true,
-            debugShowVelocity: true,
+            debugShowBody: false,
+            debugShowStaticBody: false,
+            debugShowVelocity: false,
         }
     },
     scene: [Boot, Game, Menu, GameOver, Pause],

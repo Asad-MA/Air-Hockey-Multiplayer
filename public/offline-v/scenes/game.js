@@ -41,7 +41,7 @@ class Game extends Phaser.Scene {
     this.hud = new HUD(this);
 
 
-    this.physics.world.setBounds(this.gameFrame.frameX, this.gameFrame.frameY, this.gameFrame.frameWidth, this.gameFrame.frameHeight);
+    this.physics.world.setBounds(this.gameFrame.frameX+ 10, this.gameFrame.frameY + 20, this.gameFrame.frameWidth - 30, this.gameFrame.frameHeight - 40);
 
 
     this.puck = new Puck(this, this.gameState.puck.x, this.gameState.puck.y, 'puck');
@@ -106,14 +106,16 @@ class Game extends Phaser.Scene {
     emitter2.setDepth(0);
 
     this.physics.add.collider(this.paddle, this.gameFrame.frameParts);
-    this.physics.add.collider(this.puck, this.gameFrame.frameParts, () => this.puckhit.play());
+    this.physics.add.collider(this.puck, this.gameFrame.frameParts, () => {this.puckhit.stop(); this.puckhit.play()});
     this.physics.add.collider(this.puck, this.paddle, (puck , paddle) => {
+      this.puckhit.stop();
       this.puckhit.play();
       const contactX = (puck.x + paddle.x) / 2;
       const contactY = (puck.y + paddle.y) / 2;
        brust.explode(25, contactX, contactY);
     });
     this.physics.add.collider(this.puck, this.paddle2, (puck , paddle) => {
+      this.puckhit.stop();
       this.puckhit.play();
       const contactX = (puck.x + paddle.x) / 2;
       const contactY = (puck.y + paddle.y) / 2;
