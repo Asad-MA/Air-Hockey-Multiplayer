@@ -46,8 +46,8 @@ class Game extends Phaser.Scene {
     this.add.image(0, 0, 'background').setOrigin(0).setDisplaySize(this.scale.width, this.scale.height).setDepth(-1);
     this.music = this.sound.add('glitch', { volume: 0.8 });
     this.bgMusic = this.sound.add('bg-music', { volume: 0.3 });
-    this.bgMusic.play({ loop: true });
-    this.bgMusicNeon = this.sound.add('neon', { volume: 0.05 });
+    // this.bgMusic.play({ loop: true });
+    // this.bgMusicNeon = this.sound.add('neon', { volume: 0.05 });
     this.puckhit = this.sound.add('hit', { volume: 1 });
 
     // console.log(this.game.config.physics.default);
@@ -131,57 +131,57 @@ emitter.setDepth(0);
 
 
 
-    this.physics.add.collider(this.paddle, this.gameFrame.frameParts)
-    this.physics.add.collider(this.puck, this.gameFrame.frameParts, (puck, frame) => {
-      this.puckhit.play();
-      // puck.body.setVelocity(puck.body.velocity.y*0.7 , puck.body.velocity.y*0.7);
-    }
-    )
-    this.physics.add.collider(this.puck, this.paddle, (puck, paddle) => {
-      this.puckhit.play();
-      // emitter.explode(50, this.puck.body.position.x , this.puck.body.position.y);
-      // console.log(this.puck.body.velocity);
-      const puckVirtualX = (this.puck.body.position.x - this.gameFrame.frameX) / this.gameFrame.scaleFactor;
-      const puckVirtualY = (this.puck.body.position.y - this.gameFrame.frameY) / this.gameFrame.scaleFactor;
+    // this.physics.add.collider(this.paddle, this.gameFrame.frameParts)
+    // this.physics.add.collider(this.puck, this.gameFrame.frameParts, (puck, frame) => {
+    //   this.puckhit.play();
+    //   // puck.body.setVelocity(puck.body.velocity.y*0.7 , puck.body.velocity.y*0.7);
+    // }
+    // )
+    // this.physics.add.collider(this.puck, this.paddle, (puck, paddle) => {
+    //   this.puckhit.play();
+    //   // emitter.explode(50, this.puck.body.position.x , this.puck.body.position.y);
+    //   // console.log(this.puck.body.velocity);
+    //   const puckVirtualX = (this.puck.body.position.x - this.gameFrame.frameX) / this.gameFrame.scaleFactor;
+    //   const puckVirtualY = (this.puck.body.position.y - this.gameFrame.frameY) / this.gameFrame.scaleFactor;
 
-      const puckVirtualVelocityX = this.puck.body.velocity.x / this.gameFrame.scaleFactor;
-      const puckVirtualVelocityY = this.puck.body.velocity.y / this.gameFrame.scaleFactor;
+    //   const puckVirtualVelocityX = this.puck.body.velocity.x / this.gameFrame.scaleFactor;
+    //   const puckVirtualVelocityY = this.puck.body.velocity.y / this.gameFrame.scaleFactor;
 
-      // this.puck.setVelocity(puckVirtualVelocityX , puckVirtualVelocityY );
+    //   // this.puck.setVelocity(puckVirtualVelocityX , puckVirtualVelocityY );
 
-      // this.sendPuckData({
-      //   x: puckVirtualX,
-      //   y: puckVirtualY,
-      //   vx: puckVirtualVelocityX,
-      //   vy: puckVirtualVelocityY
-      // });
+    //   // this.sendPuckData({
+    //   //   x: puckVirtualX,
+    //   //   y: puckVirtualY,
+    //   //   vx: puckVirtualVelocityX,
+    //   //   vy: puckVirtualVelocityY
+    //   // });
 
-    });
-    this.physics.add.collider(this.puck, this.paddle2, (puck, paddle) => {
-      this.puckhit.play();
-      const puckVirtualX = (this.puck.body.position.x - this.gameFrame.frameX) / this.gameFrame.scaleFactor;
-      const puckVirtualY = (this.puck.body.position.y - this.gameFrame.frameY) / this.gameFrame.scaleFactor;
+    // });
+    // this.physics.add.collider(this.puck, this.paddle2, (puck, paddle) => {
+    //   this.puckhit.play();
+    //   const puckVirtualX = (this.puck.body.position.x - this.gameFrame.frameX) / this.gameFrame.scaleFactor;
+    //   const puckVirtualY = (this.puck.body.position.y - this.gameFrame.frameY) / this.gameFrame.scaleFactor;
 
-      const puckVirtualVelocityX = this.puck.body.velocity.x / this.gameFrame.scaleFactor;
-      const puckVirtualVelocityY = this.puck.body.velocity.y / this.gameFrame.scaleFactor;
+    //   const puckVirtualVelocityX = this.puck.body.velocity.x / this.gameFrame.scaleFactor;
+    //   const puckVirtualVelocityY = this.puck.body.velocity.y / this.gameFrame.scaleFactor;
 
-      // this.puck.setVelocity(puckVirtualVelocityX , puckVirtualVelocityY );
+    //   // this.puck.setVelocity(puckVirtualVelocityX , puckVirtualVelocityY );
 
-      // this.sendPuckData({
-      //   x: puckVirtualX,
-      //   y: puckVirtualY,
-      //   vx: puckVirtualVelocityX,
-      //   vy: puckVirtualVelocityY
-      // });
-    });
-    this.physics.add.overlap(this.puck, this.gameFrame.goals, (puck, goal) => {
-      console.log(goal.texture.key);
-      if (!this.players[0].isHost) return;
+    //   // this.sendPuckData({
+    //   //   x: puckVirtualX,
+    //   //   y: puckVirtualY,
+    //   //   vx: puckVirtualVelocityX,
+    //   //   vy: puckVirtualVelocityY
+    //   // });
+    // });
+    // this.physics.add.overlap(this.puck, this.gameFrame.goals, (puck, goal) => {
+    //   console.log(goal.texture.key);
+    //   if (!this.players[0].isHost) return;
 
-      Network.sendMessage('Goal', { goal: goal.texture.key });
-      // this.pause();
-      this.handleGoal({ goal: goal.texture.key == 'goal-top' ? 'goal-bottom' : 'goal-top' });
-    }, null, this);
+    //   Network.sendMessage('Goal', { goal: goal.texture.key });
+    //   // this.pause();
+    //   this.handleGoal({ goal: goal.texture.key == 'goal-top' ? 'goal-bottom' : 'goal-top' });
+    // }, null, this);
 
     // When dragging, set the ball's position to follow the mouse pointer
     this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
@@ -252,33 +252,33 @@ emitter.setDepth(0);
 
   update(delta) {
 
-    this.resetPuckIfOutOfBounds(this.puck, this.gameFrame.bounds, 5);
+    // this.resetPuckIfOutOfBounds(this.puck, this.gameFrame.bounds, 5);
 
-    const puckVirtualX = (this.puck.body.position.x - this.gameFrame.frameX) / this.gameFrame.scaleFactor;
-    const puckVirtualY = (this.puck.body.position.y - this.gameFrame.frameY) / this.gameFrame.scaleFactor;
-    const puckVirtualVelocityX = this.puck.body.velocity.x / this.gameFrame.scaleFactor;
-    const puckVirtualVelocityY = this.puck.body.velocity.y / this.gameFrame.scaleFactor;
+    // const puckVirtualX = (this.puck.body.position.x - this.gameFrame.frameX) / this.gameFrame.scaleFactor;
+    // const puckVirtualY = (this.puck.body.position.y - this.gameFrame.frameY) / this.gameFrame.scaleFactor;
+    // const puckVirtualVelocityX = this.puck.body.velocity.x / this.gameFrame.scaleFactor;
+    // const puckVirtualVelocityY = this.puck.body.velocity.y / this.gameFrame.scaleFactor;
 
-    this.gameState.updatePuck(puckVirtualX, puckVirtualY, puckVirtualVelocityX, puckVirtualVelocityY);
-    this.gameState.updateTimestamp();
-    // this.gameState.
+    // this.gameState.updatePuck(puckVirtualX, puckVirtualY, puckVirtualVelocityX, puckVirtualVelocityY);
+    // this.gameState.updateTimestamp();
+    // // this.gameState.
 
-    const d = Phaser.Math.Distance.Between(this.paddle.body.center.x, this.paddle.body.center.y, this.puck.body.center.x, this.puck.body.center.y);
-    this.isNearPaddle = d < 100 ? true : false;
+    // const d = Phaser.Math.Distance.Between(this.paddle.body.center.x, this.paddle.body.center.y, this.puck.body.center.x, this.puck.body.center.y);
+    // this.isNearPaddle = d < 100 ? true : false;
 
-    for (const part of this.gameFrame.frameParts) {
-      const dF = Phaser.Math.Distance.Between(
-        this.puck.body.position.x,
-        this.puck.body.position.y,
-        part.x,
-        part.y
-      );
+    // for (const part of this.gameFrame.frameParts) {
+    //   const dF = Phaser.Math.Distance.Between(
+    //     this.puck.body.position.x,
+    //     this.puck.body.position.y,
+    //     part.x,
+    //     part.y
+    //   );
 
-      this.puckDistance = dF;
-      this.isNearFrame = dF < 150;
+    //   this.puckDistance = dF;
+    //   this.isNearFrame = dF < 150;
 
-      if (dF < 150) break;
-    }
+    //   if (dF < 150) break;
+    // }
 
 
 
@@ -459,27 +459,57 @@ emitter.setDepth(0);
 
   sendGameState() {
     // console.log('Host Game State: ' , this.gameState.getState());
-    Network.sendMessage('game_state', this.gameState.getState());
+    // Network.sendMessage('game_state', this.gameState.getState());
   }
 
   receiveGameState(gameState) {
+
+    // console.log('Received Game State: ', gameState);
+    const { puck, players, timestamp } = gameState;
+
+    // if(Date.now() - gameState.paddles.player2.timeStamp > 60) return;
+    const diff = Date.now() - timestamp;
+    const delta = (!isNaN(diff) || diff > 0) ? diff / 1000 : 0;
+
+    if (diff > 700) return;
+
+    var dx = ((puck.velocityX) * delta) 
+    var dy = ((puck.velocityY) * delta) 
+    // console.table({
+    //   puck1x: gameState.puck.x,
+    //   puck2x: this.puck.body.position.x,
+    //   puck1y: gameState.puck.y,
+    //   puck2y: this.puck.body.position.y,
+    // })
+
+    const currentPuckX = this.puck.body.position.x;
+    const currentPuckY = this.puck.body.position.y;
+    const newPuckX = Phaser.Math.Linear(currentPuckX + this.puck.body.halfWidth, gameState.puck.x * this.gameFrame.scaleFactor + this.gameFrame.frameX, 0.3);
+    const newPuckY = Phaser.Math.Linear(currentPuckY + this.puck.body.halfHeight, gameState.puck.y * this.gameFrame.scaleFactor + this.gameFrame.frameY, 0.3);
+
+
+    this.puck.setPosition(newPuckX , newPuckY);
+    this.puck.setVelocity(gameState.puck.velocityX * this.gameFrame.scaleFactor, gameState.puck.velocityY * this.gameFrame.scaleFactor);
+
+    return;
+
     if (this.puck.body.touching.none === false) return;
 
     // console.log(Date.now() - gameState.paddles.player2.timeStamp);
-    const { puck, paddles, timestamp } = gameState;
-    // if(Date.now() - gameState.paddles.player2.timeStamp > 60) return;
-    const diff = Date.now() - gameState.paddles.player2.timeStamp;
-    const delta = (!isNaN(diff) || diff > 0) ? diff / 1000 : 0;
+    // const { puck, paddles, timestamp } = gameState;
+    // // if(Date.now() - gameState.paddles.player2.timeStamp > 60) return;
+    // const diff = Date.now() - gameState.paddles.player2.timeStamp;
+    // const delta = (!isNaN(diff) || diff > 0) ? diff / 1000 : 0;
 
-    if (diff > 160) return;
+    // if (diff > 160) return;
 
-    var dx = ((this.puck.body.velocity.x) * delta) / this.gameFrame.scaleFactor;
-    var dy = ((this.puck.body.velocity.y) * delta) / this.gameFrame.scaleFactor;
+    // var dx = ((this.puck.body.velocity.x) * delta) / this.gameFrame.scaleFactor;
+    // var dy = ((this.puck.body.velocity.y) * delta) / this.gameFrame.scaleFactor;
 
-    if (this.isNearPaddle || this.isNearFrame) {
-      dx = 0;
-      dy = 0;
-    }
+    // if (this.isNearPaddle || this.isNearFrame) {
+    //   dx = 0;
+    //   dy = 0;
+    // }
 
 
 
@@ -494,12 +524,12 @@ emitter.setDepth(0);
 
     // POsition interpolation 
 
-    const currentPuckX = this.puck.body.position.x;
-    const currentPuckY = this.puck.body.position.y;
-    const newPuckX = Phaser.Math.Linear(currentPuckX + this.puck.body.halfWidth, puckScreenX + dx, 0.15);
-    const newPuckY = Phaser.Math.Linear(currentPuckY + this.puck.body.halfHeight, puckScreenY + dy, 0.15);
+    // const currentPuckX = this.puck.body.position.x;
+    // const currentPuckY = this.puck.body.position.y;
+    // const newPuckX = Phaser.Math.Linear(currentPuckX + this.puck.body.halfWidth, puckScreenX + dx, 0.15);
+    // const newPuckY = Phaser.Math.Linear(currentPuckY + this.puck.body.halfHeight, puckScreenY + dy, 0.15);
 
-    this.puck.setPosition(newPuckX, newPuckY);
+    // this.puck.setPosition(newPuckX, newPuckY);
 
 
     this.logs.latency.innerHTML = `
@@ -567,9 +597,9 @@ emitter.setDepth(0);
   }
 
   pause() {
-    this.physics.world.pause();
-    this.gameLoopx.paused = true;
-    this.gameState.isPaused = true;
+    // this.physics.world.pause();
+    // this.gameLoopx.paused = true;
+    // this.gameState.isPaused = true;
 
 
   }
@@ -583,9 +613,9 @@ emitter.setDepth(0);
   }
 
   resume() {
-    this.physics.world.resume();
-    this.gameLoopx.paused = false;
-    this.gameState.isPaused = false;
+    // this.physics.world.resume();
+    // this.gameLoopx.paused = false;
+    // this.gameState.isPaused = false;
 
 
 

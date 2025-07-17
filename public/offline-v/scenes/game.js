@@ -28,9 +28,9 @@ class Game extends Phaser.Scene {
     // this.add.image(0, 0, 'gameBackground').setOrigin(0).setDisplaySize(this.scale.width, this.scale.height).setDepth(-1);
     this.cameras.main.setBackgroundColor('#020017');
 
-    this.bgMusic = this.sound.add('bg-music', { volume: 0.3 });
-    // this.bgMusic.play({ loop: true });
-    this.puckhit = this.sound.add('hit', { volume: 1 });
+    this.bgMusic = this.sound.add('bg-music', { volume: 1 });
+    this.bgMusic.play({ loop: true });
+    this.puckhit = this.sound.add('hit', { volume: 0.8 });
 
     this.scaleFactor = this.sys.game.config.physics.scaleFactor;
     this.physicsManager = this.game.config.physics.default === 'matter'

@@ -12,14 +12,14 @@ class Puck extends Phaser.Physics.Arcade.Sprite {
         this.setCircle(this.body.halfWidth, 0, this.body.halfHeight - this.body.halfWidth);
         this.setScale(this.scaleFactor / 3.5);
         this.setMass(0.5);
-        this.setBounce(0.7);
-        this.setFriction(0, 0);
+        this.setBounce(0.8);
+        this.setFriction(2, 2);
         this.body.setAllowRotation();
         // this.body.slideFactor.set(0.8,0.8);
         // this.setDrag(10, 10)
         this.setMaxVelocity(1000 , 1000);
 
-        this.setCollideWorldBounds(true);
+        // this.setCollideWorldBounds(true);
 
         // And set world bounds (once, usually in scene create)
         // scene.matter.world.setBounds(0, 0, width, height, 32, true, true, true, true);

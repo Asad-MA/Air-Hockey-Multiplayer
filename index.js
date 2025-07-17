@@ -75,12 +75,12 @@ app.get("/monitor/health", (req, res) => {
 
 
 // Connect Redis Server
-await connectRedis();
+// await connectRedis();
 
 
 
 // Start Server
 app.listen(PORT, async () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);  
 });
 
