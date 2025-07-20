@@ -275,7 +275,7 @@ this.physics.world.setBounds(this.gameFrame.frameX, this.gameFrame.frameY , this
 
     const lerpFactor = 0.4;
 
-    if (Date.now() - timestamp > 150) return;
+    if (Date.now() - timestamp > 200) return;
     const targetX = puck.x * this.gameFrame.scaleFactor + this.gameFrame.frameX;
     const targetY = puck.y * this.gameFrame.scaleFactor;
 

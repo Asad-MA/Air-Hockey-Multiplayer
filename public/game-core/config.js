@@ -40,7 +40,7 @@ const config = {
     },
     fps: {
         target: 60,
-        smoothStep: false
+        smoothStep: true
     },
     input: {
         keyboard: true,
