@@ -65,4 +65,4 @@ class ColyseusNetwork extends INetworkService {
     }
 }
 
-export default new ColyseusNetwork(`ws://${config.baseUrl}:2567` , sessionStorage.getItem("token"));
+export default new ColyseusNetwork(`ws://${config.gameServerUrl}` , sessionStorage.getItem("token"));

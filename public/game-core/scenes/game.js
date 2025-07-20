@@ -18,6 +18,7 @@ class Game extends Phaser.Scene {
     this.remotePlayer = {};
     this.isNearPaddle = false;
     this.isNearFrame = false;
+    this.serverSnapshot = null;
     // console.log = function () { };
 
     this.gameSettings = {
@@ -64,6 +65,7 @@ class Game extends Phaser.Scene {
     this.gameState = new GameState(this);
     this.infoOverlay = new GameInfoOverlay(this);
     this.hud = new HUD(this);
+this.physics.world.setBounds(this.gameFrame.frameX, this.gameFrame.frameY , this.gameFrame.frameWidth , this.gameFrame.frameHeight );
 
     console.log(this.gameFrame);
 
@@ -97,37 +99,37 @@ class Game extends Phaser.Scene {
     this.addRemotePlayer(this.players[1]);
 
     // In create:
-const paddleRadius = this.paddle.displayWidth / 2;
+    const paddleRadius = this.paddle.displayWidth / 2;
 
-const paddleCircle = new Phaser.Geom.Circle(0, 0, paddleRadius);
+    const paddleCircle = new Phaser.Geom.Circle(0, 0, paddleRadius);
 
-const emitter = this.add.particles(0, 0, 'trail', {
-  speed: 30, // Set to 0, we'll apply custom velocity
-  lifespan: 1000,
-  frequency: 10,
-  scale: { start: 0.2, end: 0 },
-  blendMode: 'ADD',
-  emitZone: {
-    type: 'edge',
-    source: paddleCircle,
-    quantity: 100,
-    seamless: false
-  }
-});
+    const emitter = this.add.particles(0, 0, 'trail', {
+      speed: 30, // Set to 0, we'll apply custom velocity
+      lifespan: 1000,
+      frequency: 10,
+      scale: { start: 0.2, end: 0 },
+      blendMode: 'ADD',
+      emitZone: {
+        type: 'edge',
+        source: paddleCircle,
+        quantity: 100,
+        seamless: false
+      }
+    });
 
-emitter.startFollow(this.paddle);
-emitter.setDepth(0);
+    emitter.startFollow(this.paddle);
+    emitter.setDepth(0);
 
-// 🔁 Apply outward velocity to each emitted particle
-// emitter.on('particleEmit', (particle) => {
-//   const dx = particle.x - this.paddle.x;
-//   const dy = particle.y - this.paddle.y;
-//   const angle = Math.atan2(dy, dx);
-//   const speed = 90;
+    // 🔁 Apply outward velocity to each emitted particle
+    // emitter.on('particleEmit', (particle) => {
+    //   const dx = particle.x - this.paddle.x;
+    //   const dy = particle.y - this.paddle.y;
+    //   const angle = Math.atan2(dy, dx);
+    //   const speed = 90;
 
-//   particle.velocityX = Math.cos(angle) * speed;
-//   particle.velocityY = Math.sin(angle) * speed;
-// });
+    //   particle.velocityX = Math.cos(angle) * speed;
+    //   particle.velocityY = Math.sin(angle) * speed;
+    // });
 
 
 
@@ -251,6 +253,51 @@ emitter.setDepth(0);
 
 
   update(delta) {
+
+
+
+
+    if (!this.serverSnapshot) return;
+
+    // console.log('Received Game State: ', gameState);
+    const { puck, players, timestamp } = this.serverSnapshot;
+
+    this.logs.latency.innerHTML = `
+    Latency: ${(Date.now() - timestamp)}ms
+    `;
+
+    // console.table({
+    //   puck1x: gameState.puck.x,
+    //   puck2x: this.puck.body.position.x,
+    //   puck1y: gameState.puck.y,
+    //   puck2y: this.puck.body.position.y,
+    // })
+
+    const lerpFactor = 0.4;
+
+    if (Date.now() - timestamp > 150) return;
+    const targetX = puck.x * this.gameFrame.scaleFactor + this.gameFrame.frameX;
+    const targetY = puck.y * this.gameFrame.scaleFactor;
+
+    const newX = Phaser.Math.Linear(this.puck.x, targetX, lerpFactor);
+    const newY = Phaser.Math.Linear(this.puck.y, targetY, lerpFactor);
+
+
+
+    this.puck.setPosition(newX, newY);
+
+    // this.puck.setVelocity(gameState.puck.velocityX * this.gameFrame.scaleFactor, gameState.puck.velocityY * this.gameFrame.scaleFactor);
+
+
+    const targetVX = puck.vx * this.gameFrame.scaleFactor;
+    const targetVY = puck.vy * this.gameFrame.scaleFactor;
+
+    this.puck.body.velocity.x = Phaser.Math.Linear(this.puck.body.velocity.x, targetVX, lerpFactor);
+    this.puck.body.velocity.y = Phaser.Math.Linear(this.puck.body.velocity.y, targetVY, lerpFactor);
+
+
+
+
 
     // this.resetPuckIfOutOfBounds(this.puck, this.gameFrame.bounds, 5);
 
@@ -464,32 +511,9 @@ emitter.setDepth(0);
 
   receiveGameState(gameState) {
 
-    // console.log('Received Game State: ', gameState);
-    const { puck, players, timestamp } = gameState;
-
-    // if(Date.now() - gameState.paddles.player2.timeStamp > 60) return;
-    const diff = Date.now() - timestamp;
-    const delta = (!isNaN(diff) || diff > 0) ? diff / 1000 : 0;
-
-    if (diff > 700) return;
-
-    var dx = ((puck.velocityX) * delta) 
-    var dy = ((puck.velocityY) * delta) 
-    // console.table({
-    //   puck1x: gameState.puck.x,
-    //   puck2x: this.puck.body.position.x,
-    //   puck1y: gameState.puck.y,
-    //   puck2y: this.puck.body.position.y,
-    // })
-
-    const currentPuckX = this.puck.body.position.x;
-    const currentPuckY = this.puck.body.position.y;
-    const newPuckX = Phaser.Math.Linear(currentPuckX + this.puck.body.halfWidth, gameState.puck.x * this.gameFrame.scaleFactor + this.gameFrame.frameX, 0.3);
-    const newPuckY = Phaser.Math.Linear(currentPuckY + this.puck.body.halfHeight, gameState.puck.y * this.gameFrame.scaleFactor + this.gameFrame.frameY, 0.3);
+    this.serverSnapshot = gameState;
 
 
-    this.puck.setPosition(newPuckX , newPuckY);
-    this.puck.setVelocity(gameState.puck.velocityX * this.gameFrame.scaleFactor, gameState.puck.velocityY * this.gameFrame.scaleFactor);
 
     return;
 

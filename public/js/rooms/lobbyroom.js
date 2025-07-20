@@ -7,7 +7,7 @@ jQuery(document).ready(function($) {
 const play = $("[data-play-online]");
 
 const status = document.getElementById("status");
-const serverUrl = `ws://${config.baseUrl}:2567`;
+const serverUrl = `ws://${config.gameServerUrl}`;//:${config.gameServerPort}`;
 const client = new Colyseus.Client(serverUrl);
 client.auth.token = sessionStorage.getItem("token");
 
